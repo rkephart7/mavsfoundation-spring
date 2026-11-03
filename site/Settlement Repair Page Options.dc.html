@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&amp;family=Bebas+Neue&amp;family=Libre+Franklin:wght@400;500;600;700&amp;display=swap">
+<style>
+body { margin: 0; background: #e9e4da; font-family: 'Libre Franklin', sans-serif; color: #1d2f52; }
+a { color: #c2332b; } a:hover { color: #a52820; }
+:focus-visible { outline: 2px solid #c2332b; outline-offset: 2px; }
+</style>
+</helmet>
+
+<section style="padding: 48px; display: flex; flex-direction: column; gap: 24px;">
+  <div style="font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.08em;">FOUNDATION SETTLEMENT REPAIR · SERVICE PAGE · THREE VERSIONS</div>
+  <div style="display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start;">
+
+  <!-- 1a LEDGER -->
+  <div id="1a" style="width: 980px; display: flex; flex-direction: column; gap: 12px;">
+    <div style="display: flex; gap: 12px; align-items: baseline;"><span style="background: #1d2f52; color: #f4ecdc; font-family: 'Bebas Neue', sans-serif; font-size: 22px; padding: 4px 10px;">1A</span><span style="font-weight: 600;">Ledger: numbers in a left rail, one cream page</span></div>
+    <article style="background: #fbf6ec; border: 3px double #1d2f52; padding: 56px 56px 64px;">
+      <div style="font-size: 13px; font-weight: 600; margin-bottom: 28px;">Home / Services / Foundation Settlement Repair</div>
+      <h1 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 52px; line-height: 1.08; margin: 0; max-width: 16ch;">Foundation Settlement Repair in Spring, TX</h1>
+      <p style="font-size: 18px; line-height: 1.65; margin: 20px 0 0; max-width: 62ch;">Pressed pilings under a settled slab, then a controlled lift back toward level. Most homes take one to three days.</p>
+      <div style="display: flex; gap: 12px; margin-top: 28px;">
+        <a href="tel:2815550142" style="background: #c2332b; color: #fff; padding: 14px 20px; font-weight: 700; text-decoration: none;" style-hover="background: #a52820; color: #fff;">Call (281) 555-0142</a>
+        <a href="#1a-07" style="border: 2px solid #1d2f52; color: #1d2f52; padding: 12px 20px; font-weight: 700; text-decoration: none;" style-hover="background: #1d2f52; color: #f4ecdc;">Book a free survey</a>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 0 32px; margin-top: 56px; border-top: 3px solid #1d2f52; padding-top: 32px;">
+        <div style="font-family: 'Alfa Slab One', serif; font-size: 52px; line-height: 1; color: #c2332b;">01</div>
+        <div>
+          <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 30px; line-height: 1.15; margin: 0;">We're honest and we do things right.</h2>
+          <p style="font-size: 17px; line-height: 1.65; margin: 14px 0 0; max-width: 62ch;">Every job starts with a free elevation survey, and if your home doesn't need piers, we'll tell you. When it does, each piling is pressed to refusal and logged in your written report.</p>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 0 32px; margin-top: 40px; border-top: 2px solid #1d2f52; padding-top: 32px;">
+        <div style="font-family: 'Alfa Slab One', serif; font-size: 52px; line-height: 1; color: #c2332b;">02</div>
+        <div>
+          <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 30px; line-height: 1.15; margin: 0;">Signs you need foundation repair</h2>
+          <ul style="list-style: none; padding: 0; margin: 18px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px;">
+            <sc-for list="{{ signs }}" as="s" hint-placeholder-count="6"><li style="display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #e2d2b2; font-size: 16px; line-height: 1.5;"><span style="color: #c2332b;">★</span>{{ s }}</li></sc-for>
+          </ul>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 0 32px; margin-top: 40px; border-top: 2px solid #1d2f52; padding-top: 32px;">
+        <div style="font-family: 'Alfa Slab One', serif; font-size: 52px; line-height: 1; color: #c2332b;">03</div>
+        <div>
+          <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 30px; line-height: 1.15; margin: 0;">What causes settlement in Spring, TX</h2>
+          <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 18px;">
+            <sc-for list="{{ causes }}" as="c" hint-placeholder-count="6"><p style="font-size: 16px; line-height: 1.65; margin: 0; max-width: 68ch;"><strong>{{ c.t }}.</strong> {{ c.d }}</p></sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 0 32px; margin-top: 40px; border-top: 2px solid #1d2f52; padding-top: 32px;">
+        <div style="font-family: 'Alfa Slab One', serif; font-size: 52px; line-height: 1; color: #c2332b;">04</div>
+        <div>
+          <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 30px; line-height: 1.15; margin: 0;">How we fix it</h2>
+          <ol style="list-style: none; padding: 0; margin: 18px 0 0; display: flex; flex-direction: column;">
+            <sc-for list="{{ steps }}" as="st" hint-placeholder-count="5"><li style="display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; padding: 12px 0; border-bottom: 1px solid #e2d2b2;"><span style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: #c2332b;">{{ st.n }}</span><span style="font-size: 16px; line-height: 1.6;"><strong>{{ st.t }}.</strong> {{ st.d }}</span></li></sc-for>
+          </ol>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 0 32px; margin-top: 40px; border-top: 2px solid #1d2f52; padding-top: 32px;">
+        <div style="font-family: 'Alfa Slab One', serif; font-size: 52px; line-height: 1; color: #c2332b;">05</div>
+        <div>
+          <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 30px; line-height: 1.15; margin: 0;">Estimated costs</h2>
+          <p style="font-size: 16px; line-height: 1.6; margin: 12px 0 0; max-width: 62ch;">Typical 2026 ranges in Spring. Your exact price comes in writing after the free survey.</p>
+          <div style="margin-top: 18px; border-top: 2px solid #1d2f52;">
+            <sc-for list="{{ costs }}" as="k" hint-placeholder-count="6"><div style="display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding: 12px 0; border-bottom: 1px solid #e2d2b2;"><span style="font-size: 16px;"><strong>{{ k.t }}</strong> <span style="font-size: 14px;">{{ k.d }}</span></span><span style="font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #c2332b; white-space: nowrap;">{{ k.p }}</span></div></sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 0 32px; margin-top: 40px; border-top: 2px solid #1d2f52; padding-top: 32px;">
+        <div style="font-family: 'Alfa Slab One', serif; font-size: 52px; line-height: 1; color: #c2332b;">06</div>
+        <div>
+          <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 30px; line-height: 1.15; margin: 0;">FAQs</h2>
+          <div style="display: flex; flex-direction: column; gap: 18px; margin-top: 18px;">
+            <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="5"><div><h3 style="font-size: 17px; font-weight: 700; margin: 0;">{{ f.q }}</h3><p style="font-size: 16px; line-height: 1.65; margin: 4px 0 0; max-width: 68ch;">{{ f.a }}</p></div></sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div id="1a-07" style="display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 0 32px; margin-top: 40px; border-top: 2px solid #1d2f52; padding-top: 32px;">
+        <div style="font-family: 'Alfa Slab One', serif; font-size: 52px; line-height: 1; color: #c2332b;">07</div>
+        <div>
+          <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 30px; line-height: 1.15; margin: 0;">Reach out</h2>
+          <p style="font-size: 16px; line-height: 1.6; margin: 12px 0 0;">Call <a href="tel:2815550142" style="font-weight: 700;">(281) 555-0142</a> or send your details and we'll call to schedule a free survey.</p>
+          <form style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: 12px; margin-top: 18px; align-items: end;">
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600;">Name<input style="font: inherit; font-size: 16px; padding: 11px 12px; border: 2px solid #1d2f52; background: #fff;"></label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600;">Phone<input type="tel" style="font: inherit; font-size: 16px; padding: 11px 12px; border: 2px solid #1d2f52; background: #fff;"></label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600;">Address or ZIP<input style="font: inherit; font-size: 16px; padding: 11px 12px; border: 2px solid #1d2f52; background: #fff;"></label>
+            <button type="button" style="background: #c2332b; color: #fff; border: 0; padding: 15px 20px; font: inherit; font-weight: 700; font-size: 16px; cursor: pointer;" style-hover="background: #a52820;">Request survey</button>
+          </form>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <!-- 1b ARTICLE -->
+  <div id="1b" style="width: 860px; display: flex; flex-direction: column; gap: 12px;">
+    <div style="display: flex; gap: 12px; align-items: baseline;"><span style="background: #1d2f52; color: #f4ecdc; font-family: 'Bebas Neue', sans-serif; font-size: 22px; padding: 4px 10px;">1B</span><span style="font-weight: 600;">Article: one narrow white column, numbered kickers</span></div>
+    <article style="background: #fff; border: 3px double #1d2f52; padding: 64px 80px 72px;">
+      <div style="font-size: 13px; font-weight: 600; margin-bottom: 28px;">Home / Services / Foundation Settlement Repair</div>
+      <h1 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 46px; line-height: 1.1; margin: 0;">Foundation Settlement Repair in Spring, TX</h1>
+      <p style="font-size: 18px; line-height: 1.7; margin: 20px 0 0;">Pressed pilings under a settled slab, then a controlled lift back toward level. Most homes take one to three days.</p>
+      <div style="display: flex; gap: 12px; margin-top: 28px;">
+        <a href="tel:2815550142" style="background: #c2332b; color: #fff; padding: 14px 20px; font-weight: 700; text-decoration: none;" style-hover="background: #a52820; color: #fff;">Call (281) 555-0142</a>
+      </div>
+
+      <div style="height: 3px; border-top: 3px double #1d2f52; margin: 48px 0 40px;"></div>
+      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.12em; color: #c2332b;">01 · OUR WORD</div>
+      <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 28px; line-height: 1.2; margin: 6px 0 0;">We're honest and we do things right.</h2>
+      <p style="font-size: 17px; line-height: 1.7; margin: 14px 0 0;">Every job starts with a free elevation survey, and if your home doesn't need piers, we'll tell you. When it does, each piling is pressed to refusal and logged in your written report.</p>
+
+      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.12em; color: #c2332b; margin-top: 48px;">02 · SIGNS</div>
+      <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 28px; line-height: 1.2; margin: 6px 0 0;">Signs you need foundation repair</h2>
+      <p style="font-size: 17px; line-height: 1.7; margin: 14px 0 0;">One sign alone can be normal settling. Two or more together, or a crack that keeps growing, is worth a survey.</p>
+      <ul style="padding: 0 0 0 20px; margin: 12px 0 0; font-size: 17px; line-height: 1.7;">
+        <sc-for list="{{ signs }}" as="s" hint-placeholder-count="6"><li style="padding: 2px 0;">{{ s }}</li></sc-for>
+      </ul>
+
+      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.12em; color: #c2332b; margin-top: 48px;">03 · CAUSES</div>
+      <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 28px; line-height: 1.2; margin: 6px 0 0;">What causes settlement in Spring, TX</h2>
+      <sc-for list="{{ causes }}" as="c" hint-placeholder-count="6"><p style="font-size: 17px; line-height: 1.7; margin: 14px 0 0;"><strong>{{ c.t }}.</strong> {{ c.d }}</p></sc-for>
+
+      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.12em; color: #c2332b; margin-top: 48px;">04 · PROCESS</div>
+      <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 28px; line-height: 1.2; margin: 6px 0 0;">How we fix it</h2>
+      <sc-for list="{{ steps }}" as="st" hint-placeholder-count="5"><p style="font-size: 17px; line-height: 1.7; margin: 14px 0 0;"><strong style="color: #c2332b;">Step {{ st.n }}.</strong> <strong>{{ st.t }}.</strong> {{ st.d }}</p></sc-for>
+
+      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.12em; color: #c2332b; margin-top: 48px;">05 · COST</div>
+      <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 28px; line-height: 1.2; margin: 6px 0 0;">Estimated costs</h2>
+      <p style="font-size: 17px; line-height: 1.7; margin: 14px 0 0;">Most settlement repairs in Spring need 5 to 15 piers. These are typical 2026 ranges; your exact price comes in writing after the free survey.</p>
+      <div style="margin-top: 14px;">
+        <sc-for list="{{ costs }}" as="k" hint-placeholder-count="6"><div style="display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding: 10px 0; border-bottom: 1px dotted #1d2f52;"><span style="font-size: 16px;">{{ k.t }}</span><strong style="font-size: 16px; white-space: nowrap;">{{ k.p }}</strong></div></sc-for>
+      </div>
+
+      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.12em; color: #c2332b; margin-top: 48px;">06 · QUESTIONS</div>
+      <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 28px; line-height: 1.2; margin: 6px 0 0;">FAQs</h2>
+      <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="5"><div style="margin-top: 18px;"><h3 style="font-size: 17px; font-weight: 700; margin: 0;">{{ f.q }}</h3><p style="font-size: 17px; line-height: 1.7; margin: 4px 0 0;">{{ f.a }}</p></div></sc-for>
+
+      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.12em; color: #c2332b; margin-top: 48px;">07 · CONTACT</div>
+      <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 28px; line-height: 1.2; margin: 6px 0 0;">Reach out</h2>
+      <p style="font-size: 17px; line-height: 1.7; margin: 14px 0 0;">Call <a href="tel:2815550142" style="font-weight: 700;">(281) 555-0142</a> or leave your details and we'll call back to schedule your free survey.</p>
+      <form style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 18px;">
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600;">Name<input style="font: inherit; font-size: 16px; padding: 11px 12px; border: 2px solid #1d2f52;"></label>
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600;">Phone<input type="tel" style="font: inherit; font-size: 16px; padding: 11px 12px; border: 2px solid #1d2f52;"></label>
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; grid-column: 1 / -1;">What are you seeing?<textarea rows="3" style="font: inherit; font-size: 16px; padding: 11px 12px; border: 2px solid #1d2f52; resize: vertical;"></textarea></label>
+        <div style="display: flex;"><button type="button" style="background: #c2332b; color: #fff; border: 0; padding: 15px 20px; font: inherit; font-weight: 700; font-size: 16px; cursor: pointer;" style-hover="background: #a52820;">Request survey</button></div>
+      </form>
+    </article>
+  </div>
+
+  <!-- 1c CHAPTERS -->
+  <div id="1c" style="width: 1100px; display: flex; flex-direction: column; gap: 12px;">
+    <div style="display: flex; gap: 12px; align-items: baseline;"><span style="background: #1d2f52; color: #f4ecdc; font-family: 'Bebas Neue', sans-serif; font-size: 22px; padding: 4px 10px;">1C</span><span style="font-weight: 600;">Chapters: on-page index, big numbers beside headings</span></div>
+    <article style="background: #f4ecdc; border: 3px double #1d2f52; padding: 56px 64px 72px;">
+      <div style="font-size: 13px; font-weight: 600; margin-bottom: 28px;">Home / Services / Foundation Settlement Repair</div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 56px; align-items: end;">
+        <div>
+          <h1 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 54px; line-height: 1.06; margin: 0;">Foundation Settlement Repair in Spring, TX</h1>
+          <p style="font-size: 18px; line-height: 1.65; margin: 20px 0 0;">Pressed pilings under a settled slab, then a controlled lift back toward level. Most homes take one to three days.</p>
+          <div style="display: flex; gap: 12px; margin-top: 28px;">
+            <a href="tel:2815550142" style="background: #c2332b; color: #fff; padding: 14px 20px; font-weight: 700; text-decoration: none;" style-hover="background: #a52820; color: #fff;">Call (281) 555-0142</a>
+            <a href="#1c-07" style="border: 2px solid #1d2f52; color: #1d2f52; padding: 12px 20px; font-weight: 700; text-decoration: none;" style-hover="background: #1d2f52; color: #f4ecdc;">Book a free survey</a>
+          </div>
+        </div>
+        <nav style="border-top: 3px solid #1d2f52; display: flex; flex-direction: column;">
+          <sc-for list="{{ toc }}" as="t" hint-placeholder-count="7"><a href="{{ t.href }}" style="display: flex; gap: 16px; padding: 9px 0; border-bottom: 1px solid #1d2f52; color: #1d2f52; text-decoration: none; font-weight: 600; font-size: 15px;" style-hover="color: #c2332b;"><span style="font-family: 'Bebas Neue', sans-serif; font-size: 19px; color: #c2332b; width: 24px;">{{ t.n }}</span>{{ t.t }}</a></sc-for>
+        </nav>
+      </div>
+
+      <div id="1c-01" style="margin-top: 64px; border-top: 3px double #1d2f52; padding-top: 28px; display: flex; gap: 24px; align-items: baseline;"><span style="font-family: 'Alfa Slab One', serif; font-size: 80px; line-height: 0.8; color: transparent; -webkit-text-stroke: 2px #c2332b;">01</span><h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 34px; line-height: 1.15; margin: 0;">We're honest and we do things right.</h2></div>
+      <p style="font-size: 18px; line-height: 1.65; margin: 20px 0 0; max-width: 70ch;">Every job starts with a free elevation survey, and if your home doesn't need piers, we'll tell you. When it does, each piling is pressed to refusal and logged in your written report.</p>
+
+      <div id="1c-02" style="margin-top: 56px; border-top: 3px double #1d2f52; padding-top: 28px; display: flex; gap: 24px; align-items: baseline;"><span style="font-family: 'Alfa Slab One', serif; font-size: 80px; line-height: 0.8; color: transparent; -webkit-text-stroke: 2px #c2332b;">02</span><h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 34px; line-height: 1.15; margin: 0;">Signs you need foundation repair</h2></div>
+      <ul style="list-style: none; padding: 0; margin: 20px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 32px;">
+        <sc-for list="{{ signs }}" as="s" hint-placeholder-count="6"><li style="display: flex; gap: 10px; padding: 12px 0; border-top: 1px solid #1d2f52; font-size: 16px; line-height: 1.5;"><span style="color: #c2332b;">★</span>{{ s }}</li></sc-for>
+      </ul>
+
+      <div id="1c-03" style="margin-top: 56px; border-top: 3px double #1d2f52; padding-top: 28px; display: flex; gap: 24px; align-items: baseline;"><span style="font-family: 'Alfa Slab One', serif; font-size: 80px; line-height: 0.8; color: transparent; -webkit-text-stroke: 2px #c2332b;">03</span><h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 34px; line-height: 1.15; margin: 0;">What causes settlement in Spring, TX</h2></div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 48px; margin-top: 20px;">
+        <sc-for list="{{ causes }}" as="c" hint-placeholder-count="6"><div><h3 style="font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 22px; letter-spacing: 0.06em; margin: 0;">{{ c.t }}</h3><p style="font-size: 16px; line-height: 1.6; margin: 4px 0 0;">{{ c.d }}</p></div></sc-for>
+      </div>
+
+      <div id="1c-04" style="margin-top: 56px; border-top: 3px double #1d2f52; padding-top: 28px; display: flex; gap: 24px; align-items: baseline;"><span style="font-family: 'Alfa Slab One', serif; font-size: 80px; line-height: 0.8; color: transparent; -webkit-text-stroke: 2px #c2332b;">04</span><h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 34px; line-height: 1.15; margin: 0;">How we fix it</h2></div>
+      <ol style="list-style: none; padding: 0; margin: 20px 0 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px;">
+        <sc-for list="{{ steps }}" as="st" hint-placeholder-count="5"><li style="border-top: 3px solid #c2332b; padding-top: 12px;"><div style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: #c2332b;">STEP {{ st.n }}</div><strong style="display: block; font-size: 16px; margin-top: 4px;">{{ st.t }}</strong><p style="font-size: 15px; line-height: 1.55; margin: 6px 0 0;">{{ st.d }}</p></li></sc-for>
+      </ol>
+
+      <div id="1c-05" style="margin-top: 56px; border-top: 3px double #1d2f52; padding-top: 28px; display: flex; gap: 24px; align-items: baseline;"><span style="font-family: 'Alfa Slab One', serif; font-size: 80px; line-height: 0.8; color: transparent; -webkit-text-stroke: 2px #c2332b;">05</span><h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 34px; line-height: 1.15; margin: 0;">Estimated costs</h2></div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 48px; margin-top: 20px; align-items: start;">
+        <div>
+          <div style="font-family: 'Alfa Slab One', serif; font-size: 40px; line-height: 1;">$3,800 – $20,000</div>
+          <p style="font-size: 16px; line-height: 1.6; margin: 12px 0 0;">Typical total for settlement repair on a Spring slab home, based on 5 to 15 piers. Your exact price comes in writing after the free survey.</p>
+        </div>
+        <div style="border-top: 2px solid #1d2f52;">
+          <sc-for list="{{ costs }}" as="k" hint-placeholder-count="6"><div style="display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding: 11px 0; border-bottom: 1px solid #1d2f52;"><span style="font-size: 16px;"><strong>{{ k.t }}</strong> <span style="font-size: 14px;">{{ k.d }}</span></span><span style="font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #c2332b; white-space: nowrap;">{{ k.p }}</span></div></sc-for>
+        </div>
+      </div>
+
+      <div id="1c-06" style="margin-top: 56px; border-top: 3px double #1d2f52; padding-top: 28px; display: flex; gap: 24px; align-items: baseline;"><span style="font-family: 'Alfa Slab One', serif; font-size: 80px; line-height: 0.8; color: transparent; -webkit-text-stroke: 2px #c2332b;">06</span><h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 34px; line-height: 1.15; margin: 0;">FAQs</h2></div>
+      <div style="margin-top: 20px;">
+        <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="5"><div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 48px; padding: 16px 0; border-top: 1px solid #1d2f52;"><h3 style="font-size: 17px; font-weight: 700; line-height: 1.4; margin: 0;">{{ f.q }}</h3><p style="font-size: 16px; line-height: 1.65; margin: 0;">{{ f.a }}</p></div></sc-for>
+      </div>
+
+      <div id="1c-07" style="margin-top: 56px; border-top: 3px double #1d2f52; padding-top: 28px; display: flex; gap: 24px; align-items: baseline;"><span style="font-family: 'Alfa Slab One', serif; font-size: 80px; line-height: 0.8; color: transparent; -webkit-text-stroke: 2px #c2332b;">07</span><h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 34px; line-height: 1.15; margin: 0;">Reach out</h2></div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 48px; margin-top: 20px; align-items: start;">
+        <div>
+          <a href="tel:2815550142" style="font-family: 'Alfa Slab One', serif; font-size: 34px; color: #1d2f52; text-decoration: none;" style-hover="color: #c2332b;">(281) 555-0142</a>
+          <p style="font-size: 16px; line-height: 1.6; margin: 10px 0 0;">Free elevation survey. Written report and price before any work starts.</p>
+        </div>
+        <form style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600;">Name<input style="font: inherit; font-size: 16px; padding: 11px 12px; border: 2px solid #1d2f52; background: #fff;"></label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600;">Phone<input type="tel" style="font: inherit; font-size: 16px; padding: 11px 12px; border: 2px solid #1d2f52; background: #fff;"></label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; grid-column: 1 / -1;">Address or ZIP<input style="font: inherit; font-size: 16px; padding: 11px 12px; border: 2px solid #1d2f52; background: #fff;"></label>
+          <div style="display: flex;"><button type="button" style="background: #c2332b; color: #fff; border: 0; padding: 15px 20px; font: inherit; font-weight: 700; font-size: 16px; cursor: pointer; box-shadow: 4px 4px 0 #1d2f52;" style-hover="background: #a52820;">Request survey</button></div>
+        </form>
+      </div>
+    </article>
+  </div>
+
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const steps = [
+      { t: 'Free elevation survey', d: 'Digital floor readings across the slab show where it has dropped and by how much.' },
+      { t: 'Engineered pier plan', d: 'A third-party structural engineer reviews pier count, spacing and depth.' },
+      { t: 'Pilings pressed to refusal', d: 'Concrete cylinders or steel pipe are driven hydraulically until the soil supports the load.' },
+      { t: 'Controlled lift', d: 'The slab is raised in small increments back toward level and re-surveyed.' },
+      { t: 'Clean up and report', d: 'Access holes are backfilled and compacted, and you get a pier log with every depth recorded.' }
+    ].map((s, i) => ({ ...s, n: String(i + 1).padStart(2, '0') }));
+    const toc = ['Our word', 'Signs', 'Causes in Spring', 'Process', 'Estimated costs', 'FAQs', 'Reach out'].map((t, i) => ({ t, n: String(i + 1).padStart(2, '0'), href: '#1c-0' + (i + 1) }));
+    return {
+      steps, toc,
+      signs: ['Diagonal drywall cracks off door and window corners', 'Stair-step cracking in brick veneer', 'Doors binding or out of square', 'Cracked floor tile following a single line', 'Gaps between walls and ceiling or trim', 'Floors that slope toward one corner'],
+      causes: [
+        { t: 'Expansive clay', d: 'Spring sits on clay soil that swells when wet and shrinks when dry. That movement pushes and drops the slab above it.' },
+        { t: 'Drought summers', d: 'Long dry stretches pull moisture from under slab edges first, so corners and west- and south-facing walls tend to drop.' },
+        { t: 'Creeks and a shallow water table', d: 'Homes near Spring Creek and Cypress Creek see wetter, softer soil that shifts more between seasons.' },
+        { t: 'Mature trees', d: 'Oaks and pines in older neighborhoods like Champion Forest draw water from the clay near the foundation.' },
+        { t: 'Poorly compacted fill', d: 'Some newer subdivisions were built on fill that was not compacted well, and slabs can settle within the first decade.' },
+        { t: 'Plumbing leaks', d: 'Many 1970s and 80s homes still have cast-iron drains that leak under the slab and soften the soil.' }
+      ],
+      costs: [
+        { t: 'Elevation survey and written plan', d: '', p: 'FREE' },
+        { t: 'Structural engineer report', d: 'if required', p: '$499 – $780' },
+        { t: 'Pressed concrete piling', d: 'per pier', p: '$765 – $1,100' },
+        { t: 'Steel push pier', d: 'per pier', p: '$990 – $1,350' },
+        { t: 'Helical pier', d: 'per pier', p: '$3,500 – $4,400' },
+        { t: 'Typical job, 5 to 15 piers', d: '', p: '$3,800 – $20,000' }
+      ],
+      faqs: [
+        { q: 'How deep do pressed pilings go in Spring?', a: 'Each piling is driven until it reaches refusal, the point where soil resistance supports the load. Depth varies by lot and is recorded for every pier.' },
+        { q: 'Concrete or steel pilings?', a: 'Both are pressed to refusal. Steel reaches greater depth on lots with deep soft clay; concrete is common and cost-effective on typical Spring lots. The engineer specifies which.' },
+        { q: 'How long does the repair take?', a: 'Most homes take one to three days of work.' },
+        { q: 'Will my cracks close after leveling?', a: 'Finishes can shift as the structure moves. Many existing cracks close as the house returns toward level.' },
+        { q: 'Is a permit required?', a: 'Many jurisdictions around Spring require one. We pull it and schedule any required inspection.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

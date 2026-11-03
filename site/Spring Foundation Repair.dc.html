@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&amp;display=swap">
+<link rel="stylesheet" href="_ds/modernist-e8c71e2d-abb7-43c6-955f-3b34f2be7ca8/styles.css">
+<script src="_ds/modernist-e8c71e2d-abb7-43c6-955f-3b34f2be7ca8/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+body { margin: 0; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); text-wrap: pretty; -webkit-font-smoothing: antialiased; }
+a { color: var(--color-accent-700); }
+a:hover { color: var(--color-accent); }
+</style>
+</helmet>
+
+<nav class="nav" style="position: sticky; top: 0; z-index: 20; background: var(--color-bg); flex-wrap: wrap; row-gap: 8px; padding-inline: clamp(20px, 5vw, 72px);">
+  <a href="#/" class="nav-brand" style="font-size: 18px; color: var(--color-text);">{{ brand }}</a>
+  <a href="#/services">Services</a>
+  <a href="#/service-areas">Service areas</a>
+  <a href="#/foundation-inspection-spring-tx">Free inspection</a>
+  <a class="btn btn-primary" href="{{ phoneHref }}" style="color: var(--color-bg); font-size: 14px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+    {{ phone }}
+  </a>
+</nav>
+
+<sc-if value="{{ showSeo }}" hint-placeholder-val="{{ true }}">
+  <div style="background: var(--color-text); color: var(--color-bg); font-size: 12px; line-height: 1.5; padding: 10px clamp(20px, 5vw, 72px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 4px 24px;">
+    <div><span style="opacity: 0.6; text-transform: uppercase; letter-spacing: 0.08em;">URL </span>{{ seo.url }}</div>
+    <div style="grid-column: span 2;"><span style="opacity: 0.6; text-transform: uppercase; letter-spacing: 0.08em;">Title tag </span>{{ seo.title }}</div>
+    <div><span style="opacity: 0.6; text-transform: uppercase; letter-spacing: 0.08em;">H1 </span>{{ seo.h1 }}</div>
+  </div>
+</sc-if>
+
+<!-- HOME -->
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<main data-screen-label="Home">
+  <section style="max-width: 1200px; margin: 0 auto; padding: clamp(48px, 8vw, 112px) clamp(20px, 5vw, 72px) clamp(48px, 6vw, 84px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 56px; align-items: start;">
+    <div>
+      <span style="display: block; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 20px;">Spring, TX · 77373 · 77379 · 77388 · 77389</span>
+      <h1 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(44px, 6.4vw, 84px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 0 -0.05em;">Foundation repair in Spring, TX.</h1>
+      <p style="font-size: 18px; line-height: 1.6; max-width: 54ch; margin: 28px 0 0;">Cracked brick, sticking doors or sloping floors usually mean the clay under your home has moved. We inspect for free, tell you plainly what's wrong, and fix slab and pier &amp; beam foundations across Spring and north Harris County.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px;">
+        <a class="btn btn-primary" href="{{ phoneHref }}" style="color: var(--color-bg); padding: 12px 18px; font-size: 15px;">Call {{ phone }}</a>
+        <a class="btn btn-secondary" href="#/foundation-inspection-spring-tx" style="color: var(--color-text); padding: 12px 18px; font-size: 15px;">How the free inspection works</a>
+      </div>
+    </div>
+    <sc-if value="{{ heroForm }}" hint-placeholder-val="{{ true }}">
+      <form onSubmit="{{ submit }}" style="background: var(--color-surface); border-top: 4px solid var(--color-accent); padding: 28px; display: flex; flex-direction: column; gap: 14px;">
+        <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 24px; letter-spacing: -0.01em; margin: 0;">Book a free foundation inspection</h2>
+        <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+          <p style="font-size: 16px; line-height: 1.6; margin: 0;">Thanks. A local foundation specialist will call you within one business day to set a time.</p>
+        </sc-if>
+        <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="field"><label>Name</label><input class="input" required="required" autocomplete="name"></div>
+            <div class="field"><label>Phone</label><input class="input" type="tel" required="required" autocomplete="tel"></div>
+            <div class="field"><label>Address or ZIP</label><input class="input" autocomplete="street-address"></div>
+            <div class="field"><label>What are you seeing?</label>
+              <select class="input">
+                <option>Cracks in walls or brick</option>
+                <option>Doors or windows sticking</option>
+                <option>Sloping or uneven floors</option>
+                <option>Water pooling near the house</option>
+                <option>Buying or selling, need an inspection</option>
+                <option>Something else</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" style="padding: 12px 16px; font-size: 15px;">Request inspection
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </button>
+          </div>
+        </sc-if>
+      </form>
+    </sc-if>
+    <sc-if value="{{ noHeroForm }}" hint-placeholder-val="{{ false }}">
+      <div class="grayscale" style="aspect-ratio: 4 / 3;"><image-slot id="home-hero" shape="rect" placeholder="Crew at work on a Spring home (photo)"></image-slot></div>
+    </sc-if>
+  </section>
+
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 72px);"><hr class="hr" style="margin: 0;"></div>
+
+  <section id="services" style="max-width: 1200px; margin: 0 auto; padding: 72px clamp(20px, 5vw, 72px);">
+    <span style="display: block; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px;">Services</span>
+    <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 40px;">Foundation repair services in Spring</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); column-gap: 40px;">
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
+        <a href="{{ s.href }}" style="display: flex; flex-direction: column; gap: 10px; padding: 24px 0 32px; border-top: 2px solid var(--color-divider); color: var(--color-text); text-decoration: none;" style-hover="color: var(--color-accent-700);">
+          <span style="font-size: 13px; font-weight: 600; font-feature-settings: 'tnum' 1;">{{ s.num }}</span>
+          <span style="font-family: var(--font-heading); font-weight: 800; font-size: 22px; letter-spacing: -0.01em;">{{ s.name }}</span>
+          <span style="font-size: 15px; line-height: 1.6; color: color-mix(in srgb, var(--color-text) 78%, transparent);">{{ s.short }}</span>
+          <span style="display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--color-accent-700);">{{ s.anchor }}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </span>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 72px) 72px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 56px; align-items: center;">
+    <div>
+      <span style="display: block; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px;">The soil</span>
+      <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(28px, 3vw, 38px); line-height: 1.1; letter-spacing: -0.02em; margin: 0;">Why Spring foundations move</h2>
+      <p style="font-size: 16px; line-height: 1.7; margin: 20px 0 0; max-width: 52ch;">Spring sits on expansive clay. It swells when it's wet and shrinks during dry Texas summers, and a slab resting on it rises and settles with every cycle. Add a high water table near Spring Creek and Cypress Creek, mature oaks pulling moisture from the soil, and gutters that dump water at the slab edge, and you get the cracks most Spring homeowners call us about.</p>
+      <p style="font-size: 16px; line-height: 1.7; margin: 16px 0 0; max-width: 52ch;">Most fixes come down to two things: support the house on <a href="#/slab-foundation-repair-spring-tx">piers driven below the active clay</a>, and <a href="#/foundation-drainage-solutions-spring-tx">keep water moving away from the foundation</a>.</p>
+    </div>
+    <div class="grayscale" style="aspect-ratio: 4 / 3;"><image-slot id="home-soil" shape="rect" placeholder="Cracked clay soil or pier install (photo)"></image-slot></div>
+  </section>
+
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 72px);"><hr class="hr" style="margin: 0;"></div>
+
+  <section style="max-width: 1200px; margin: 0 auto; padding: 72px clamp(20px, 5vw, 72px);">
+    <span style="display: block; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px;">How it works</span>
+    <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 40px;">From first call to finished repair</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 0 32px;">
+      <sc-for list="{{ process }}" as="p" hint-placeholder-count="4">
+        <div style="border-top: 2px solid var(--color-divider); padding: 20px 0 28px; display: flex; flex-direction: column; gap: 10px;">
+          <span style="display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600;"><span style="width: 10px; height: 10px; background: var(--color-accent);"></span>{{ p.num }}</span>
+          <span style="font-family: var(--font-heading); font-weight: 800; font-size: 20px;">{{ p.t }}</span>
+          <span style="font-size: 15px; line-height: 1.6; color: color-mix(in srgb, var(--color-text) 78%, transparent);">{{ p.d }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background: var(--color-surface);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 72px clamp(20px, 5vw, 72px);">
+      <span style="display: block; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px;">Service areas</span>
+      <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 16px;">Neighborhoods we serve around Spring</h2>
+      <p style="font-size: 16px; line-height: 1.6; margin: 0 0 32px; max-width: 60ch;">We work throughout Spring's 77373, 77379, 77388 and 77389 ZIP codes and the neighborhoods that border them.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); column-gap: 32px;">
+        <sc-for list="{{ areas }}" as="a" hint-placeholder-count="12">
+          <a href="{{ a.href }}" style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 14px 0; border-top: 2px solid var(--color-divider); color: var(--color-text); text-decoration: none; font-weight: 600; font-size: 16px;" style-hover="color: var(--color-accent-700);">{{ a.name }}<span style="font-weight: 400; font-size: 13px; color: color-mix(in srgb, var(--color-text) 70%, transparent);">{{ a.zip }}</span></a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width: 1200px; margin: 0 auto; padding: 72px clamp(20px, 5vw, 72px);">
+    <span style="display: block; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px;">Questions</span>
+    <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 32px;">Foundation repair FAQ</h2>
+    <sc-for list="{{ homeFaqs }}" as="f" hint-placeholder-count="4">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 12px 48px; padding: 24px 0; border-top: 2px solid var(--color-divider);">
+        <h3 style="font-family: var(--font-heading); font-weight: 800; font-size: 19px; line-height: 1.3; margin: 0;">{{ f.q }}</h3>
+        <p style="font-size: 16px; line-height: 1.65; margin: 0;">{{ f.a }}</p>
+      </div>
+    </sc-for>
+  </section>
+</main>
+</sc-if>
+
+<!-- SERVICE PAGE -->
+<sc-if value="{{ isService }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Service page">
+  <section style="max-width: 1200px; margin: 0 auto; padding: 40px clamp(20px, 5vw, 72px) 64px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; margin-bottom: 40px;">
+      <a href="#/">Home</a><span>/</span><a href="#/services">Services</a><span>/</span><span>{{ svc.name }}</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 56px; align-items: start;">
+      <div>
+        <h1 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(38px, 5vw, 64px); line-height: 1.04; letter-spacing: -0.025em; margin: 0 0 0 -0.05em;">{{ svc.h1 }}</h1>
+        <p style="font-size: 18px; line-height: 1.65; margin: 24px 0 0; max-width: 56ch;">{{ svc.lead }}</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px;">
+          <a class="btn btn-primary" href="{{ phoneHref }}" style="color: var(--color-bg); padding: 12px 18px; font-size: 15px;">Call {{ phone }}</a>
+          <a class="btn btn-secondary" href="#quote" style="color: var(--color-text); padding: 12px 18px; font-size: 15px;">Get a free inspection</a>
+        </div>
+      </div>
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="0">
+        <sc-if value="{{ s.active }}">
+          <div class="grayscale" style="aspect-ratio: 4 / 3;"><image-slot id="{{ s.slot }}" shape="rect" placeholder="{{ s.photo }}"></image-slot></div>
+        </sc-if>
+      </sc-for>
+    </div>
+  </section>
+
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 72px);"><hr class="hr" style="margin: 0;"></div>
+
+  <section style="max-width: 1200px; margin: 0 auto; padding: 56px clamp(20px, 5vw, 72px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 40px 56px;">
+    <div>
+      <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 28px; letter-spacing: -0.015em; margin: 0 0 20px;">{{ svc.signsTitle }}</h2>
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column;">
+        <sc-for list="{{ svc.signs }}" as="sign" hint-placeholder-count="4">
+          <li style="display: flex; gap: 14px; align-items: baseline; padding: 12px 0; border-top: 2px solid var(--color-divider); font-size: 16px; line-height: 1.5;"><span style="flex: none; width: 10px; height: 10px; background: var(--color-accent); transform: translateY(-1px);"></span>{{ sign }}</li>
+        </sc-for>
+      </ul>
+    </div>
+    <div>
+      <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 28px; letter-spacing: -0.015em; margin: 0 0 20px;">{{ svc.stepsTitle }}</h2>
+      <ol style="list-style: none; padding: 0; margin: 0;">
+        <sc-for list="{{ svc.steps }}" as="st" hint-placeholder-count="4">
+          <li style="display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 4px 12px; padding: 12px 0; border-top: 2px solid var(--color-divider);">
+            <span style="font-size: 13px; font-weight: 600; font-feature-settings: 'tnum' 1; padding-top: 3px;">{{ st.num }}</span>
+            <span><strong style="display: block; font-size: 16px; margin-bottom: 4px;">{{ st.t }}</strong><span style="font-size: 15px; line-height: 1.6; color: color-mix(in srgb, var(--color-text) 78%, transparent);">{{ st.d }}</span></span>
+          </li>
+        </sc-for>
+      </ol>
+    </div>
+  </section>
+
+  <section style="background: var(--color-surface);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 56px clamp(20px, 5vw, 72px);">
+      <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 28px; letter-spacing: -0.015em; margin: 0 0 16px;">{{ svc.localTitle }}</h2>
+      <p style="font-size: 16px; line-height: 1.7; margin: 0; max-width: 70ch;">{{ svc.local }}</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 20px; font-size: 14px;">
+        <sc-for list="{{ svc.areaLinks }}" as="al" hint-placeholder-count="4">
+          <a href="{{ al.href }}">{{ al.label }}</a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width: 1200px; margin: 0 auto; padding: 56px clamp(20px, 5vw, 72px);">
+    <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 28px; letter-spacing: -0.015em; margin: 0 0 20px;">{{ svc.faqTitle }}</h2>
+    <sc-for list="{{ svc.faqs }}" as="f" hint-placeholder-count="3">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 12px 48px; padding: 22px 0; border-top: 2px solid var(--color-divider);">
+        <h3 style="font-family: var(--font-heading); font-weight: 800; font-size: 18px; line-height: 1.3; margin: 0;">{{ f.q }}</h3>
+        <p style="font-size: 16px; line-height: 1.65; margin: 0;">{{ f.a }}</p>
+      </div>
+    </sc-for>
+  </section>
+
+  <section id="quote" style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 72px) 72px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 48px; align-items: start;">
+    <div>
+      <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 28px; letter-spacing: -0.015em; margin: 0 0 20px;">Related foundation services</h2>
+      <sc-for list="{{ svc.relatedList }}" as="r" hint-placeholder-count="3">
+        <a href="{{ r.href }}" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 0; border-top: 2px solid var(--color-divider); color: var(--color-text); text-decoration: none; font-weight: 600; font-size: 17px;" style-hover="color: var(--color-accent-700);">{{ r.anchor }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+        </a>
+      </sc-for>
+    </div>
+    <form onSubmit="{{ submit }}" style="background: var(--color-surface); border-top: 4px solid var(--color-accent); padding: 28px; display: flex; flex-direction: column; gap: 14px;">
+      <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 24px; letter-spacing: -0.01em; margin: 0;">Book a free foundation inspection</h2>
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+        <p style="font-size: 16px; line-height: 1.6; margin: 0;">Thanks. A local foundation specialist will call you within one business day to set a time.</p>
+      </sc-if>
+      <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div class="field"><label>Name</label><input class="input" required="required" autocomplete="name"></div>
+          <div class="field"><label>Phone</label><input class="input" type="tel" required="required" autocomplete="tel"></div>
+          <div class="field"><label>Address or ZIP</label><input class="input" autocomplete="street-address"></div>
+          <button type="submit" class="btn btn-primary btn-block" style="padding: 12px 16px; font-size: 15px;">Request inspection
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </sc-if>
+    </form>
+  </section>
+</main>
+</sc-if>
+
+<!-- SERVICE AREAS -->
+<sc-if value="{{ isAreas }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Service areas">
+  <section style="max-width: 1200px; margin: 0 auto; padding: 40px clamp(20px, 5vw, 72px) 56px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; margin-bottom: 40px;">
+      <a href="#/">Home</a><span>/</span><span>Service areas</span>
+    </div>
+    <h1 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(38px, 5vw, 64px); line-height: 1.04; letter-spacing: -0.025em; margin: 0 0 0 -0.05em; max-width: 18ch;">Foundation repair service areas around Spring, TX</h1>
+    <p style="font-size: 18px; line-height: 1.65; margin: 24px 0 0; max-width: 60ch;">We repair foundations in every Spring neighborhood and the communities next door. Find yours below, or call {{ phone }} and we'll tell you how soon we can be there.</p>
+  </section>
+  <section style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 72px) 72px;">
+    <sc-for list="{{ areas }}" as="a" hint-placeholder-count="12">
+      <div id="{{ a.slug }}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px 48px; padding: 28px 0; border-top: 2px solid var(--color-divider); scroll-margin-top: 80px;">
+        <div>
+          <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 24px; letter-spacing: -0.01em; margin: 0;">{{ a.h2 }}</h2>
+          <span style="display: block; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin-top: 8px;">{{ a.zip }}</span>
+        </div>
+        <div>
+          <p style="font-size: 16px; line-height: 1.65; margin: 0;">{{ a.note }}</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 12px; font-size: 14px;">
+            <sc-for list="{{ a.links }}" as="l" hint-placeholder-count="2">
+              <a href="{{ l.href }}">{{ l.label }}</a>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </section>
+</main>
+</sc-if>
+
+<!-- CLOSE -->
+<section style="background: var(--color-accent); color: var(--color-bg);">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 84px clamp(20px, 5vw, 72px); display: flex; flex-direction: column; align-items: flex-start; gap: 32px;">
+    <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(36px, 4.6vw, 60px); line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 0 -0.05em; max-width: 16ch;">Foundation cracks don't fix themselves.</h2>
+    <a class="btn" href="{{ phoneHref }}" style="color: var(--color-bg); border: 2px solid var(--color-bg); padding: 12px 18px; font-size: 16px;" style-hover="background: var(--color-accent-600);">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+      Call {{ phone }} for a free inspection
+    </a>
+  </div>
+</section>
+
+<footer style="max-width: 1200px; margin: 0 auto; padding: 56px clamp(20px, 5vw, 72px) 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 32px 48px; font-size: 14px; line-height: 1.6;">
+  <div style="display: flex; flex-direction: column; gap: 8px;">
+    <span style="font-family: var(--font-heading); font-weight: 800; font-size: 18px;">{{ brand }}</span>
+    <a href="{{ phoneHref }}" style="font-weight: 600;">{{ phone }}</a>
+    <span style="color: color-mix(in srgb, var(--color-text) 72%, transparent);">Serving Spring, TX and north Harris County</span>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 72%, transparent); margin-bottom: 4px;">Services</span>
+    <sc-for list="{{ services }}" as="s" hint-placeholder-count="6"><a href="{{ s.href }}" style="color: var(--color-text);">{{ s.name }}</a></sc-for>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 72%, transparent); margin-bottom: 4px;">Service areas</span>
+    <sc-for list="{{ footerAreas }}" as="a" hint-placeholder-count="6"><a href="{{ a.href }}" style="color: var(--color-text);">Foundation repair {{ a.name }}</a></sc-for>
+    <a href="#/service-areas" style="font-weight: 600;">All service areas</a>
+  </div>
+  <p style="grid-column: 1 / -1; margin: 16px 0 0; padding-top: 20px; border-top: 2px solid var(--color-divider); font-size: 12px; color: color-mix(in srgb, var(--color-text) 72%, transparent);">{{ brand }} connects Spring homeowners with a licensed, insured local foundation repair contractor. Updated {{ updated }}.</p>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;brand&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;Spring Foundation Repair&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Site&quot;}, &quot;phone&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;(281) 555-0142&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Site&quot;}, &quot;showSeo&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Display&quot;}, &quot;heroForm&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Display&quot;}}">
+const SVC = [
+  {
+    slug: 'slab-foundation-repair-spring-tx', name: 'Slab Foundation Repair',
+    short: 'Pressed piers under a sinking or cracked concrete slab, then a controlled lift back toward level.',
+    anchor: 'Slab foundation repair in Spring',
+    title: 'Slab Foundation Repair in Spring, TX — Free Inspection | Slab Leveling, Pressed Piers, 77379 77373 77388',
+    h1: 'Slab foundation repair in Spring, TX',
+    lead: 'Most Spring homes sit on a concrete slab over expansive clay. When the clay shrinks in a drought and swells after heavy rain, the slab moves with it and cracks. We stop the movement by installing piers down to stable soil, then lift the slab back toward level. Most homes take one to three days.',
+    signs: ['Diagonal cracks above doors and windows', 'Stair-step cracks in brick veneer', 'Doors that stick or won\'t latch', 'Cracked floor tile or separating baseboards', 'Gaps where walls meet the ceiling'],
+    steps: [
+      { t: 'Free elevation survey', d: 'We measure elevations across the slab and map exactly where it has dropped.' },
+      { t: 'Engineered plan', d: 'An independent structural engineer reviews pier count and placement.' },
+      { t: 'Piers installed', d: 'Concrete or steel piers are pressed to refusal at the perimeter and interior where needed.' },
+      { t: 'Lift, backfill, re-measure', d: 'We raise the slab, confirm the new readings with you, and backfill every access hole.' }
+    ],
+    local: 'Slab homes from the 1970s and 80s in Northgate Forest, Champion Forest and Spring Creek Oaks often show their first serious cracks after a dry summer. Newer builds in Gleannloch Farms and Augusta Pines aren\'t immune either: post-tension slabs on fresh fill can settle in their first decade.',
+    areas: ['northgate-forest', 'champion-forest', 'spring-creek-oaks', 'gleannloch-farms'],
+    faqs: [
+      { q: 'How long does slab foundation repair take?', a: 'One to three days of work for most Spring homes, depending on how many piers are needed. You can stay in the house the whole time.' },
+      { q: 'Will my slab need repair again later?', a: 'Piers set below the active clay layer stop the settlement they support. Good drainage around the house keeps the rest of the slab stable.' },
+      { q: 'Do I need a permit?', a: 'Many jurisdictions around Spring require one. We pull it and schedule any inspection as part of the job.' }
+    ],
+    related: ['house-leveling-spring-tx', 'foundation-drainage-solutions-spring-tx', 'foundation-crack-repair-spring-tx'],
+    photo: 'Slab pier install at a Spring home (photo)'
+  },
+  {
+    slug: 'pier-and-beam-foundation-repair-spring-tx', name: 'Pier & Beam Foundation Repair',
+    short: 'Re-shimming, new piers and sill or joist replacement for raised homes with a crawl space.',
+    anchor: 'Pier and beam repair in Spring',
+    title: 'Pier & Beam Foundation Repair in Spring, TX — Bouncy Floors Fixed | Crawl Space, Shimming, Sill Beams',
+    h1: 'Pier and beam foundation repair in Spring, TX',
+    lead: 'Pier and beam homes sit on raised supports with a crawl space underneath. When floors feel soft, bouncy or sloped, the cause is usually settled piers, loose shims or beams weakened by moisture. We crawl the whole space, re-support what\'s settled and replace damaged wood. Most jobs finish in one or two days.',
+    signs: ['Soft, bouncy or sagging floors', 'Floors that slope toward one room', 'Gaps under interior doors', 'Musty smell or standing water in the crawl space', 'Rotted or termite-damaged sill beams'],
+    steps: [
+      { t: 'Crawl space inspection', d: 'We check every pier, shim, beam and joist and photograph what we find.' },
+      { t: 'Clear repair plan', d: 'You get a written list of what needs work and what doesn\'t.' },
+      { t: 'Re-support and replace', d: 'New piers, steel shims, sistered joists or sill beam replacement as needed.' },
+      { t: 'Level and close up', d: 'We bring floors back toward level and address crawl space moisture.' }
+    ],
+    local: 'Older pier and beam homes are common in Old Town Spring and along the creek corridors, where a high water table keeps crawl spaces damp. Moisture plus Spring\'s shifting clay is the most common reason we replace shims and sill beams in this area.',
+    areas: ['old-town-spring', 'spring-creek-oaks', 'olde-oaks'],
+    faqs: [
+      { q: 'Is pier and beam repair cheaper than slab repair?', a: 'Often, because the crawl space gives direct access to the structure with no tunneling or breaking concrete.' },
+      { q: 'Can you fix bouncy floors without leveling the whole house?', a: 'Yes. Many bouncy floors come from a few weak joists or missing supports, which we can fix on their own.' },
+      { q: 'Do you handle crawl space moisture?', a: 'Yes. We can add drainage, vapor barriers and ventilation so the repair lasts.' }
+    ],
+    related: ['house-leveling-spring-tx', 'foundation-drainage-solutions-spring-tx', 'foundation-inspection-spring-tx'],
+    photo: 'Crawl space with new piers and shims (photo)'
+  },
+  {
+    slug: 'foundation-drainage-solutions-spring-tx', name: 'Foundation Drainage Solutions',
+    short: 'French drains, surface drains and gutter tie-ins that keep water from pooling at the slab.',
+    anchor: 'Foundation drainage in Spring',
+    title: 'Foundation Drainage in Spring, TX — Stop Water at the Slab | French Drains, Surface Drains, Gutter Downspouts',
+    h1: 'Foundation drainage solutions in Spring, TX',
+    lead: 'Water pooling next to your foundation makes the clay underneath swell unevenly, which pushes and cracks the slab. A drainage system moves that water away before it soaks in. It\'s the cheapest way to protect a foundation, and it helps any pier repair last.',
+    signs: ['Standing water near the house after rain', 'Downspouts emptying right at the slab', 'Soil washing away from the foundation edge', 'Flower beds sloping toward the house', 'Damp or musty crawl space'],
+    steps: [
+      { t: 'Watch the water', d: 'We map grading, downspouts and low spots across the lot.' },
+      { t: 'Design the system', d: 'French drains, surface drains, catch basins or regrading, sized to your yard.' },
+      { t: 'Install', d: 'Trenching, pipe, pop-up emitters and downspout tie-ins, usually in a day.' },
+      { t: 'Restore', d: 'We put sod and beds back and walk the system with you.' }
+    ],
+    local: 'Flat lots and heavy clay make drainage the first thing to check on almost every Spring property. Neighborhoods near Spring Creek and Cypress Creek, like Spring Creek Oaks and Cypresswood, see the most standing water after big storms.',
+    areas: ['spring-creek-oaks', 'cypresswood', 'klein'],
+    faqs: [
+      { q: 'Will drainage alone fix my foundation?', a: 'Not if the slab has already settled. It prevents new movement and protects any pier work we do.' },
+      { q: 'What\'s the difference between a French drain and a surface drain?', a: 'A surface drain collects water at grade through a grate. A French drain uses perforated pipe in gravel to collect water soaking into the soil.' }
+    ],
+    related: ['slab-foundation-repair-spring-tx', 'pier-and-beam-foundation-repair-spring-tx', 'foundation-inspection-spring-tx'],
+    photo: 'French drain trench beside a slab (photo)'
+  },
+  {
+    slug: 'foundation-inspection-spring-tx', name: 'Foundation Inspection',
+    short: 'A free elevation survey and a plain-English report, for homeowners, buyers and sellers.',
+    anchor: 'Free foundation inspection in Spring',
+    title: 'Free Foundation Inspection in Spring, TX — Know Before You Buy or Sell | Elevation Survey, Report, 77389',
+    h1: 'Free foundation inspection in Spring, TX',
+    lead: 'A foundation inspection tells you whether your home has moved, how much, and whether it needs repair at all. We measure elevations across the floor, check the exterior, attic and crawl space, and explain the results in plain English. Inspections for homeowners are free.',
+    signs: ['You\'ve noticed new cracks or sticking doors', 'You\'re buying or selling a home in Spring', 'A home inspector flagged the foundation', 'You want a baseline before doing repairs', 'There was flooding or a long drought'],
+    steps: [
+      { t: 'Schedule', d: 'Pick a time that works. Most visits take about an hour.' },
+      { t: 'Measure', d: 'We take floor elevations with a digital level and photograph cracks.' },
+      { t: 'Explain', d: 'We walk you through what moved, why, and whether it matters.' },
+      { t: 'Written report', d: 'You get the readings and any recommended repair in writing.' }
+    ],
+    local: 'We inspect homes all over Spring, from Gleannloch Farms and Champion Forest to Augusta Pines. Many visits are for buyers and sellers during the option period, when a fast, clear answer matters most.',
+    areas: ['gleannloch-farms', 'champion-forest', 'augusta-pines'],
+    faqs: [
+      { q: 'Is the inspection really free?', a: 'Yes, for homeowners. Real estate and engineering reports for transactions may carry a fee, and we\'ll tell you up front.' },
+      { q: 'Will you push me into a repair?', a: 'No. Plenty of homes have minor movement that doesn\'t need work. We\'ll tell you if that\'s the case.' }
+    ],
+    related: ['slab-foundation-repair-spring-tx', 'pier-and-beam-foundation-repair-spring-tx', 'foundation-crack-repair-spring-tx'],
+    photo: 'Inspector taking floor elevations (photo)'
+  },
+  {
+    slug: 'house-leveling-spring-tx', name: 'House Leveling',
+    short: 'Raising settled sections of a home back toward level, on slab or pier and beam.',
+    anchor: 'House leveling in Spring',
+    title: 'House Leveling in Spring, TX — Fix Sloping Floors | Slab Lifting, Pier & Beam Re-Leveling, 77373 77388',
+    h1: 'House leveling in Spring, TX',
+    lead: 'House leveling raises the parts of your home that have settled so floors, doors and walls line up again. On slab homes we lift from new piers. On pier and beam homes we adjust or replace supports. The goal is a stable, near-level house, not a perfectly flat one, since most homes were never built dead level.',
+    signs: ['A marble rolls across the floor', 'Doors swing open or closed on their own', 'Cabinets or counters pulling away from walls', 'Windows that won\'t open or close', 'Visible dip along an exterior wall'],
+    steps: [
+      { t: 'Elevation map', d: 'We record readings across the whole house to find the low areas.' },
+      { t: 'Support', d: 'Piers or new supports go in under the settled sections.' },
+      { t: 'Controlled lift', d: 'Hydraulic jacks raise the house in small steps while we watch for stress.' },
+      { t: 'Final readings', d: 'We re-measure and share the before and after numbers.' }
+    ],
+    local: 'Settlement in Spring tends to show up at the corners and along the side of the house that gets the most afternoon sun, where clay dries out first. We level homes throughout Klein, Northgate Forest and Olde Oaks.',
+    areas: ['klein', 'northgate-forest', 'olde-oaks'],
+    faqs: [
+      { q: 'Will leveling crack my drywall?', a: 'Some cosmetic cracks can open or close as the house moves. Many existing cracks close up as the house comes back toward level.' },
+      { q: 'How level will my house be?', a: 'We lift toward the original design without forcing it, so the structure isn\'t overstressed. We share the final readings with you.' }
+    ],
+    related: ['slab-foundation-repair-spring-tx', 'pier-and-beam-foundation-repair-spring-tx', 'foundation-inspection-spring-tx'],
+    photo: 'Hydraulic jacks under a home (photo)'
+  },
+  {
+    slug: 'foundation-crack-repair-spring-tx', name: 'Foundation Crack Repair',
+    short: 'Sealing and structural repair for cracks in slabs, grade beams and brick veneer.',
+    anchor: 'Foundation crack repair in Spring',
+    title: 'Foundation Crack Repair in Spring, TX — Which Cracks Matter | Slab Cracks, Brick Cracks, Epoxy Injection',
+    h1: 'Foundation crack repair in Spring, TX',
+    lead: 'Not every crack means a foundation problem. Hairline shrinkage cracks are normal in Texas concrete. Cracks that are wider than a quarter inch, uneven from side to side, or growing usually mean the foundation has moved. We tell you which kind you have, then seal or structurally repair it.',
+    signs: ['Cracks wider than 1/4 inch', 'One side of the crack sits higher than the other', 'Stair-step cracks in brick', 'Cracks that have grown since you first saw them', 'Cracks with water coming through'],
+    steps: [
+      { t: 'Measure the crack', d: 'Width, offset and pattern tell us whether it\'s cosmetic or structural.' },
+      { t: 'Find the cause', d: 'We check elevations to see if the foundation has moved.' },
+      { t: 'Repair', d: 'Epoxy or polyurethane injection for sealing, piers if the slab is moving.' },
+      { t: 'Patch and match', d: 'Brick and mortar repairs blended to your existing finish.' }
+    ],
+    local: 'After long dry spells, Spring homeowners see a wave of new brick and slab cracks as the clay shrinks. Neighborhoods with mature trees, like Champion Forest and Olde Oaks, see more of it because roots pull extra moisture from the soil.',
+    areas: ['champion-forest', 'olde-oaks', 'windrose'],
+    faqs: [
+      { q: 'Should I worry about a hairline crack?', a: 'Usually not. Mark the ends with a pencil and date it. If it grows, call for an inspection.' },
+      { q: 'Can you just fill the crack?', a: 'We can, but if the foundation is still moving the crack will come back. We check first so you only pay for the repair you need.' }
+    ],
+    related: ['slab-foundation-repair-spring-tx', 'foundation-inspection-spring-tx', 'house-leveling-spring-tx'],
+    photo: 'Stair-step crack in brick veneer (photo)'
+  }
+];
+
+const AREAS = [
+  { slug: 'gleannloch-farms', name: 'Gleannloch Farms', zip: '77379', note: 'Large homes on post-tension slabs, many built since the late 1990s. We see settlement at corners and garages, and plenty of pre-sale inspections.', svc: ['slab-foundation-repair-spring-tx', 'foundation-inspection-spring-tx'] },
+  { slug: 'champion-forest', name: 'Champion Forest', zip: '77069 · 77379', note: 'Mature oaks and older slabs. Tree roots drawing moisture from the clay are a common cause of brick cracks here.', svc: ['foundation-crack-repair-spring-tx', 'slab-foundation-repair-spring-tx'] },
+  { slug: 'northgate-forest', name: 'Northgate Forest', zip: '77068', note: 'Homes from the 1970s and 80s that have been through decades of wet and dry cycles. Slab piering and leveling are the most common work.', svc: ['slab-foundation-repair-spring-tx', 'house-leveling-spring-tx'] },
+  { slug: 'klein', name: 'Klein', zip: '77379 · 77388', note: 'A wide mix of slab homes across older and newer subdivisions. Leveling and drainage are the most frequent requests.', svc: ['house-leveling-spring-tx', 'foundation-drainage-solutions-spring-tx'] },
+  { slug: 'olde-oaks', name: 'Olde Oaks', zip: '77379', note: 'Wooded lots and established homes. We often pair crack repair with root and moisture management.', svc: ['foundation-crack-repair-spring-tx', 'house-leveling-spring-tx'] },
+  { slug: 'spring-creek-oaks', name: 'Spring Creek Oaks', zip: '77373', note: 'Close to Spring Creek, with low spots that hold water after storms. Drainage work often comes before or alongside pier repair.', svc: ['foundation-drainage-solutions-spring-tx', 'slab-foundation-repair-spring-tx'] },
+  { slug: 'augusta-pines', name: 'Augusta Pines', zip: '77389', note: 'Newer construction around the golf course. Most calls are inspections and early settlement on newer slabs.', svc: ['foundation-inspection-spring-tx', 'slab-foundation-repair-spring-tx'] },
+  { slug: 'cypresswood', name: 'Cypresswood', zip: '77373', note: 'Near Cypress Creek, where flat grading and a high water table make drainage the first thing we check.', svc: ['foundation-drainage-solutions-spring-tx', 'foundation-inspection-spring-tx'] },
+  { slug: 'old-town-spring', name: 'Old Town Spring', zip: '77373', note: 'Historic pier and beam homes and converted storefronts. Shim, sill beam and crawl space moisture work is common.', svc: ['pier-and-beam-foundation-repair-spring-tx', 'foundation-inspection-spring-tx'] },
+  { slug: 'windrose', name: 'Windrose', zip: '77379', note: 'Newer slab homes on clay. We handle crack assessments and early settlement before it spreads.', svc: ['foundation-crack-repair-spring-tx', 'foundation-inspection-spring-tx'] },
+  { slug: 'the-woodlands', name: 'The Woodlands', zip: '77380 · 77381 · 77382', note: 'Just north of Spring. Heavily wooded lots and slab homes with the same clay and root issues we see in Spring.', svc: ['slab-foundation-repair-spring-tx', 'foundation-crack-repair-spring-tx'] },
+  { slug: 'tomball', name: 'Tomball', zip: '77375 · 77377', note: 'West of Spring, with a mix of rural pier and beam homes and newer slab subdivisions.', svc: ['pier-and-beam-foundation-repair-spring-tx', 'slab-foundation-repair-spring-tx'] }
+];
+
+const SITE = 'springtxfoundationrepair.com';
+const pad = (n) => String(n).padStart(2, '0');
+const short = (s) => s.replace(' Foundation Repair', ' repair').replace('Foundation ', '').toLowerCase();
+
+class Component extends DCLogic {
+  state = { route: '', submitted: false };
+  readHash = () => {
+    const h = (location.hash || '').replace(/^#\/?/, '');
+    const parts = h.split('/').filter(Boolean);
+    this.setState({ route: parts[0] || '' }, () => {
+      const target = parts[1] || (parts[0] === 'services' ? 'services' : null);
+      if (target) {
+        requestAnimationFrame(() => {
+          const el = document.getElementById(target);
+          if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 70, behavior: 'smooth' });
+        });
+      } else window.scrollTo(0, 0);
+    });
+  };
+  componentDidMount() { this.readHash(); window.addEventListener('hashchange', this.readHash); }
+  componentWillUnmount() { window.removeEventListener('hashchange', this.readHash); }
+
+  renderVals() {
+    const brand = this.props.brand ?? 'Spring Foundation Repair';
+    const phone = this.props.phone ?? '(281) 555-0142';
+    const showSeo = this.props.showSeo ?? true;
+    const heroForm = this.props.heroForm ?? true;
+    const route = this.state.route;
+    const bySlug = Object.fromEntries(SVC.map((s) => [s.slug, s]));
+    const svcRaw = bySlug[route];
+    const isAreas = route === 'service-areas';
+    const isService = !!svcRaw;
+    const isHome = !isAreas && !isService;
+
+    const services = SVC.map((s, i) => ({ ...s, num: pad(i + 1), href: '#/' + s.slug, slot: 'svc-' + s.slug, active: s.slug === route }));
+    const areas = AREAS.map((a) => ({
+      ...a, href: '#/service-areas/' + a.slug,
+      h2: 'Foundation repair in ' + a.name,
+      links: a.svc.map((sl) => ({ href: '#/' + sl, label: bySlug[sl].name + ' in ' + a.name }))
+    }));
+    const areaBy = Object.fromEntries(areas.map((a) => [a.slug, a]));
+
+    let svc = null;
+    if (svcRaw) {
+      const nm = short(svcRaw.name);
+      svc = {
+        ...svcRaw,
+        signsTitle: 'Signs you need ' + nm + ' in Spring',
+        stepsTitle: 'How our ' + nm + ' works',
+        localTitle: svcRaw.name + ' across Spring neighborhoods',
+        faqTitle: svcRaw.name + ' questions',
+        steps: svcRaw.steps.map((s, i) => ({ ...s, num: pad(i + 1) })),
+        areaLinks: svcRaw.areas.map((sl) => ({ href: areaBy[sl].href, label: svcRaw.name + ' in ' + areaBy[sl].name })),
+        relatedList: svcRaw.related.map((sl) => ({ href: '#/' + sl, anchor: bySlug[sl].anchor }))
+      };
+    }
+
+    const seo = isService
+      ? { url: SITE + '/' + svcRaw.slug + '/', title: svcRaw.title, h1: svcRaw.h1 }
+      : isAreas
+        ? { url: SITE + '/service-areas/', title: 'Foundation Repair Near You in Spring, TX — Gleannloch, Klein, Champion Forest | The Woodlands, Tomball', h1: 'Foundation repair service areas around Spring, TX' }
+        : { url: SITE + '/', title: 'Foundation Repair Spring TX — Free Inspection, Call Today | Slab, Pier & Beam, Leveling, Drainage 77373 77379 77388 77389', h1: 'Foundation repair in Spring, TX.' };
+
+    return {
+      brand, phone, phoneHref: 'tel:' + phone.replace(/[^0-9+]/g, ''),
+      showSeo, heroForm, noHeroForm: !heroForm,
+      isHome, isService, isAreas, svc, seo,
+      services, areas, footerAreas: areas.slice(0, 6),
+      process: [
+        { num: '01', t: 'Call or book online', d: 'Tell us what you\'re seeing. We usually schedule within a few days.' },
+        { num: '02', t: 'Free inspection', d: 'We measure floor elevations and explain what\'s moving and why.' },
+        { num: '03', t: 'Written plan', d: 'A clear scope and price, with no pressure to sign on the spot.' },
+        { num: '04', t: 'Repair and re-measure', d: 'Most jobs finish in one to three days, with before and after readings.' }
+      ],
+      homeFaqs: [
+        { q: 'What causes foundation problems in Spring, TX?', a: 'Expansive clay soil. It swells when wet and shrinks when dry, so slabs rise and settle with the seasons. Poor drainage and large trees near the house make it worse.' },
+        { q: 'How do I know if my foundation needs repair?', a: 'Look for diagonal cracks above doors, stair-step cracks in brick, sticking doors and sloping floors. If you see more than one, book a free inspection.' },
+        { q: 'Do you repair slab and pier and beam foundations?', a: 'Yes, both. Slab homes usually get pressed piers. Pier and beam homes usually need new supports, shims or beam repair.' },
+        { q: 'Can I sell a house in Spring with foundation issues?', a: 'Yes, but buyers will ask. A documented repair with a transferable warranty and engineer\'s letter makes the sale much easier.' }
+      ],
+      submitted: this.state.submitted, notSubmitted: !this.state.submitted,
+      submit: (e) => { e.preventDefault(); this.setState({ submitted: true }); },
+      updated: 'October 2026'
+    };
+  }
+}
+</script>
+</body>
+</html>

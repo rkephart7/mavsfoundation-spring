@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&amp;family=Bebas+Neue&amp;family=Source+Sans+3:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0;background:#e9e4da;font-family:'Source Sans 3',sans-serif;color:#1d2f52}a{color:inherit}a:hover{color:#f4ecdc}</style>
+</helmet>
+<section style="padding: 48px; display: flex; flex-direction: column; gap: 24px;">
+  <h1 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 28px; margin: 0;">Footer — three ideas</h1>
+  <div style="display: flex; flex-direction: column; gap: 48px;">
+
+    <div id="1a" style="width: 1200px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; gap: 12px; align-items: center;"><span style="background: #1d2f52; color: #fff; font-weight: 700; padding: 4px 10px;">1a</span><strong>Call banner on top, link columns below</strong></div>
+      <footer style="background: #c2332b; color: #fff;">
+        <div style="padding: 40px 56px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px; border-bottom: 2px solid rgba(255,255,255,0.35);">
+          <div>
+            <div style="font-family: 'Alfa Slab One', serif; font-size: 34px; line-height: 1.1;">Foundation problems? Call today.</div>
+            <div style="font-size: 17px; margin-top: 8px;">Mon–Sat 7am–7pm</div>
+          </div>
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <a href="tel:2815550142" style="font-family: 'Alfa Slab One', serif; font-size: 30px; text-decoration: none; color: #fff;">{{ phone }}</a>
+            <button type="button" style="background: #1d2f52; color: #fff; border: 0; padding: 14px 20px; font-family: 'Alfa Slab One', serif; font-size: 16px; cursor: pointer;" style-hover="background: #10203d;">GET FREE ESTIMATE</button>
+          </div>
+        </div>
+        <div style="padding: 40px 56px; display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 40px;">
+          <div style="display: flex; flex-direction: column; gap: 8px;"><strong style="font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 24px; letter-spacing: 0.08em;">SERVICES</strong><sc-for list="{{ services }}" as="s" hint-placeholder-count="12"><a href="#" style="text-decoration: none; font-size: 14px;">{{ s }}</a></sc-for></div>
+          <div style="display: flex; flex-direction: column; gap: 8px;"><strong style="font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 24px; letter-spacing: 0.08em;">COMPANY</strong><sc-for list="{{ pages }}" as="p" hint-placeholder-count="5"><a href="#" style="text-decoration: none; font-size: 14px;">{{ p }}</a></sc-for></div>
+          <div style="display: flex; flex-direction: column; gap: 8px;"><strong style="font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 24px; letter-spacing: 0.08em;">AREAS WE SERVE</strong><div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 20px;"><sc-for list="{{ areas }}" as="a" hint-placeholder-count="12"><a href="#" style="text-decoration: none; font-size: 14px;">{{ a }}</a></sc-for></div></div>
+        </div>
+        <div style="background: #a52820; padding: 16px 56px; font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;"><span>© 2026 Mavericks of Spring, TX Foundation Repair</span><span>3336 Spring Stuebner Rd, Spring, TX 77389</span></div>
+      </footer>
+    </div>
+
+    <div id="1b" style="width: 1200px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; gap: 12px; align-items: center;"><span style="background: #1d2f52; color: #fff; font-weight: 700; padding: 4px 10px;">1b</span><strong>Brand block on the left, links on the right</strong></div>
+      <footer style="background: #c2332b; color: #fff; border-top: 6px solid #1d2f52;">
+        <div style="padding: 48px 56px; display: grid; grid-template-columns: 1.1fr 2fr; gap: 56px;">
+          <div style="display: flex; flex-direction: column; gap: 14px; padding-right: 40px; border-right: 2px solid rgba(255,255,255,0.35);">
+            <div style="font-family: 'Alfa Slab One', serif; font-size: 30px; line-height: 1.1;">Mavericks of Spring, TX Foundation Repair</div>
+            <div style="font-size: 16px; line-height: 1.6;">3336 Spring Stuebner Rd<br>Spring, TX 77389<br>Mon–Sat 7am–7pm</div>
+            <a href="tel:2815550142" style="font-family: 'Alfa Slab One', serif; font-size: 26px; text-decoration: none; color: #fff;">{{ phone }}</a>
+            <button type="button" style="align-self: flex-start; background: #fff; color: #c2332b; border: 0; padding: 14px 20px; font-family: 'Alfa Slab One', serif; font-size: 16px; cursor: pointer; box-shadow: 3px 3px 0 #1d2f52;" style-hover="background: #f4ecdc;">GET FREE ESTIMATE</button>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 32px;">
+            <div style="display: flex; flex-direction: column; gap: 8px;"><strong style="font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 24px; letter-spacing: 0.08em;">SERVICES</strong><sc-for list="{{ services }}" as="s" hint-placeholder-count="12"><a href="#" style="text-decoration: none; font-size: 14px;">{{ s }}</a></sc-for></div>
+            <div style="display: flex; flex-direction: column; gap: 8px;"><strong style="font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 24px; letter-spacing: 0.08em;">COMPANY</strong><sc-for list="{{ pages }}" as="p" hint-placeholder-count="5"><a href="#" style="text-decoration: none; font-size: 14px;">{{ p }}</a></sc-for></div>
+            <div style="display: flex; flex-direction: column; gap: 8px;"><strong style="font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 24px; letter-spacing: 0.08em;">AREAS WE SERVE</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px;"><sc-for list="{{ areas }}" as="a" hint-placeholder-count="12"><a href="#" style="text-decoration: none; font-size: 14px;">{{ a }}</a></sc-for></div></div>
+          </div>
+        </div>
+        <div style="padding: 16px 56px; font-size: 13px; border-top: 2px solid rgba(255,255,255,0.35);">© 2026 Mavericks of Spring, TX Foundation Repair</div>
+      </footer>
+    </div>
+
+    <div id="1c" style="width: 1200px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; gap: 12px; align-items: center;"><span style="background: #1d2f52; color: #fff; font-weight: 700; padding: 4px 10px;">1c</span><strong>Compact — one row of links, big name across the bottom</strong></div>
+      <footer style="background: #c2332b; color: #fff;">
+        <div style="padding: 32px 56px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; border-bottom: 2px solid rgba(255,255,255,0.35);">
+          <nav style="display: flex; flex-wrap: wrap; gap: 8px 28px; font-weight: 700; font-size: 16px;"><sc-for list="{{ pagesAll }}" as="p" hint-placeholder-count="7"><a href="#" style="text-decoration: none;">{{ p }}</a></sc-for></nav>
+          <div style="display: flex; gap: 16px; align-items: center;"><a href="tel:2815550142" style="font-weight: 700; font-size: 20px; text-decoration: none; color: #fff;">{{ phone }}</a><button type="button" style="background: #1d2f52; color: #fff; border: 0; padding: 12px 18px; font-family: 'Alfa Slab One', serif; font-size: 15px; cursor: pointer;" style-hover="background: #10203d;">GET FREE ESTIMATE</button></div>
+        </div>
+        <div style="padding: 24px 56px; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px;"><strong style="font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 18px; letter-spacing: 0.08em;">SERVING</strong><sc-for list="{{ areas }}" as="a" hint-placeholder-count="12"><a href="#" style="text-decoration: none;">{{ a }}</a></sc-for></div>
+        <div style="padding: 8px 56px 28px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px;">
+          <div style="font-family: 'Bebas Neue', sans-serif; font-size: 88px; line-height: 0.9; letter-spacing: 0.02em;">MAVERICKS OF SPRING</div>
+          <div style="font-size: 13px; text-align: right; line-height: 1.6;">3336 Spring Stuebner Rd, Spring, TX 77389<br>Mon–Sat 7am–7pm · © 2026</div>
+        </div>
+      </footer>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      phone: '(281) 555-0142',
+      services: ['Foundation Settlement Repair', 'Slab Heave Repair', 'Slab Leak Detection & Repair', 'Foundation Crack Repair', 'Foundation Inspection', 'Corner Pop Repair', 'Post-Tension Slab Repair', 'Foundation Re-Leveling', 'Pier and Beam Repair', 'Drainage Correction', 'Slab Void Fill', 'Commercial Foundation Repair'],
+      pages: ['About', 'Spring TX Considerations', 'Warning Signs', 'Pricing Guide', 'Contact'],
+      pagesAll: ['Home', 'Services', 'Spring TX Considerations', 'About', 'Warning Signs', 'Pricing Guide', 'Contact'],
+      areas: ['Spring', 'Klein', 'Old Town Spring', 'Gleannloch Farms', 'Champion Forest', 'Northgate Forest', 'Augusta Pines', 'Spring Lakes', 'Olde Oaks', 'Windrose', 'Cypresswood', 'Imperial Oaks']
+    };
+  }
+}
+</script>
+</body>
+</html>
