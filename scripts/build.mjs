@@ -42,11 +42,11 @@ function must(src, re, to, label) {
   return src.replace(re, to);
 }
 
-// "#/" -> "/", "#/klein" -> "/klein/", "#/services" -> "/#services" (home section)
+// "#/" -> "/", "#/klein" -> "/klein/", "#/services" -> "/" (services section, see below)
 const toPath = (h) => {
   const p = h.replace(/^#\/?/, '').replace(/\/+$/, '');
   if (p === '') return '/';
-  if (p === 'services') return '/#services';
+  if (p === 'services') return '/';
   return '/' + p + '/';
 };
 
@@ -54,10 +54,12 @@ function transformTemplate(src) {
   // Route from the real path instead of the hash.
   src = must(src, /\(location\.hash \|\| ''\)\.replace\(\/\^#\\\/\?\/, ''\)/, "location.pathname", 'readHash');
   src = must(src, /window\.addEventListener\('hashchange', this\.readHash\);\s*/, '', 'hashchange listener');
-  // Menu items that jump to a section of another page: load that page with the
-  // section in the hash (/about/#why-choose); boot.js scrolls to it after load.
+  // Menu items that jump to a section of another page: remember the section,
+  // load the page at its clean URL (/about/), and boot.js scrolls there. No "#" in the URL.
   src = must(src, /location\.hash = '#\/' \+ r; setTimeout\(go, 250\);/,
-    "location.href = (r ? '/' + r + '/' : '/') + '#' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-');", 'pageJump navigation');
+    "try { sessionStorage.setItem('dc-jump', label.toLowerCase().replace(/[^a-z0-9]+/g, '-')); } catch (err) {} location.href = r ? '/' + r + '/' : '/';", 'pageJump navigation');
+  // Breadcrumb "Services" -> the services section of the home page.
+  src = must(src, /href="#\/services"/g, 'href="/" data-section="services"', 'services breadcrumb');
   // Any other in-page JS navigation becomes a normal page load.
   src = src.replace(/location\.hash = /g, 'location.href = ');
   // JS-built links:  '#/' + s.slug  ->  '/' + s.slug + '/'
@@ -66,6 +68,8 @@ function transformTemplate(src) {
   src = src.replace(/'(#\/[\w\/-]*)'/g, (_, h) => `'${toPath(h)}'`);
   // Template links: href="#/areas/klein"
   src = src.replace(/href="(#\/[^"]*)"/g, (_, h) => `href="${toPath(h)}"`);
+  // In-page links (href="#area-quote") -> no "#" anywhere; boot.js does the scroll.
+  src = src.replace(/href="#([\w-]+)"/g, 'href="" data-section="$1"');
   // Assets must be absolute now that pages live in sub-folders.
   src = src.replace(/(["'])(?:\.\/)?(images|uploads)\//g, '$1/$2/');
   src = src.replace(/src="\.\/(support|image-slot)\.js"/g, 'src="/$1.js"');

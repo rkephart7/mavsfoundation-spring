@@ -852,7 +852,7 @@ a:hover { color: #1d2f52; }
   <sc-if value="{{ isService }}" hint-placeholder-val="{{ false }}">
   <article data-screen-label="Service detail" style="background: #fff; color: #1d2f52;">
     <div style="max-width: 1240px; margin: 0; padding: 32px clamp(20px, 5vw, 56px) 72px;">
-      <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; font-weight: 600; margin-bottom: 44px;"><a href="/">Home</a><span>/</span><a href="/#services">Services</a><span>/</span><span>{{ svc.name }}</span></div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; font-weight: 600; margin-bottom: 44px;"><a href="/">Home</a><span>/</span><a href="/" data-section="services">Services</a><span>/</span><span>{{ svc.name }}</span></div>
       <div style="display: flex; flex-direction: column; gap: 48px;">
         <div>
           <h1 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: clamp(36px, 4.6vw, 54px); line-height: 1.1; margin: 0; color: #c2332b;"><span style="display: block; color: #1d2f52; font-size: 0.55em; line-height: 1.2; margin-bottom: 14px;">Our Services:</span>{{ svc.name }}</h1>
@@ -1040,7 +1040,7 @@ a:hover { color: #1d2f52; }
         <p style="font-size: 18px; line-height: 1.65; margin: 22px 0 0; max-width: 56ch;">{{ area.lead }}</p>
         <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px;">
           <a href="{{ phoneHref }}" style="background: #c2332b; color: #fff; padding: 14px 20px; font-weight: 700; font-size: 16px; text-decoration: none;" style-hover="background: #a52820; color: #fff;">Call {{ phone }}</a>
-          <a href="#area-quote" style="border: 2px solid #1d2f52; color: #1d2f52; padding: 12px 20px; font-weight: 700; font-size: 16px; text-decoration: none;" style-hover="background: #1d2f52; color: #f4ecdc;">Request an estimate</a>
+          <a href="" data-section="area-quote" style="border: 2px solid #1d2f52; color: #1d2f52; padding: 12px 20px; font-weight: 700; font-size: 16px; text-decoration: none;" style-hover="background: #1d2f52; color: #f4ecdc;">Request an estimate</a>
         </div>
       </div>
       <sc-for list="{{ areas }}" as="a" hint-placeholder-count="0">
@@ -1969,7 +1969,7 @@ class Component extends DCLogic {
     const isContact = route === 'contact';
     const isHome = !isArea && !isAreas && !isService && !isGuide && !isAbout && !isSpringPg && !isContact;
     const gBy = Object.fromEntries(GUIDES.map((g) => [g.slug, g]));
-    const pageJump = (r, label) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ menu: null, mobileMenu: false }); const go = homeJump(label); if (route === r) { go(); return; } location.href = (r ? '/' + r + '/' : '/') + '#' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-'); };
+    const pageJump = (r, label) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ menu: null, mobileMenu: false }); const go = homeJump(label); if (route === r) { go(); return; } try { sessionStorage.setItem('dc-jump', label.toLowerCase().replace(/[^a-z0-9]+/g, '-')); } catch (err) {} location.href = r ? '/' + r + '/' : '/'; };
     const guides = GUIDES.map((g) => ({ ...g, href: '/' + g.slug + '/', line: g.slug === route ? '#c2332b' : 'transparent' }));
     const guide = guideRaw ? { ...guideRaw, relatedList: guideRaw.related.map((sl) => ({ href: '/' + sl + '/', anchor: bySlug[sl].anchor })) } : null;
 

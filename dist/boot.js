@@ -4,15 +4,39 @@
 // then swaps the static copy out once the live one has rendered.
 (function () {
   var slug = function (t) { return t.toLowerCase().replace(/[^a-z0-9]+/g, '-'); };
-  function scrollToHash() {
-    var want = decodeURIComponent(location.hash.slice(1));
+  function jumpTo(want, instant) {
     var el = document.getElementById(want);
     if (!el) {
       var all = document.querySelectorAll('main[data-page-main] [data-screen-label]');
       for (var i = 0; i < all.length && !el; i++) if (slug(all[i].getAttribute('data-screen-label')) === want) el = all[i];
     }
-    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + 2 });
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + 2, behavior: instant ? 'auto' : 'smooth' });
   }
+  function store(k, v) { try { if (v == null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) {} }
+  function load(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+
+  // Section to land on after this page loads: set by a menu click on another page.
+  // Old-style "#section" URLs still work but the "#..." is removed from the address bar.
+  var pending = load('dc-jump');
+  store('dc-jump', null);
+  if (!pending && location.hash.length > 1) {
+    pending = decodeURIComponent(location.hash.slice(1));
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+
+  // Keep "#" out of the address bar for in-page links (e.g. "Request an estimate").
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    var href = a.getAttribute('href');
+    var section = a.getAttribute('data-section');
+    if (href.charAt(0) === '#' && href.length > 1) { e.preventDefault(); jumpTo(href.slice(1)); return; }
+    if (section) {
+      if (a.pathname === location.pathname) { e.preventDefault(); jumpTo(section); }
+      else store('dc-jump', section);
+    }
+  }, true);
+
   var hide = document.createElement('style');
   hide.textContent = 'x-dc{display:none!important}';
   document.head.appendChild(hide);
@@ -40,10 +64,11 @@
           obs.disconnect();
           var y = window.scrollY;
           pre.remove();
+          var tm = document.getElementById('prerendered-mobile');
+          if (tm) tm.remove();
           window.scrollTo(0, y);
-          // Land on the section named in the URL (#services, #why-choose, ...),
-          // after the page's own initial scroll-to-top has run.
-          if (location.hash.length > 1) setTimeout(scrollToHash, 60);
+          // Land on the requested section, after the page's own initial scroll-to-top.
+          if (pending) setTimeout(function () { jumpTo(pending, true); }, 60);
         }
       });
       obs.observe(document.body, { childList: true, subtree: true });
