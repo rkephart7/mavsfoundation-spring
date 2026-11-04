@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /app.dc.html
+Disallow: /build-report.json
+
+Sitemap: https://springtexasfoundationrepair.com/sitemap.xml

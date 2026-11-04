@@ -168,7 +168,8 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, 
 // The phone render rides along in a <template>, which browsers do not display and
 // search engines do not index; a one-line script swaps it in on narrow screens
 // before first paint, so phones never flash the desktop layout.
-function page(snap, mobile) {
+function page(snap, mobile, route, origin) {
+  const url = origin + route;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -176,6 +177,14 @@ function page(snap, mobile) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(snap.title)}</title>
 <meta name="description" content="${esc(snap.description)}">
+<link rel="canonical" href="${url}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mavericks of Spring Texas Foundation Repair">
+<meta property="og:title" content="${esc(snap.title)}">
+<meta property="og:description" content="${esc(snap.description)}">
+<meta property="og:url" content="${url}">
+<meta property="og:image" content="${origin}/images/house-spring.webp">
+<meta name="twitter:card" content="summary_large_image">
 ${snap.head}
 </head>
 <body>
@@ -195,6 +204,10 @@ async function main() {
   const raw = await readFile(path.join(SRC, TEMPLATE), 'utf8');
   const app = transformTemplate(raw);
   const routes = only.length ? only : routesFrom(raw);
+  // The live domain, from the template (const SITE = 'example.com').
+  const siteM = /^const SITE = '([^']+)';/m.exec(raw);
+  if (!siteM) throw new Error('build: could not find const SITE in the template');
+  const ORIGIN = 'https://' + siteM[1];
 
   await rm(DIST, { recursive: true, force: true });
   await mkdir(DIST, { recursive: true });
@@ -238,11 +251,17 @@ async function main() {
     const mobile = await render(phone, r, errors);
     const out = path.join(DIST, r, 'index.html');
     await mkdir(path.dirname(out), { recursive: true });
-    await writeFile(out, page(snap, mobile));
+    await writeFile(out, page(snap, mobile, r, ORIGIN));
     report.push({ route: r, title: snap.title, h1: snap.h1, errors });
     console.log(`${r.padEnd(32)} ${snap.h1.length} h1  ${snap.title.slice(0, 70)}${errors.length ? '  ERRORS: ' + errors.join('; ') : ''}`);
   }
   await writeFile(path.join(DIST, 'build-report.json'), JSON.stringify(report, null, 2));
+  if (!only.length) {
+    const today = new Date().toISOString().slice(0, 10);
+    await writeFile(path.join(DIST, 'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+      routes.map((r) => `  <url><loc>${ORIGIN}${r}</loc><lastmod>${today}</lastmod></url>\n`).join('') + '</urlset>\n');
+    await writeFile(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /app.dc.html\nDisallow: /build-report.json\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
+  }
   await browser.close();
   server.close();
   console.log(`\nBuilt ${report.length} pages into dist/`);

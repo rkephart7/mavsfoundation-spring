@@ -37,3 +37,10 @@ Pages are discovered from the `SVC`, `GUIDES` and `AREAS` lists in the template,
 plus home, the services hub, warning signs, pricing guide, about, contact,
 considerations (`/spring-tx-foundation-considerations/`) and the areas hub. Add an area or
 service there and rebuild; it gets its own URL automatically.
+
+## SEO tags
+
+- Page titles live in the `TITLES` table in the template (`site/Spring Texas Foundation Repair.dc.html`),
+  keyed by URL. Descriptions are in `DESC` right below it.
+- The build adds a canonical link, Open Graph and Twitter tags to every page, and writes
+  `dist/sitemap.xml` and `dist/robots.txt`, all pointing at the domain in `const SITE` in the template.

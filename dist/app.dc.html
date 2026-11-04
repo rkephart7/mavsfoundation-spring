@@ -1819,7 +1819,63 @@ const AREAS = [
   {slug: "cypress-station", name: "Cypress Station", zip: "77090", teaser: "Older slabs near FM 1960 and I-45.", lead: "Cypress Station sits just south of Spring near FM 1960 and I-45. Older slabs here show settlement, cracks and plumbing leaks.", conditions: ["Older slabs","Aging plumbing under slabs","Clay soil"], housing: "Mostly 1970s and 1980s slab homes and apartments.", svc: ["settlement-repair","slab-leak","crack-repair"], nearby: ["westfield","klein","spring"]}
 ];
 
+// Page titles, by URL. Keyword first, one hook, brand last; no ZIP-code lists.
+const TITLES = {
+  "/": "Foundation Repair in Spring, TX | Free Inspection & Written Report | Mavericks",
+  "/services/": "Foundation Repair Services in Spring, TX | Slab, Pier & Beam, Drainage | Mavericks",
+  "/warning-signs/": "Signs of Foundation Problems in Spring, TX | What to Look For | Mavericks",
+  "/pricing-guide/": "Foundation Repair Cost in Spring, TX | Pricing Guide | Mavericks",
+  "/about/": "About Mavericks | Foundation Repair in Spring, TX",
+  "/contact/": "Contact Mavericks | Foundation Repair Estimates in Spring, TX",
+  "/spring-tx-foundation-considerations/": "Spring, TX Foundation Considerations | Clay, Flooding & Subsidence | Mavericks",
+  "/areas/": "Foundation Repair Service Areas Near Spring, TX | Mavericks",
+  "/settlement-repair/": "Foundation Settlement Repair in Spring, TX | Pressed Pilings to Refusal | Mavericks",
+  "/slab-heave/": "Slab Heave Repair in Spring, TX | Find the Water, Level the Slab | Mavericks",
+  "/slab-leak/": "Slab Leak Detection & Repair in Spring, TX | Hydrostatic Testing | Mavericks",
+  "/crack-repair/": "Foundation Crack Repair in Spring, TX | Structural or Cosmetic? | Mavericks",
+  "/inspection/": "Free Foundation Inspection in Spring, TX | Elevation Survey & Report | Mavericks",
+  "/corner-pop/": "Brick & Corner Pop Repair in Spring, TX | Cracked Slab Corners | Mavericks",
+  "/post-tension/": "Post-Tension Cable Repair in Spring, TX | Broken & Exposed Tendons | Mavericks",
+  "/re-leveling/": "Foundation Re-Leveling in Spring, TX | Fix Sloping Floors | Mavericks",
+  "/pier-and-beam/": "Pier & Beam Foundation Repair in Spring, TX | Soft Floors Fixed | Mavericks",
+  "/drainage/": "Foundation Drainage in Spring, TX | French Drains & Downspouts | Mavericks",
+  "/void-fill/": "Slab Void Fill in Spring, TX | Washout & Void Stabilization | Mavericks",
+  "/commercial/": "Commercial Foundation Repair in Spring, TX | Retail, Office, Multifamily | Mavericks",
+  "/soil/": "Spring, TX Soil and Your Foundation | Beaumont Clay Explained | Mavericks",
+  "/how-it-works/": "How Foundation Repair Works in Spring, TX | Piers, Lifting, Moisture | Mavericks",
+  "/causes/": "What Causes Foundation Problems in Spring, TX | Clay, Drainage, Trees | Mavericks",
+  "/common-issues/": "Common Foundation Issues in Spring, TX | Subsidence, Flooding, Trees | Mavericks",
+  "/what-to-expect/": "What to Expect During Foundation Repair | Spring, TX Timeline | Mavericks",
+  "/areas/spring/": "Spring, TX Neighborhood Foundation Repair | Creeks, Clay & Every Slab Age | Mavericks",
+  "/areas/the-woodlands/": "The Woodlands, TX Foundation Repair | Root & Clay Movement | Mavericks",
+  "/areas/klein/": "Klein Foundation Repair | Clay Soil Specialists Near Spring, TX | Mavericks",
+  "/areas/tomball/": "Tomball, TX Foundation Repair | Pier & Beam and Newer Slabs | Mavericks",
+  "/areas/humble/": "Humble, TX Foundation Repair | Flooding & Voids Near Lake Houston | Mavericks",
+  "/areas/westfield/": "Westfield, TX Foundation Repair | Older Slabs on Flat Clay Lots | Mavericks",
+  "/areas/aldine/": "Aldine, TX Foundation Repair | Leveling & Leak Repair for Older Homes | Mavericks",
+  "/areas/porter-heights/": "Porter Heights, TX Foundation Repair | Wooded Rural Lots | Mavericks",
+  "/areas/kohrville/": "Kohrville, TX Foundation Repair | Slabs on Clay & Fill Along SH 249 | Mavericks",
+  "/areas/dyersdale/": "Dyersdale, TX Foundation Repair | Drainage & Void Fill Near Greens Bayou | Mavericks",
+  "/areas/grangerland/": "Grangerland, TX Foundation Repair | Raised Homes & Drainage | Mavericks",
+  "/areas/new-caney/": "New Caney, TX Foundation Repair | Wooded Lots Near the San Jacinto | Mavericks",
+  "/areas/cypress/": "Cypress, TX Foundation Repair | Settlement in Master-Planned Subdivisions | Mavericks",
+  "/areas/conroe/": "Conroe, TX Foundation Repair | Older Pier & Beam and New Slabs | Mavericks",
+  "/areas/kingwood/": "Kingwood, TX Foundation Repair | Roots & Flooding Near Lake Houston | Mavericks",
+  "/areas/atascocita/": "Atascocita, TX Foundation Repair | Clay & Drainage by Lake Houston | Mavericks",
+  "/areas/magnolia/": "Magnolia, TX Foundation Repair | Acreage Homes & New Subdivisions | Mavericks",
+  "/areas/porter/": "Porter, TX Foundation Repair | New Slabs on Fill Along I-69 | Mavericks",
+  "/areas/oak-ridge-north/": "Oak Ridge North, TX Foundation Repair | Older Wooded Subdivisions | Mavericks",
+  "/areas/cypress-station/": "Cypress Station, TX Foundation Repair | Older Slabs Near FM 1960 | Mavericks",
+};
 const DESC = {
+  "cypress": "Foundation repair in Cypress, TX. Slab settlement repair and leveling for homes in large master-planned subdivisions built on clay.",
+  "conroe": "Foundation repair in Conroe, TX. Pier and beam repair for older homes near downtown and slab repair for newer subdivisions outside it.",
+  "kingwood": "Foundation repair in Kingwood, TX. Root barriers, drainage and slab repair for wooded neighborhoods on clay near Lake Houston.",
+  "atascocita": "Foundation repair in Atascocita, TX. Slab repair, leveling and drainage for Lake Houston subdivisions built on expansive clay.",
+  "magnolia": "Foundation repair in Magnolia, TX. Pier and beam and slab repair for rural acreage homes and fast-growing new subdivisions.",
+  "porter": "Foundation repair in Porter, TX. Slab settlement repair, leveling and void fill for newer homes built on fill along I-69.",
+  "oak-ridge-north": "Foundation repair in Oak Ridge North, TX. Slab repair, leveling and root barriers for older wooded subdivisions along I-45.",
+  "cypress-station": "Foundation repair in Cypress Station, TX. Leveling, slab repair and drainage for older homes on clay near FM 1960 and I-45.",
   services: 'All 12 foundation repair services we offer in Spring, TX: settlement, slab heave and leaks, cracks, leveling, pier & beam, drainage and more.',
   home: 'Foundation repair in Spring, TX for slab and pier & beam homes. Written reports from local crews who know Spring\'s clay soil.',
   areas: 'Foundation repair across Spring, TX and nearby: The Woodlands, Klein, Tomball, Humble, Westfield, Aldine and more.',
@@ -2050,6 +2106,8 @@ class Component extends DCLogic {
     } else {
       seo = { url: SITE + '/', title: 'Spring TX Foundation Repair — Call Today | Slab, Pier & Beam, Leveling, Drainage 77373 77379 77388 77389', desc: DESC.home, h1: 'Foundation repair in Spring, TX, measured before it\'s sold.' };
     }
+    const seoPath = seo.url.slice(SITE.length);
+    if (TITLES[seoPath]) seo.title = TITLES[seoPath];
     if (typeof document !== 'undefined') {
       document.title = seo.title;
       let md = document.querySelector('meta[name="description"]');
