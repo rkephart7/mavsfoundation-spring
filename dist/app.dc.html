@@ -44,19 +44,19 @@ a:hover { color: #1d2f52; }
 <div style="background: #10203d; padding: 0 clamp(20px, 5vw, 56px) 0 {{ menuPadLeft }}; display: flex; flex-wrap: wrap; gap: 4px; position: relative; z-index: 20;">
   <a href="/" style="color: #f4ecdc; text-decoration: none; background: none; border: 0; font: inherit; font-weight: 700; font-size: clamp(15px, 1.25vw, 17px); cursor: pointer; white-space: nowrap; padding: 20px clamp(8px, 1.1vw, 16px) 17px; display: flex; align-items: center; gap: 6px; padding-left: 0; border-bottom: 3px solid {{ lineHome }};" style-hover="color: #f08a80;">Home</a>
   <div onMouseEnter="{{ openServices }}" onMouseLeave="{{ closeMenu }}" style="position: relative;">
-    <button type="button" onClick="{{ toggleServices }}" style="color: #f4ecdc; text-decoration: none; background: none; border: 0; font: inherit; font-weight: 700; font-size: clamp(15px, 1.25vw, 17px); cursor: pointer; white-space: nowrap; padding: 20px clamp(8px, 1.1vw, 16px) 17px; display: flex; align-items: center; gap: 6px; border-bottom: 3px solid {{ lineServices }};" style-hover="color: #f08a80;">Services<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+    <a href="/services/" style="color: #f4ecdc; text-decoration: none; background: none; border: 0; font: inherit; font-weight: 700; font-size: clamp(15px, 1.25vw, 17px); cursor: pointer; white-space: nowrap; padding: 20px clamp(8px, 1.1vw, 16px) 17px; display: flex; align-items: center; gap: 6px; border-bottom: 3px solid {{ lineServices }};" style-hover="color: #f08a80;">Services<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></a>
     <sc-if value="{{ servicesOpen }}" hint-placeholder-val="{{ false }}"><div style="position: absolute; left: 0; top: 100%; min-width: 260px; background: #fff; border-top: 3px solid #c2332b; box-shadow: 0 8px 24px rgba(0,0,0,0.2); display: flex; flex-direction: column; z-index: 30;"><sc-for list="{{ services }}" as="s" hint-placeholder-count="9"><a href="{{ s.href }}" style="padding: 11px 16px; font-size: 15px; font-weight: 600; color: #1d2f52; text-decoration: none; border-bottom: 1px solid #eee4d2; white-space: nowrap;" style-hover="background: #f4ecdc; color: #c2332b;">{{ s.navName }}</a></sc-for></div></sc-if>
   </div>
   <div onMouseEnter="{{ openGuide }}" onMouseLeave="{{ closeMenu }}" style="position: relative;">
-    <a href="/considerations/" style="color: #f4ecdc; text-decoration: none; background: none; border: 0; font: inherit; font-weight: 700; font-size: clamp(15px, 1.25vw, 17px); cursor: pointer; white-space: nowrap; padding: 20px clamp(8px, 1.1vw, 16px) 17px; display: flex; align-items: center; gap: 6px; border-bottom: 3px solid {{ lineGuide }};" style-hover="color: #f08a80;">Spring TX Considerations<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></a>
-    <sc-if value="{{ guideOpen }}" hint-placeholder-val="{{ false }}"><div style="position: absolute; left: 0; top: 100%; min-width: 260px; background: #fff; border-top: 3px solid #c2332b; box-shadow: 0 8px 24px rgba(0,0,0,0.2); display: flex; flex-direction: column; z-index: 30;"><sc-for list="{{ springMenu }}" as="g" hint-placeholder-count="3"><button type="button" onClick="{{ g.go }}" style="padding: 11px 16px; font: inherit; font-size: 15px; font-weight: 600; color: #1d2f52; text-align: left; background: #fff; border: 0; border-bottom: 1px solid #eee4d2; white-space: nowrap; cursor: pointer;" style-hover="background: #f4ecdc; color: #c2332b;">{{ g.t }}</button></sc-for></div></sc-if>
+    <a href="/spring-tx-foundation-considerations/" style="color: #f4ecdc; text-decoration: none; background: none; border: 0; font: inherit; font-weight: 700; font-size: clamp(15px, 1.25vw, 17px); cursor: pointer; white-space: nowrap; padding: 20px clamp(8px, 1.1vw, 16px) 17px; display: flex; align-items: center; gap: 6px; border-bottom: 3px solid {{ lineGuide }};" style-hover="color: #f08a80;">Spring TX Considerations<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></a>
+    <sc-if value="{{ guideOpen }}" hint-placeholder-val="{{ false }}"><div style="position: absolute; left: 0; top: 100%; min-width: 260px; background: #fff; border-top: 3px solid #c2332b; box-shadow: 0 8px 24px rgba(0,0,0,0.2); display: flex; flex-direction: column; z-index: 30;"><sc-for list="{{ springMenu }}" as="g" hint-placeholder-count="3"><a href="{{ g.href }}" onClick="{{ g.go }}" style="display: block; padding: 11px 16px; font: inherit; font-size: 15px; font-weight: 600; color: #1d2f52; text-align: left; text-decoration: none; background: #fff; border: 0; border-bottom: 1px solid #eee4d2; white-space: nowrap; cursor: pointer;" style-hover="background: #f4ecdc; color: #c2332b;">{{ g.t }}</a></sc-for></div></sc-if>
   </div>
   <div onMouseEnter="{{ openAbout }}" onMouseLeave="{{ closeMenu }}" style="position: relative;">
     <a href="/about/" style="color: #f4ecdc; text-decoration: none; background: none; border: 0; font: inherit; font-weight: 700; font-size: clamp(15px, 1.25vw, 17px); cursor: pointer; white-space: nowrap; padding: 20px clamp(8px, 1.1vw, 16px) 17px; display: flex; align-items: center; gap: 6px; border-bottom: 3px solid {{ lineAbout }};" style-hover="color: #f08a80;">About<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></a>
-    <sc-if value="{{ aboutOpen }}" hint-placeholder-val="{{ false }}"><div style="position: absolute; left: 0; top: 100%; min-width: 260px; background: #fff; border-top: 3px solid #c2332b; box-shadow: 0 8px 24px rgba(0,0,0,0.2); display: flex; flex-direction: column; z-index: 30;"><sc-for list="{{ aboutMenu }}" as="g" hint-placeholder-count="3"><button type="button" onClick="{{ g.go }}" style="padding: 11px 16px; font: inherit; font-size: 15px; font-weight: 600; color: #1d2f52; text-align: left; background: #fff; border: 0; border-bottom: 1px solid #eee4d2; white-space: nowrap; cursor: pointer;" style-hover="background: #f4ecdc; color: #c2332b;">{{ g.t }}</button></sc-for></div></sc-if>
+    <sc-if value="{{ aboutOpen }}" hint-placeholder-val="{{ false }}"><div style="position: absolute; left: 0; top: 100%; min-width: 260px; background: #fff; border-top: 3px solid #c2332b; box-shadow: 0 8px 24px rgba(0,0,0,0.2); display: flex; flex-direction: column; z-index: 30;"><sc-for list="{{ aboutMenu }}" as="g" hint-placeholder-count="3"><a href="{{ g.href }}" onClick="{{ g.go }}" style="display: block; padding: 11px 16px; font: inherit; font-size: 15px; font-weight: 600; color: #1d2f52; text-align: left; text-decoration: none; background: #fff; border: 0; border-bottom: 1px solid #eee4d2; white-space: nowrap; cursor: pointer;" style-hover="background: #f4ecdc; color: #c2332b;">{{ g.t }}</a></sc-for></div></sc-if>
   </div>
-  <button type="button" onClick="{{ goSigns }}" style="color: #f4ecdc; text-decoration: none; background: none; border: 0; font: inherit; font-weight: 700; font-size: clamp(15px, 1.25vw, 17px); cursor: pointer; white-space: nowrap; padding: 20px clamp(8px, 1.1vw, 16px) 17px; display: flex; align-items: center; gap: 6px;" style-hover="color: #f08a80;">Warning Signs</button>
-  <button type="button" onClick="{{ goPricing }}" style="color: #f4ecdc; text-decoration: none; background: none; border: 0; font: inherit; font-weight: 700; font-size: clamp(15px, 1.25vw, 17px); cursor: pointer; white-space: nowrap; padding: 20px clamp(8px, 1.1vw, 16px) 17px; display: flex; align-items: center; gap: 6px;" style-hover="color: #f08a80;">Pricing Guide</button>
+  <a href="/warning-signs/" style="color: #f4ecdc; text-decoration: none; background: none; border: 0; font: inherit; font-weight: 700; font-size: clamp(15px, 1.25vw, 17px); cursor: pointer; white-space: nowrap; padding: 20px clamp(8px, 1.1vw, 16px) 17px; display: flex; align-items: center; gap: 6px; border-bottom: 3px solid {{ lineSigns }};" style-hover="color: #f08a80;">Warning Signs</a>
+  <a href="/pricing-guide/" style="color: #f4ecdc; text-decoration: none; background: none; border: 0; font: inherit; font-weight: 700; font-size: clamp(15px, 1.25vw, 17px); cursor: pointer; white-space: nowrap; padding: 20px clamp(8px, 1.1vw, 16px) 17px; display: flex; align-items: center; gap: 6px; border-bottom: 3px solid {{ linePrice }};" style-hover="color: #f08a80;">Pricing Guide</a>
   <a href="/contact/" style="color: #f4ecdc; text-decoration: none; background: none; border: 0; font: inherit; font-weight: 700; font-size: clamp(15px, 1.25vw, 17px); cursor: pointer; white-space: nowrap; padding: 20px clamp(8px, 1.1vw, 16px) 17px; display: flex; align-items: center; gap: 6px; border-bottom: 3px solid {{ lineContact }};" style-hover="color: #f08a80;">Contact</a>
 </div>
 </sc-if>
@@ -70,7 +70,7 @@ a:hover { color: #1d2f52; }
   <div style="display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid #2c3f63; border-bottom: 1px solid #2c3f63;">
     <a href="/" style="padding: 14px 20px; color: #f4ecdc; text-decoration: none; font-weight: 700; font-size: 16px;">Home</a>
     <a href="/about/" style="padding: 14px 20px; color: #f4ecdc; text-decoration: none; font-weight: 700; font-size: 16px;">About</a>
-    <a href="/considerations/" style="padding: 14px 20px; color: #f4ecdc; text-decoration: none; font-weight: 700; font-size: 16px;">Spring TX</a>
+    <a href="/spring-tx-foundation-considerations/" style="padding: 14px 20px; color: #f4ecdc; text-decoration: none; font-weight: 700; font-size: 16px;">Spring TX</a>
     <button type="button" onClick="{{ goToForm }}" style="padding: 14px 20px; text-align: left; background: none; border: 0; color: #f4ecdc; font: inherit; font-weight: 700; font-size: 16px; cursor: pointer;">Contact</button>
   </div>
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); font-weight: 700; font-size: 15px;">
@@ -196,7 +196,7 @@ a:hover { color: #1d2f52; }
   </section>
   </sc-if>
   <sc-if value="{{ isSubPg }}" hint-placeholder-val="{{ false }}">
-  <section style="max-width: 1240px; margin: 0; padding: 0 clamp(20px, 5vw, 56px) 48px; box-sizing: border-box; min-height: {{ subMinH }};">
+  <section style="max-width: 1240px; margin: 0; padding: 0 clamp(20px, 5vw, 56px) {{ subPadB }}; box-sizing: border-box; min-height: {{ subMinH }};">
     <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; font-weight: 600; margin-bottom: 32px;"><a href="/">Home</a><span>/</span><span>{{ subPg.crumb }}</span></div>
     <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
     <div style="display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 13px; letter-spacing: 0.26em; color: #c2332b; margin-bottom: 16px;"><span>★</span>{{ subPg.eyebrow }}</div>
@@ -852,7 +852,7 @@ a:hover { color: #1d2f52; }
   <sc-if value="{{ isService }}" hint-placeholder-val="{{ false }}">
   <article data-screen-label="Service detail" style="background: #fff; color: #1d2f52;">
     <div style="max-width: 1240px; margin: 0; padding: 32px clamp(20px, 5vw, 56px) 72px;">
-      <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; font-weight: 600; margin-bottom: 44px;"><a href="/">Home</a><span>/</span><a href="/#services">Services</a><span>/</span><span>{{ svc.name }}</span></div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; font-weight: 600; margin-bottom: 44px;"><a href="/">Home</a><span>/</span><a href="/services/">Services</a><span>/</span><span>{{ svc.name }}</span></div>
       <div style="display: flex; flex-direction: column; gap: 48px;">
         <div>
           <h1 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: clamp(36px, 4.6vw, 54px); line-height: 1.1; margin: 0; color: #c2332b;"><span style="display: block; color: #1d2f52; font-size: 0.55em; line-height: 1.2; margin-bottom: 14px;">Our Services:</span>{{ svc.name }}</h1>
@@ -1040,7 +1040,7 @@ a:hover { color: #1d2f52; }
         <p style="font-size: 18px; line-height: 1.65; margin: 22px 0 0; max-width: 56ch;">{{ area.lead }}</p>
         <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px;">
           <a href="{{ phoneHref }}" style="background: #c2332b; color: #fff; padding: 14px 20px; font-weight: 700; font-size: 16px; text-decoration: none;" style-hover="background: #a52820; color: #fff;">Call {{ phone }}</a>
-          <a href="#area-quote" style="border: 2px solid #1d2f52; color: #1d2f52; padding: 12px 20px; font-weight: 700; font-size: 16px; text-decoration: none;" style-hover="background: #1d2f52; color: #f4ecdc;">Request an estimate</a>
+          <a href="" data-section="area-quote" style="border: 2px solid #1d2f52; color: #1d2f52; padding: 12px 20px; font-weight: 700; font-size: 16px; text-decoration: none;" style-hover="background: #1d2f52; color: #f4ecdc;">Request an estimate</a>
         </div>
       </div>
       <sc-for list="{{ areas }}" as="a" hint-placeholder-count="0">
@@ -1121,6 +1121,40 @@ a:hover { color: #1d2f52; }
 </main>
 </sc-if>
 
+<!-- SERVICES HUB -->
+<sc-if value="{{ isServicesHub }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Services">
+  <section style="max-width: 1240px; margin: 0 auto; padding: 32px clamp(20px, 5vw, 56px) 48px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; font-weight: 600; margin-bottom: 36px;">
+      <a href="/">Home</a><span>/</span><span>Services</span>
+    </div>
+    <h1 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: clamp(36px, 4.6vw, 58px); line-height: 1.08; margin: 0; max-width: 20ch;">Foundation repair services in Spring, TX</h1>
+    <p style="font-size: 18px; line-height: 1.65; margin: 22px 0 0; max-width: 62ch;">Every job starts with a free inspection and a written report, so you know what your home needs before any work begins. Choose a service for the signs, causes, process and typical cost in Spring.</p>
+  </section>
+  <section style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px) 72px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); column-gap: 40px;">
+    <sc-for list="{{ svcHub }}" as="s" hint-placeholder-count="12">
+      <a href="{{ s.href }}" style="display: flex; flex-direction: column; gap: 8px; padding: 22px 0 28px; border-top: 3px double #1d2f52; color: #1d2f52; text-decoration: none;" style-hover="color: #c2332b;">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.2em; color: #c2332b;">{{ s.num }}</span>
+        <span style="font-family: 'Alfa Slab One', serif; font-size: 22px;">{{ s.name }}</span>
+        <span style="font-size: 15px; line-height: 1.6; color: #1d2f52;">{{ s.short }}</span>
+      </a>
+    </sc-for>
+  </section>
+  <section style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px) 72px;">
+    <div style="border: 3px solid #c2332b; background: #c2332b; color: #fff; padding: clamp(28px, 4vw, 48px); display: flex; flex-wrap: wrap; gap: 18px 40px; align-items: center; justify-content: space-between;">
+      <div style="display: flex; flex-direction: column; gap: 10px; max-width: 60ch;">
+        <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: clamp(26px, 3vw, 34px); line-height: 1.15; margin: 0; color: #fff;">Not sure which repair you need?</h2>
+        <p style="font-size: 16px; line-height: 1.6; margin: 0;">Most homeowners aren't. Book a free inspection and we'll measure, explain what we find, and give you a written price before any work starts.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;">
+        <a href="{{ phoneHref }}" style="font-family: 'Alfa Slab One', serif; font-size: clamp(26px, 3vw, 36px); line-height: 1.1; color: #fff; text-decoration: none;" style-hover="color: #1d2f52;">{{ phone }}</a>
+        <a href="/contact/" style="background: #1d2f52; color: #fff; padding: 14px 20px; font-weight: 700; font-size: 16px; text-decoration: none; box-shadow: 4px 4px 0 #f4ecdc;" style-hover="background: #10203d;">Request a free inspection</a>
+      </div>
+    </div>
+  </section>
+</main>
+</sc-if>
+
 <!-- AREAS HUB -->
 <sc-if value="{{ isAreas }}" hint-placeholder-val="{{ false }}">
 <main data-screen-label="Service areas">
@@ -1189,7 +1223,8 @@ a:hover { color: #1d2f52; }
     </div>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 32px; align-content: start; padding-left: clamp(0px, 3vw, 40px); border-left: 2px solid rgba(255,255,255,0.35);">
       <div style="display: flex; flex-direction: column; gap: 8px;"><strong style="font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 24px; letter-spacing: 0.08em;">SERVICES</strong><sc-for list="{{ services }}" as="s" hint-placeholder-count="12"><a href="{{ s.href }}" style="color: #fff; text-decoration: none; font-size: 14px; background: none; border: 0; padding: 0; font-family: inherit; text-align: left; cursor: pointer;" style-hover="color: #f4ecdc; text-decoration: underline;">{{ s.navName }}</a></sc-for></div>
-      <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start;"><strong style="font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 24px; letter-spacing: 0.08em;">COMPANY</strong><a href="/about/" style="color: #fff; text-decoration: none; font-size: 14px; background: none; border: 0; padding: 0; font-family: inherit; text-align: left; cursor: pointer;" style-hover="color: #f4ecdc; text-decoration: underline;">About</a><a href="/considerations/" style="color: #fff; text-decoration: none; font-size: 14px; background: none; border: 0; padding: 0; font-family: inherit; text-align: left; cursor: pointer;" style-hover="color: #f4ecdc; text-decoration: underline;">Spring TX Considerations</a><button type="button" onClick="{{ goSigns }}" style="color: #fff; text-decoration: none; font-size: 14px; background: none; border: 0; padding: 0; font-family: inherit; text-align: left; cursor: pointer;" style-hover="color: #f4ecdc; text-decoration: underline;">Warning Signs</button><button type="button" onClick="{{ goPricing }}" style="color: #fff; text-decoration: none; font-size: 14px; background: none; border: 0; padding: 0; font-family: inherit; text-align: left; cursor: pointer;" style-hover="color: #f4ecdc; text-decoration: underline;">Pricing Guide</button><a href="/contact/" style="color: #fff; text-decoration: none; font-size: 14px; background: none; border: 0; padding: 0; font-family: inherit; text-align: left; cursor: pointer;" style-hover="color: #f4ecdc; text-decoration: underline;">Contact</a></div>
+      <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start;"><strong style="font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 24px; letter-spacing: 0.08em;">COMPANY</strong><a href="/about/" style="color: #fff; text-decoration: none; font-size: 14px; background: none; border: 0; padding: 0; font-family: inherit; text-align: left; cursor: pointer;" style-hover="color: #f4ecdc; text-decoration: underline;">About</a><a href="/spring-tx-foundation-considerations/" style="color: #fff; text-decoration: none; font-size: 14px; background: none; border: 0; padding: 0; font-family: inherit; text-align: left; cursor: pointer;" style-hover="color: #f4ecdc; text-decoration: underline;">Spring TX Considerations</a><a href="/warning-signs/" style="color: #fff; text-decoration: none; font-size: 14px; background: none; border: 0; padding: 0; font-family: inherit; text-align: left; cursor: pointer;" style-hover="color: #f4ecdc; text-decoration: underline;">Warning Signs</a><a href="/pricing-guide/" style="color: #fff; text-decoration: none; font-size: 14px; background: none; border: 0; padding: 0; font-family: inherit; text-align: left; cursor: pointer;" style-hover="color: #f4ecdc; text-decoration: underline;">Pricing Guide</a><a href="/contact/" style="color: #fff; text-decoration: none; font-size: 14px; background: none; border: 0; padding: 0; font-family: inherit; text-align: left; cursor: pointer;" style-hover="color: #f4ecdc; text-decoration: underline;">Contact</a></div>
+      <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start;"><strong style="font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 24px; letter-spacing: 0.08em;">GUIDES</strong><sc-for list="{{ guides }}" as="g" hint-placeholder-count="5"><a href="{{ g.href }}" style="color: #fff; text-decoration: none; font-size: 14px; font-family: inherit; text-align: left;" style-hover="color: #f4ecdc; text-decoration: underline;">{{ g.nav }}</a></sc-for></div>
     </div>
   </div>
   <div style="padding: 16px clamp(20px, 5vw, 56px); font-size: 13px; border-top: 2px solid rgba(255,255,255,0.35);">© 2026 Mavericks of Spring, TX Foundation Repair</div>
@@ -1615,7 +1650,7 @@ const PG = {
 const HOME_NAV = [['Signs', 'Warning signs'], ['Our Services', 'Our services'], ['Why Choose', 'Why choose us'], ['Process', 'How it works'], ['Pricing Guide', 'Pricing guide'], ['Spring Texas', 'Built for Spring'], ['Spring Local Issues', 'Local issues'], ['Areas We Serve', 'Areas we serve'], ['Reach out', 'Reach out']];
 const SPRING_NAV = [['Spring Texas', 'Characteristics'], ['Spring Local Issues', 'Local issues'], ['Spring Soil', 'Spring soil type'], ['Spring Common Issues', 'Common issues'], ['Reach out', 'Reach out']];
 const ABOUT_NAV = [['Why Choose', 'Values'], ['Process', 'How it works'], ['Areas We Serve', 'Areas we serve'], ['Reach out', 'Reach out']];
-const navFor = (r) => r === 'considerations' ? SPRING_NAV : r === 'about' ? ABOUT_NAV : HOME_NAV;
+const navFor = (r) => r === 'spring-tx-foundation-considerations' ? SPRING_NAV : r === 'about' ? ABOUT_NAV : HOME_NAV;
 const homeJump = (label) => () => { const el = document.querySelector('main[data-page-main] [data-screen-label="' + label + '"]'); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + 2, behavior: 'smooth' }); };
 const THREE_SIGNS = ['inspection', 'corner-pop', 'post-tension', 're-leveling', 'pier-and-beam', 'drainage', 'void-fill', 'commercial'];
 const PHOTO_MAP = [
@@ -1785,6 +1820,7 @@ const AREAS = [
 ];
 
 const DESC = {
+  services: 'All 12 foundation repair services we offer in Spring, TX: settlement, slab heave and leaks, cracks, leveling, pier & beam, drainage and more.',
   home: 'Foundation repair in Spring, TX for slab and pier & beam homes. Written reports from local crews who know Spring\'s clay soil.',
   areas: 'Foundation repair across Spring, TX and nearby: The Woodlands, Klein, Tomball, Humble, Westfield, Aldine and more.',
   'slab-heave': 'Slab heave repair in Spring, TX. We find the water lifting your slab, from leaks to poor drainage, stop it, and level what moved.',
@@ -1929,12 +1965,7 @@ class Component extends DCLogic {
   readHash = () => {
     const parts = location.pathname.split('/').filter(Boolean);
     this.setState({ route: parts[0] || '', sub: parts[1] || '', menu: null, mobileMenu: false }, () => {
-      if (parts[0] === 'services') {
-        requestAnimationFrame(() => {
-          const el = document.getElementById('services');
-          if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 64, behavior: 'smooth' });
-        });
-      } else window.scrollTo(0, 0);
+      window.scrollTo(0, 0);
     });
   };
   componentDidMount() { this.readHash(); window.addEventListener('resize', this.onResize); this.onResize(); window.addEventListener('scroll', this.onScroll, { passive: true }); this.onScroll(); }
@@ -1960,15 +1991,18 @@ class Component extends DCLogic {
     const svcRaw = bySlug[route];
     const isArea = !!areaRaw;
     const isAreas = route === 'areas' && !areaRaw;
+    const isServicesHub = route === 'services';
     const isService = !!svcRaw;
     const guideRaw = GUIDES.find((g) => g.slug === route);
     const isGuide = !!guideRaw;
     const isAbout = route === 'about';
-    const isSpringPg = route === 'considerations';
+    const isSpringPg = route === 'spring-tx-foundation-considerations';
+    const isSignsPg = route === 'warning-signs';
+    const isPricePg = route === 'pricing-guide';
     const isContact = route === 'contact';
-    const isHome = !isArea && !isAreas && !isService && !isGuide && !isAbout && !isSpringPg && !isContact;
+    const isHome = !isSignsPg && !isPricePg && !isServicesHub && !isArea && !isAreas && !isService && !isGuide && !isAbout && !isSpringPg && !isContact;
     const gBy = Object.fromEntries(GUIDES.map((g) => [g.slug, g]));
-    const pageJump = (r, label) => () => { this.setState({ menu: null, mobileMenu: false }); const go = homeJump(label); if (route === r) { go(); return; } location.href = '/' + r + '/'; setTimeout(go, 250); };
+    const pageJump = (r, label) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ menu: null, mobileMenu: false }); const go = homeJump(label); if (route === r) { go(); return; } try { sessionStorage.setItem('dc-jump', label.toLowerCase().replace(/[^a-z0-9]+/g, '-')); } catch (err) {} location.href = r ? '/' + r + '/' : '/'; };
     const guides = GUIDES.map((g) => ({ ...g, href: '/' + g.slug + '/', line: g.slug === route ? '#c2332b' : 'transparent' }));
     const guide = guideRaw ? { ...guideRaw, relatedList: guideRaw.related.map((sl) => ({ href: '/' + sl + '/', anchor: bySlug[sl].anchor })) } : null;
 
@@ -2002,9 +2036,15 @@ class Component extends DCLogic {
     } else if (isContact) {
       seo = { url: SITE + '/contact/', title: 'Contact Us — Foundation Repair in Spring, TX | ' + brand, desc: 'Call or send a request for foundation repair in Spring, TX. A specialist calls back within one business day.', h1: 'Contact Us' };
     } else if (isSpringPg) {
-      seo = { url: SITE + '/considerations/', title: 'Spring TX Foundation Considerations — Clay Soil, Subsidence, Flooding, Trees | Local Conditions', desc: 'What makes Spring, TX foundations move: expansive Beaumont clay, ground sinking, creek flooding, trees and older subdivisions.', h1: 'Spring, TX Foundation Considerations' };
+      seo = { url: SITE + '/spring-tx-foundation-considerations/', title: 'Spring TX Foundation Considerations — Clay Soil, Subsidence, Flooding, Trees | Local Conditions', desc: 'What makes Spring, TX foundations move: expansive Beaumont clay, ground sinking, creek flooding, trees and older subdivisions.', h1: 'Spring, TX Foundation Considerations' };
     } else if (isAbout) {
       seo = { url: SITE + '/about/', title: 'About ' + brand + ' | Spring TX Foundation Repair', desc: 'About ' + brand + ': licensed, insured foundation repair for Spring, TX homes on expansive clay. Written report on every job.', h1: 'About ' + brand };
+    } else if (isSignsPg) {
+      seo = { url: SITE + '/warning-signs/', title: 'Signs of Foundation Problems in Spring, TX — Cracks, Sticking Doors, Sloping Floors | Mavericks', desc: 'The foundation warning signs we see most in Spring, TX homes, from stair-step brick cracks to sloping floors, and when to get a free inspection.', h1: 'Signs of Foundation Problems in Spring, TX' };
+    } else if (isPricePg) {
+      seo = { url: SITE + '/pricing-guide/', title: 'Foundation Repair Cost in Spring, TX — Pricing Guide | Mavericks', desc: 'What foundation repair costs in Spring, TX: typical price ranges for piers, slab leveling, drainage and more, and what drives the price up or down.', h1: 'Foundation Repair Cost in Spring, TX' };
+    } else if (isServicesHub) {
+      seo = { url: SITE + '/services/', title: 'Foundation Repair Services in Spring, TX — Slab, Pier & Beam, Leveling, Drainage | Mavericks', desc: DESC.services, h1: 'Foundation repair services in Spring, TX' };
     } else if (isAreas) {
       seo = { url: SITE + '/areas/', title: 'Foundation Repair Near You in Spring, TX — The Woodlands, Klein, Tomball, Humble', desc: DESC.areas, h1: 'Foundation repair service areas around Spring, TX' };
     } else {
@@ -2029,20 +2069,20 @@ class Component extends DCLogic {
       servicesOpen: this.state.menu === 'services', guideOpen: this.state.menu === 'guide',
       openServices: () => this.setState({ menu: 'services' }), openGuide: () => this.setState({ menu: 'guide' }), closeMenu: () => this.setState({ menu: null }),
       toggleServices: () => this.setState((s) => ({ menu: s.menu === 'services' ? null : 'services' })), toggleGuide: () => this.setState((s) => ({ menu: s.menu === 'guide' ? null : 'guide' })),
-      lineHome: isHome ? '#c2332b' : 'transparent', lineServices: isService ? '#c2332b' : 'transparent', lineAbout: isAbout ? '#c2332b' : 'transparent', lineGuide: isSpringPg ? '#c2332b' : 'transparent', lineContact: isContact ? '#c2332b' : 'transparent',
+      lineHome: isHome ? '#c2332b' : 'transparent', lineServices: (isService || isServicesHub) ? '#c2332b' : 'transparent', lineAbout: isAbout ? '#c2332b' : 'transparent', lineGuide: isSpringPg ? '#c2332b' : 'transparent', lineSigns: isSignsPg ? '#c2332b' : 'transparent', linePrice: isPricePg ? '#c2332b' : 'transparent', lineContact: isContact ? '#c2332b' : 'transparent',
       mobileMenu: this.state.mobileMenu, openMobile: () => this.setState({ mobileMenu: true }), closeMobile: () => this.setState({ mobileMenu: false }),
       tabServices: () => this.setState({ tab: 'services' }), tabAreas: () => this.setState({ tab: 'areas' }), tabGuide: () => this.setState({ tab: 'guide' }),
       tabBgServices: this.state.tab === 'services' ? '#c2332b' : 'transparent', tabBgAreas: this.state.tab === 'areas' ? '#c2332b' : 'transparent', tabBgGuide: this.state.tab === 'guide' ? '#c2332b' : 'transparent',
-      mobileLinks: this.state.tab === 'areas' ? areas.map((x) => ({ href: x.href, label: x.name })) : this.state.tab === 'guide' ? [{ href: '/considerations/', label: 'Spring TX Considerations' }, { href: '/about/', label: 'About & What to Expect' }] : services.map((x) => ({ href: x.href, label: x.navName })),
-      isHome, isService, isArea, isAreas, svc, area, seo, services, areas, isGuide, guide, guides,
+      mobileLinks: this.state.tab === 'areas' ? areas.map((x) => ({ href: x.href, label: x.name })) : this.state.tab === 'guide' ? [{ href: '/spring-tx-foundation-considerations/', label: 'Spring TX Considerations' }, { href: '/about/', label: 'About & What to Expect' }, { href: '/warning-signs/', label: 'Warning Signs' }, { href: '/pricing-guide/', label: 'Pricing Guide' }].concat(guides.map((g) => ({ href: g.href, label: g.nav }))) : [{ href: '/services/', label: 'All services' }].concat(services.map((x) => ({ href: x.href, label: x.navName }))),
+      isHome, isService, isArea, isAreas, isServicesHub, svcHub: SVC.map((x, i) => ({ ...x, num: pad(i + 1), href: '/' + x.slug + '/' })), svc, area, seo, services, areas, isGuide, guide, guides,
       toTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
-      showMain: isHome || isSpringPg || isAbout || isContact, isSpringPg, notSpringPg: !isSpringPg, isSubPg: isSpringPg || isAbout || isContact, subMinH: (!this.state.mobile && isSpringPg) ? '880px' : '0', whyBleed: (isAbout || this.state.mobile) ? '0' : '-240px', whyInner: (isAbout || this.state.mobile) ? '0' : '240px', floatTop: (isAbout && !this.state.mobile) ? '760px' : '0', mainLabel: isSpringPg ? 'Spring TX Considerations' : isAbout ? 'About' : isContact ? 'Contact' : 'Home', showFloat: !isContact, isContact, notAbout: !isAbout,
-      subPg: isContact ? { crumb: 'Contact', eyebrow: 'CONTACT', h1: 'Contact Us', lead: 'Call us or send the form below. We will call you back within one business day to schedule a visit.' } : isSpringPg ? { crumb: 'Spring TX Considerations', eyebrow: 'SPRING TX CONSIDERATIONS', h1: 'Spring, TX Considerations', lead: 'Spring has the usual Houston-area clay problems, plus some that are more specific to it: ground sinking, creek flooding, heavy tree cover and older subdivisions.' } : { crumb: 'About', eyebrow: 'ABOUT US', h1: 'About ' + brand, lead: '' },
-      showSigns: isHome, showSvc: isHome, showWhy: isHome || isAbout, showProcess: isHome || isAbout, showPricing: isHome, showSpring: isHome || isSpringPg, showLocal: isHome || isSpringPg, showAreas: isHome || isAbout, showExpect: isAbout,
+      showMain: isHome || isSpringPg || isAbout || isContact || isSignsPg || isPricePg, isSpringPg, notSpringPg: !isSpringPg, isSubPg: isSpringPg || isAbout || isContact || isSignsPg || isPricePg, subMinH: '0', subPadB: isSpringPg ? '0' : '48px', whyBleed: (isAbout || this.state.mobile) ? '0' : '-240px', whyInner: (isAbout || this.state.mobile) ? '0' : '240px', floatTop: (isAbout && !this.state.mobile) ? '760px' : '0', mainLabel: isSignsPg ? 'Warning Signs' : isPricePg ? 'Pricing Guide' : isSpringPg ? 'Spring TX Considerations' : isAbout ? 'About' : isContact ? 'Contact' : 'Home', showFloat: !isContact && !isSignsPg && !isPricePg && !isSpringPg, isContact, notAbout: !isAbout,
+      subPg: isSignsPg ? { crumb: 'Warning Signs', eyebrow: 'WARNING SIGNS', h1: 'Signs of Foundation Problems in Spring, TX', lead: 'Foundation trouble usually shows up inside the house before you can see it in the slab. Here is what to look for, and when it is worth a free inspection.' } : isPricePg ? { crumb: 'Pricing Guide', eyebrow: 'PRICING GUIDE', h1: 'Foundation Repair Cost in Spring, TX', lead: 'Typical price ranges for the repairs we do most in Spring, and what pushes a job up or down. Every estimate is free and in writing.' } : isContact ? { crumb: 'Contact', eyebrow: 'CONTACT', h1: 'Contact Us', lead: 'Call us or send the form below. We will call you back within one business day to schedule a visit.' } : isSpringPg ? { crumb: 'Spring TX Considerations', eyebrow: 'SPRING TX CONSIDERATIONS', h1: 'Spring, TX Considerations', lead: 'Spring has the usual Houston-area clay problems, plus some that are more specific to it: ground sinking, creek flooding, heavy tree cover and older subdivisions.' } : { crumb: 'About', eyebrow: 'ABOUT US', h1: 'About ' + brand, lead: '' },
+      showSigns: isHome || isSignsPg, showSvc: isHome, showWhy: isHome || isAbout, showProcess: isHome || isAbout, showPricing: isHome || isPricePg, showSpring: isHome || isSpringPg, showLocal: isHome || isSpringPg, showAreas: isHome || isAbout, showExpect: isAbout,
       expectG: gBy['what-to-expect'],
       springGuides: isSpringPg ? [{ ...gBy.soil, label: 'Spring Soil', eyebrow: 'SPRING SOIL TYPE', h: 'Spring, TX Soil and What It Does to Foundations' }, { ...gBy['common-issues'], label: 'Spring Common Issues', eyebrow: 'COMMON ISSUES', h: 'Common Foundation Issues in Spring, TX' }] : [],
-      springMenu: SPRING_NAV.slice(0, 4).map(([l, t]) => ({ t, go: pageJump('considerations', l) })),
-      aboutMenu: ABOUT_NAV.slice(0, 3).map(([l, t]) => ({ t, go: pageJump('about', l) })),
+      springMenu: SPRING_NAV.slice(0, 2).map(([l, t]) => ({ t, href: '/spring-tx-foundation-considerations/', go: pageJump('spring-tx-foundation-considerations', l) })).concat(guides.map((g) => ({ t: g.nav, href: g.href }))),
+      aboutMenu: ABOUT_NAV.slice(0, 3).map(([l, t]) => ({ t, href: '/about/', go: pageJump('about', l) })),
       goSigns: pageJump('', 'Signs'), goPricing: pageJump('', 'Pricing Guide'),
       aboutOpen: this.state.menu === 'about', openAbout: () => this.setState({ menu: 'about' }),
       homeNav: navFor(route).map(([l, t], i) => { const a = i === (this.state.homeNavAct ?? -1); return { t, num: pad(i + 1), go: homeJump(l), card: a ? '#c2332b' : '#fff', cardInk: a ? '#fff' : '#1d2f52', numInk: a ? '#fff' : '#c2332b' }; }),
@@ -2072,7 +2112,7 @@ class Component extends DCLogic {
         const sb = Object.fromEntries(svcList.map((s) => [s.slug, s]));
         const svcGroups = [['Settlement & leveling', ['settlement-repair', 're-leveling', 'slab-heave', 'void-fill']], ['Cracks & slab structure', ['crack-repair', 'corner-pop', 'post-tension']], ['Water & leaks', ['slab-leak', 'drainage']], ['Inspection & more', ['inspection', 'pier-and-beam', 'commercial']]].map(([g, l]) => ({ h: g, items: l.map((x) => sb[x]) }));
         const svcExtra = { svcGroups };
-        return { ...svcExtra, signs, bleedLeft: (this.state.mobile || this.state.route === 'contact') ? '0' : '-240px', bleedInner: (this.state.mobile || this.state.route === 'contact') ? '0' : '240px' };
+        return { ...svcExtra, signs, bleedLeft: (this.state.mobile || this.state.route === 'contact' || isSignsPg || isPricePg || isSpringPg) ? '0' : '-240px', bleedInner: (this.state.mobile || this.state.route === 'contact' || isSignsPg || isPricePg || isSpringPg) ? '0' : '240px' };
       })(),
       introA: (this.props.homeIntro ?? 'A · Side by side') === 'A · Side by side',
       introB: (this.props.homeIntro ?? 'A · Side by side') === 'B · Factor grid',
