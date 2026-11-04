@@ -8,6 +8,30 @@
     "errors": []
   },
   {
+    "route": "/services/",
+    "title": "Foundation Repair Services in Spring, TX — Slab, Pier & Beam, Leveling, Drainage | Mavericks",
+    "h1": [
+      "Foundation repair services in Spring, TX"
+    ],
+    "errors": []
+  },
+  {
+    "route": "/warning-signs/",
+    "title": "Signs of Foundation Problems in Spring, TX — Cracks, Sticking Doors, Sloping Floors | Mavericks",
+    "h1": [
+      "Signs of Foundation Problems in Spring, TX"
+    ],
+    "errors": []
+  },
+  {
+    "route": "/pricing-guide/",
+    "title": "Foundation Repair Cost in Spring, TX — Pricing Guide | Mavericks",
+    "h1": [
+      "Foundation Repair Cost in Spring, TX"
+    ],
+    "errors": []
+  },
+  {
     "route": "/about/",
     "title": "About Mavericks of Spring Texas Foundation Repair | Spring TX Foundation Repair",
     "h1": [
@@ -24,7 +48,7 @@
     "errors": []
   },
   {
-    "route": "/considerations/",
+    "route": "/spring-tx-foundation-considerations/",
     "title": "Spring TX Foundation Considerations — Clay Soil, Subsidence, Flooding, Trees | Local Conditions",
     "h1": [
       "Spring, TX Considerations"

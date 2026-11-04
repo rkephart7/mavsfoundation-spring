@@ -42,11 +42,10 @@ function must(src, re, to, label) {
   return src.replace(re, to);
 }
 
-// "#/" -> "/", "#/klein" -> "/klein/", "#/services" -> "/" (services section, see below)
+// "#/" -> "/", "#/klein" -> "/klein/"
 const toPath = (h) => {
   const p = h.replace(/^#\/?/, '').replace(/\/+$/, '');
   if (p === '') return '/';
-  if (p === 'services') return '/';
   return '/' + p + '/';
 };
 
@@ -58,13 +57,11 @@ function transformTemplate(src) {
   // load the page at its clean URL (/about/), and boot.js scrolls there. No "#" in the URL.
   src = must(src, /location\.hash = '#\/' \+ r; setTimeout\(go, 250\);/,
     "try { sessionStorage.setItem('dc-jump', label.toLowerCase().replace(/[^a-z0-9]+/g, '-')); } catch (err) {} location.href = r ? '/' + r + '/' : '/';", 'pageJump navigation');
-  // Breadcrumb "Services" -> the services section of the home page.
-  src = must(src, /href="#\/services"/g, 'href="/" data-section="services"', 'services breadcrumb');
   // Any other in-page JS navigation becomes a normal page load.
   src = src.replace(/location\.hash = /g, 'location.href = ');
   // JS-built links:  '#/' + s.slug  ->  '/' + s.slug + '/'
   src = src.replace(/'#\/(areas\/)?' \+ ([\w.]+)/g, (_, a, e) => `'/${a || ''}' + ${e} + '/'`);
-  // JS string literals: '#/considerations'
+  // JS string literals: '#/contact'
   src = src.replace(/'(#\/[\w\/-]*)'/g, (_, h) => `'${toPath(h)}'`);
   // Template links: href="#/areas/klein"
   src = src.replace(/href="(#\/[^"]*)"/g, (_, h) => `href="${toPath(h)}"`);
@@ -89,7 +86,7 @@ function routesFrom(src) {
     return [...m[1].matchAll(/^\s*\{\s*slug:\s*['"]([^'"]+)['"]/gm)].map((x) => x[1]);
   };
   return [
-    '/', '/about/', '/contact/', '/considerations/', '/areas/',
+    '/', '/services/', '/warning-signs/', '/pricing-guide/', '/about/', '/contact/', '/spring-tx-foundation-considerations/', '/areas/',
     ...block('SVC').map((s) => `/${s}/`),
     ...block('GUIDES').map((s) => `/${s}/`),
     ...block('AREAS').map((s) => `/areas/${s}/`),

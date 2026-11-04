@@ -34,5 +34,6 @@ the first time on a new machine).
    mobile menu and forms behave exactly as in the design tool.
 
 Pages are discovered from the `SVC`, `GUIDES` and `AREAS` lists in the template,
-plus home, about, contact, considerations and the areas hub. Add an area or
+plus home, the services hub, warning signs, pricing guide, about, contact,
+considerations (`/spring-tx-foundation-considerations/`) and the areas hub. Add an area or
 service there and rebuild; it gets its own URL automatically.
