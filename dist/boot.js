@@ -3,6 +3,16 @@
 // menus, mobile layout and forms by starting the normal design-tool runtime,
 // then swaps the static copy out once the live one has rendered.
 (function () {
+  var slug = function (t) { return t.toLowerCase().replace(/[^a-z0-9]+/g, '-'); };
+  function scrollToHash() {
+    var want = decodeURIComponent(location.hash.slice(1));
+    var el = document.getElementById(want);
+    if (!el) {
+      var all = document.querySelectorAll('main[data-page-main] [data-screen-label]');
+      for (var i = 0; i < all.length && !el; i++) if (slug(all[i].getAttribute('data-screen-label')) === want) el = all[i];
+    }
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + 2 });
+  }
   var hide = document.createElement('style');
   hide.textContent = 'x-dc{display:none!important}';
   document.head.appendChild(hide);
@@ -31,6 +41,9 @@
           var y = window.scrollY;
           pre.remove();
           window.scrollTo(0, y);
+          // Land on the section named in the URL (#services, #why-choose, ...),
+          // after the page's own initial scroll-to-top has run.
+          if (location.hash.length > 1) setTimeout(scrollToHash, 60);
         }
       });
       obs.observe(document.body, { childList: true, subtree: true });

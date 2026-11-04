@@ -54,7 +54,11 @@ function transformTemplate(src) {
   // Route from the real path instead of the hash.
   src = must(src, /\(location\.hash \|\| ''\)\.replace\(\/\^#\\\/\?\/, ''\)/, "location.pathname", 'readHash');
   src = must(src, /window\.addEventListener\('hashchange', this\.readHash\);\s*/, '', 'hashchange listener');
-  // In-page JS navigation becomes a normal page load.
+  // Menu items that jump to a section of another page: load that page with the
+  // section in the hash (/about/#why-choose); boot.js scrolls to it after load.
+  src = must(src, /location\.hash = '#\/' \+ r; setTimeout\(go, 250\);/,
+    "location.href = (r ? '/' + r + '/' : '/') + '#' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-');", 'pageJump navigation');
+  // Any other in-page JS navigation becomes a normal page load.
   src = src.replace(/location\.hash = /g, 'location.href = ');
   // JS-built links:  '#/' + s.slug  ->  '/' + s.slug + '/'
   src = src.replace(/'#\/(areas\/)?' \+ ([\w.]+)/g, (_, a, e) => `'/${a || ''}' + ${e} + '/'`);
