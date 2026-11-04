@@ -218,12 +218,14 @@ a:hover { color: #1d2f52; }
   </sc-if>
   </sc-if>
   <sc-if value="{{ showSigns }}" hint-placeholder-val="{{ true }}">
-  <section data-screen-label="Signs" style="position: relative; z-index: 1; margin-top: 56px; margin-left: {{ bleedLeft }}; background: #fff; border-top: 3px double #1d2f52; border-bottom: 3px double #1d2f52;">
+  <section data-screen-label="Signs" style="position: relative; z-index: 1; margin-top: {{ signsMT }}; margin-left: {{ bleedLeft }}; background: #fff; border-top: 3px double #1d2f52; border-bottom: 3px double #1d2f52;">
     <div style="max-width: 1480px; margin: 0 0 0 {{ bleedInner }}; padding: 64px clamp(20px, 5vw, 56px);">
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
       <div style="display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 13px; letter-spacing: 0.26em; color: #c2332b; margin-bottom: 14px;"><span>★</span>WARNING SIGNS</div>
       <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.1; margin: 0; color: #1d2f52;">Signs of Foundation Issues</h2>
-      <p style="font-size: 17px; line-height: 1.65; margin: 16px 0 0; max-width: 62ch; color: #1d2f52;">These are the seven signs we see most often in Spring homes. One on its own can be normal settling. Two or more together are worth having checked.</p>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 24px; margin-top: 36px;">
+      <p style="font-size: 17px; line-height: 1.65; margin: 16px 0 36px; max-width: 62ch; color: #1d2f52;">These are the seven signs we see most often in Spring homes. One on its own can be normal settling. Two or more together are worth having checked.</p>
+      </sc-if>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 24px;">
         <sc-for list="{{ signs }}" as="s" hint-placeholder-count="7">
           <a href="{{ s.href }}" style="display: flex; flex-direction: column; background: #fff; border: 3px double #1d2f52; color: #1d2f52; text-decoration: none;" style-hover="border-color: #c2332b;">
             <div style="aspect-ratio: 4 / 3; border-bottom: 3px double #1d2f52;"><div style="width: 100%; height: 100%; filter: sepia(0.3);"><image-slot id="{{ s.slot }}" shape="rect" src="{{ s.src }}" placeholder="{{ s.photo }}"></image-slot></div></div>
@@ -442,11 +444,13 @@ a:hover { color: #1d2f52; }
   <sc-if value="{{ showPricing }}" hint-placeholder-val="{{ true }}">
   <sc-if value="{{ priceD }}" hint-placeholder-val="{{ false }}">
   <section data-screen-label="Pricing Guide" style="position: relative; z-index: 1; margin-left: {{ bleedLeft }}; background: #fff; border-bottom: 3px double #1d2f52;">
-    <div style="max-width: 1480px; margin: 0 0 0 {{ bleedInner }}; padding: 72px clamp(20px, 5vw, 56px); color: #1d2f52;">
+    <div style="max-width: 1480px; margin: 0 0 0 {{ bleedInner }}; padding: {{ secPadT }} clamp(20px, 5vw, 56px) 72px; color: #1d2f52;">
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
       <div style="display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 13px; letter-spacing: 0.26em; color: #c2332b; margin-bottom: 14px;"><span>★</span>PRICING GUIDE</div>
       <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.1; margin: 0; color: #1d2f52;">What Foundation Repair Costs in Spring</h2>
-      <p style="font-size: 17px; line-height: 1.65; margin: 16px 0 0; max-width: 62ch; color: #1d2f52; text-wrap: pretty;">Typical price ranges for homes in Spring and nearby. Your exact price comes in writing after a free assessment.</p>
-      <h3 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 24px; margin: 40px 0 0;">What affects your price</h3>
+      <p style="font-size: 17px; line-height: 1.65; margin: 16px 0 40px; max-width: 62ch; color: #1d2f52; text-wrap: pretty;">Typical price ranges for homes in Spring and nearby. Your exact price comes in writing after a free assessment.</p>
+      </sc-if>
+      <h3 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: 24px; margin: 0;">What affects your price</h3>
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 0 40px; margin-top: 8px;">
         <div style="display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; padding: 20px 0; border-top: 3px double #1d2f52;"><span style="font-family: 'Bebas Neue', sans-serif; font-size: 32px; line-height: 1; color: #c2332b;">01</span><div><div style="font-family: 'Alfa Slab One', serif; font-size: 18px; line-height: 1.2; margin: 2px 0 6px;">Size of the problem</div><p style="font-size: 15px; line-height: 1.6; margin: 0;">How much of the slab has moved sets the number of pilings, the biggest single cost.</p></div></div>
         <div style="display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; padding: 20px 0; border-top: 3px double #1d2f52;"><span style="font-family: 'Bebas Neue', sans-serif; font-size: 32px; line-height: 1; color: #c2332b;">02</span><div><div style="font-family: 'Alfa Slab One', serif; font-size: 18px; line-height: 1.2; margin: 2px 0 6px;">Soil and depth</div><p style="font-size: 15px; line-height: 1.6; margin: 0;">Pilings are pressed until they hit stable soil. Deeper clay means more material.</p></div></div>
@@ -736,7 +740,7 @@ a:hover { color: #1d2f52; }
 
   </div>
   <section id="quote" data-screen-label="Reach out" style="scroll-margin-top: 80px; position: relative; z-index: 1; margin-left: {{ bleedLeft }}; background: #fff;">
-    <div style="max-width: 1480px; margin: 0 0 0 {{ bleedInner }}; padding: 72px clamp(20px, 5vw, 56px);">
+    <div style="max-width: 1480px; margin: 0 0 0 {{ bleedInner }}; padding: {{ quotePT }} clamp(20px, 5vw, 56px) 72px;">
       <sc-if value="{{ isSpringPg }}" hint-placeholder-val="{{ false }}">
       <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.1; margin: 0; color: #1d2f52;">Reach Out</h2>
       <p style="font-size: 20px; line-height: 1.55; font-weight: 700; margin: 16px 0 32px; max-width: 64ch; color: #c2332b; text-wrap: pretty;">If you are experiencing any of these issues please reach out so we can assess and resolve your situation and concerns.</p>
@@ -2134,7 +2138,7 @@ class Component extends DCLogic {
       mobileLinks: this.state.tab === 'areas' ? areas.map((x) => ({ href: x.href, label: x.name })) : this.state.tab === 'guide' ? [{ href: '#/spring-tx-foundation-considerations', label: 'Spring TX Considerations' }, { href: '#/about', label: 'About & What to Expect' }, { href: '#/warning-signs', label: 'Warning Signs' }, { href: '#/pricing-guide', label: 'Pricing Guide' }].concat(guides.map((g) => ({ href: g.href, label: g.nav }))) : [{ href: '#/services', label: 'All services' }].concat(services.map((x) => ({ href: x.href, label: x.navName }))),
       isHome, isService, isArea, isAreas, isServicesHub, svcHub: SVC.map((x, i) => ({ ...x, num: pad(i + 1), href: '#/' + x.slug })), svc, area, seo, services, areas, isGuide, guide, guides,
       toTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
-      showMain: isHome || isSpringPg || isAbout || isContact || isSignsPg || isPricePg, isSpringPg, notSpringPg: !isSpringPg, isSubPg: isSpringPg || isAbout || isContact || isSignsPg || isPricePg, subMinH: '0', subPadB: isSpringPg ? '0' : '48px', whyBleed: (isAbout || this.state.mobile) ? '0' : '-240px', whyInner: (isAbout || this.state.mobile) ? '0' : '240px', floatTop: (isAbout && !this.state.mobile) ? '760px' : '0', mainLabel: isSignsPg ? 'Warning Signs' : isPricePg ? 'Pricing Guide' : isSpringPg ? 'Spring TX Considerations' : isAbout ? 'About' : isContact ? 'Contact' : 'Home', showFloat: !isContact && !isSignsPg && !isPricePg && !isSpringPg, isContact, notAbout: !isAbout,
+      showMain: isHome || isSpringPg || isAbout || isContact || isSignsPg || isPricePg, isSpringPg, notSpringPg: !isSpringPg, isSubPg: isSpringPg || isAbout || isContact || isSignsPg || isPricePg, subMinH: '0', subPadB: isSpringPg ? '0' : '48px', secPadT: isPricePg ? '0' : '72px', quotePT: isContact ? '0' : '72px', signsMT: isSignsPg ? '0' : '56px', whyBleed: (isAbout || this.state.mobile) ? '0' : '-240px', whyInner: (isAbout || this.state.mobile) ? '0' : '240px', floatTop: (isAbout && !this.state.mobile) ? '760px' : '0', mainLabel: isSignsPg ? 'Warning Signs' : isPricePg ? 'Pricing Guide' : isSpringPg ? 'Spring TX Considerations' : isAbout ? 'About' : isContact ? 'Contact' : 'Home', showFloat: !isContact && !isSignsPg && !isPricePg && !isSpringPg, isContact, notAbout: !isAbout,
       subPg: isSignsPg ? { crumb: 'Warning Signs', eyebrow: 'WARNING SIGNS', h1: 'Signs of Foundation Problems in Spring, TX', lead: 'Foundation trouble usually shows up inside the house before you can see it in the slab. Here is what to look for, and when it is worth a free inspection.' } : isPricePg ? { crumb: 'Pricing Guide', eyebrow: 'PRICING GUIDE', h1: 'Foundation Repair Cost in Spring, TX', lead: 'Typical price ranges for the repairs we do most in Spring, and what pushes a job up or down. Every estimate is free and in writing.' } : isContact ? { crumb: 'Contact', eyebrow: 'CONTACT', h1: 'Contact Us', lead: 'Call us or send the form below. We will call you back within one business day to schedule a visit.' } : isSpringPg ? { crumb: 'Spring TX Considerations', eyebrow: 'SPRING TX CONSIDERATIONS', h1: 'Spring, TX Considerations', lead: 'Spring has the usual Houston-area clay problems, plus some that are more specific to it: ground sinking, creek flooding, heavy tree cover and older subdivisions.' } : { crumb: 'About', eyebrow: 'ABOUT US', h1: 'About ' + brand, lead: '' },
       showSigns: isHome || isSignsPg, showSvc: isHome, showWhy: isHome || isAbout, showProcess: isHome || isAbout, showPricing: isHome || isPricePg, showSpring: isHome || isSpringPg, showLocal: isHome || isSpringPg, showAreas: isHome || isAbout, showExpect: isAbout,
       expectG: gBy['what-to-expect'],
