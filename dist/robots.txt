@@ -3,4 +3,4 @@ Allow: /
 Disallow: /app.dc.html
 Disallow: /build-report.json
 
-Sitemap: https://springtexasfoundationrepair.com/sitemap.xml
+Sitemap: https://mavsofspringtxfoundationrepair.com/sitemap.xml
