@@ -1079,6 +1079,7 @@ a:hover { color: #1d2f52; }
           </a>
         </sc-for>
       </div>
+      <a href="#/pricing-guide" style="display: inline-block; margin-top: 24px; font-size: 15px; font-weight: 700; color: #f08a80; text-decoration: none;" style-hover="color: #f4ecdc;">See typical foundation repair costs in {{ area.name }} →</a>
     </div>
   </section>
 
@@ -1899,16 +1900,16 @@ const DESC = {
   'what-to-expect': 'What to expect during foundation repair in Spring, TX: inspection, prep, one to three days of work, cleanup and aftercare.',
   'spring': 'Foundation repair in Spring, TX. Slab and pier and beam repair, drainage and elevation surveys on Spring\'s expansive clay.',
   'the-woodlands': 'Foundation repair in The Woodlands, TX. Slab repair and root barriers for homes under dense pine and oak canopy.',
-  'klein': 'Foundation repair in Klein, TX. House leveling, slab repair and drainage for mixed-age subdivisions on clay.',
-  'tomball': 'Foundation repair in Tomball, TX. Pier and beam repair for rural homes and slab repair for newer subdivisions.',
-  'humble': 'Foundation repair in Humble, TX. Void fill, drainage and slab repair for homes near Lake Houston.',
-  'westfield': 'Foundation repair in Westfield, TX. Slab settlement and drainage repair for homes on flat clay lots.',
-  'aldine': 'Foundation repair in Aldine, TX. Pier and beam leveling and slab leak repair for older homes.',
-  'porter-heights': 'Foundation repair in Porter Heights, TX. Pier and beam and slab repair for wooded rural lots.',
+  'klein': "Foundation repair in Klein, TX. House leveling, slab repair and drainage for 1970s–80s and newer post-tension homes on flat clay lots.",
+  'tomball': "Foundation repair in Tomball, TX. Pier and beam repair for rural farmhouses and slab settlement repair for newer subdivisions built on fill.",
+  'humble': "Foundation repair in Humble, TX. Void fill, drainage and slab repair for homes on low ground near Lake Houston and the San Jacinto River.",
+  'westfield': "Foundation repair in Westfield, TX. Slab settlement and drainage repair for 1970s–80s homes on flat clay lots along I-45 near Cypress Creek.",
+  'aldine': "Foundation repair in Aldine, TX. Pier and beam leveling and slab leak repair for older homes, including 1960s–70s slabs with cast-iron drains.",
+  'porter-heights': "Foundation repair in Porter Heights, TX. Pier and beam and slab repair for wooded lots, where tree roots and moisture drive most repairs.",
   'kohrville': 'Foundation repair in Kohrville, TX. Slab settlement, corner pop and post-tension repair along SH 249.',
-  'dyersdale': 'Foundation repair in Dyersdale, TX. Drainage and void fill for homes on low ground near Greens Bayou.',
-  'grangerland': 'Foundation repair in Grangerland, TX. Pier and beam repair and drainage for rural homes.',
-  'new-caney': 'Foundation repair in New Caney, TX. Pier and beam repair and slab settlement for homes along I-69.',
+  'dyersdale': "Foundation repair in Dyersdale, TX. Drainage and void fill for older slab homes on low, flood-prone ground near Greens Bayou.",
+  'grangerland': "Foundation repair in Grangerland, TX. Pier and beam repair and drainage for raised, manufactured and slab homes on rural acreage lots.",
+  'new-caney': "Foundation repair in New Caney, TX. Pier and beam repair and slab settlement for homes on wooded lots and newer subdivisions along I-69.",
 };
 
 const GUIDES = [
@@ -2061,7 +2062,7 @@ class Component extends DCLogic {
     const gBy = Object.fromEntries(GUIDES.map((g) => [g.slug, g]));
     const pageJump = (r, label) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ menu: null, mobileMenu: false }); const go = homeJump(label); if (route === r) { go(); return; } location.hash = '#/' + r; setTimeout(go, 250); };
     const guides = GUIDES.map((g) => ({ ...g, href: '#/' + g.slug, line: g.slug === route ? '#c2332b' : 'transparent' }));
-    const guide = guideRaw ? { ...guideRaw, relatedList: guideRaw.related.map((sl) => ({ href: '#/' + sl, anchor: bySlug[sl].anchor })) } : null;
+    const guide = guideRaw ? { ...guideRaw, relatedList: [...guideRaw.related.map((sl) => ({ href: '#/' + sl, anchor: bySlug[sl].anchor })), { href: '#/pricing-guide', anchor: 'Foundation repair cost in Spring, TX' }] } : null;
 
     const services = SVC.map((s) => ({ ...s, href: '#/' + s.slug, slot: 'svc-' + s.slug, active: s.slug === route, navName: s.name, barLine: s.slug === route ? '#c2332b' : 'transparent', sideBg: s.slug === route ? '#c2332b' : 'transparent', sideColor: s.slug === route ? '#fff' : '#f4ecdc' }));
     const areas = AREAS.map((a) => ({ ...a, href: '#/areas/' + a.slug, slot: 'area-' + a.slug, photo: 'Photo: a home or street in ' + a.name, active: !!areaRaw && a.slug === areaRaw.slug }));
@@ -2082,7 +2083,7 @@ class Component extends DCLogic {
     } else if (areaRaw) {
       const n = areaRaw.name;
       const ordered = [...areaRaw.svc, ...SVC.map((s) => s.slug).filter((s) => !areaRaw.svc.includes(s))];
-      area = { ...areaRaw, h1: 'Foundation Repair in ' + n + ', Spring TX', zipLabel: 'ZIP ' + areaRaw.zip,
+      area = { ...areaRaw, h1: 'Foundation Repair in ' + n + ', TX', zipLabel: 'ZIP ' + areaRaw.zip,
         condTitle: 'Conditions we see in ' + n,
         svcTitle: 'Foundation services in ' + n,
         svcLinks: ordered.map((sl) => ({ href: '#/' + sl, label: bySlug[sl].name + ' in ' + n })),
