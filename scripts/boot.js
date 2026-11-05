@@ -41,6 +41,9 @@
   hide.textContent = 'x-dc{display:none!important}';
   document.head.appendChild(hide);
 
+  // Start the live site after the page (and its first photos) have loaded, so the
+  // runtime download does not compete with what the visitor sees first.
+  function start() {
   fetch('/app.dc.html')
     .then(function (r) { return r.text(); })
     .then(function (text) {
@@ -78,4 +81,6 @@
       document.body.appendChild(rt);
     })
     .catch(function (e) { console.error('[boot] live site failed to load; static page stays', e); });
+  }
+  if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
 })();

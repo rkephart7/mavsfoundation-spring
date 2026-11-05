@@ -1138,7 +1138,7 @@
           // (the pick path's credit/credit-href setAttributes) need this
           // flag, not complete, to know a load is in flight.
           this._loadPending = true;
-          this._img.src = url;
+          this._img.src = url; { const cap = (this.getAttribute('placeholder') || '').replace(/^[a-z ]*photo:\s*/i, '').trim(); this._img.alt = cap.charAt(0).toUpperCase() + cap.slice(1); }
           this._ghost.src = url;
         } else {
           // Same-src re-render — release if settled, so an ingest-set

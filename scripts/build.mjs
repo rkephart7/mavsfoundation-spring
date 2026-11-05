@@ -78,6 +78,13 @@ function transformTemplate(src) {
 }
 
 // Pull every route out of the data tables in the template.
+// slug -> name for a data block (SVC, AREAS), used for schema markup.
+function namesFrom(src, name) {
+  const m = new RegExp(`^const ${name} = \\[([\\s\\S]*?)^\\];`, 'm').exec(src);
+  if (!m) throw new Error(`build: could not find const ${name} in the template`);
+  return Object.fromEntries([...m[1].matchAll(/^\s*\{\s*slug:\s*['"]([^'"]+)['"],\s*name:\s*['"]([^'"]+)['"]/gm)].map((x) => [x[1], x[2]]));
+}
+
 function routesFrom(src) {
   const block = (name) => {
     const m = new RegExp(`^const ${name} = \\[([\\s\\S]*?)^\\];`, 'm').exec(src);
@@ -134,11 +141,15 @@ function snapshot() {
     if (src && !src.startsWith('data:')) {
       const img = document.createElement('img');
       img.src = src;
-      img.alt = slot.getAttribute('placeholder') || '';
+      // Alt text from the slot caption: "Photo: stair-step crack in brick" -> "Stair-step crack in brick".
+      const cap = (slot.getAttribute('placeholder') || '').replace(/^[a-z ]*photo:\s*/i, '').trim();
+      img.alt = cap.charAt(0).toUpperCase() + cap.slice(1);
       img.setAttribute('style', 'position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:' + (slot.getAttribute('fit') || 'cover') + ';');
       const r = live[i] && live[i].getBoundingClientRect();
       if (r && r.width) { img.width = Math.round(r.width); img.height = Math.round(r.height); }
       img.loading = i < 2 ? 'eager' : 'lazy';
+      if (i === 0) img.setAttribute('fetchpriority', 'high');
+      img.decoding = 'async';
       box.appendChild(img);
     } else if (live[i]) {
       const r = live[i].getBoundingClientRect();
@@ -159,6 +170,18 @@ function snapshot() {
     head: head.join('\n'),
     body: clone.innerHTML,
     h1: [...root.querySelectorAll('h1')].map((h) => h.textContent.trim()),
+    crumbs: (() => {
+      const d = [...clone.querySelectorAll('div')].find((x) => x.firstElementChild && x.firstElementChild.tagName === 'A' && x.firstElementChild.textContent.trim() === 'Home' && x.querySelector(':scope > span'));
+      if (!d) return [];
+      return [...d.children].filter((c) => c.textContent.trim() !== '/').map((c) => ({ name: c.textContent.trim(), href: c.tagName === 'A' ? c.getAttribute('href') : null }));
+    })(),
+    faqs: (() => {
+      const h = [...root.querySelectorAll('h2')].find((x) => /\bFAQ/i.test(x.textContent));
+      if (!h) return [];
+      const box = (h.closest('[id^="st-"]') || h.parentElement).nextElementSibling;
+      if (!box) return [];
+      return [...box.querySelectorAll('h3')].filter((q) => q.nextElementSibling && q.nextElementSibling.tagName === 'P').map((q) => ({ q: q.textContent.trim(), a: q.nextElementSibling.textContent.trim() }));
+    })(),
   };
 }
 
@@ -168,7 +191,30 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, 
 // The phone render rides along in a <template>, which browsers do not display and
 // search engines do not index; a one-line script swaps it in on narrow screens
 // before first paint, so phones never flash the desktop layout.
-function page(snap, mobile, route, origin) {
+// JSON-LD: the business on every page, plus Service, BreadcrumbList and FAQPage where they apply.
+function schema(snap, route, origin, info) {
+  const biz = {
+    '@type': 'GeneralContractor', '@id': origin + '/#business', name: info.brand, url: origin + '/',
+    telephone: info.phone, image: origin + '/images/house-spring.webp', priceRange: '$$',
+    address: { '@type': 'PostalAddress', streetAddress: '3336 Spring Stuebner Rd', addressLocality: 'Spring', addressRegion: 'TX', postalCode: '77389', addressCountry: 'US' },
+    openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '07:00', closes: '19:00' }],
+    areaServed: ['Spring', ...Object.values(info.areas).filter((n) => n !== 'Spring')].map((n) => ({ '@type': 'City', name: n + ', TX' })),
+  };
+  const graph = [biz];
+  const slug = route.replace(/^\/|\/$/g, '');
+  if (info.services[slug]) {
+    graph.push({ '@type': 'Service', name: snap.h1[0] || info.services[slug], serviceType: info.services[slug], url: origin + route, provider: { '@id': biz['@id'] }, areaServed: biz.areaServed });
+  }
+  if (snap.crumbs.length > 1) {
+    graph.push({ '@type': 'BreadcrumbList', itemListElement: snap.crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: origin + (c.href || route) })) });
+  }
+  if (snap.faqs.length) {
+    graph.push({ '@type': 'FAQPage', mainEntity: snap.faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) });
+  }
+  return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
+}
+
+function page(snap, mobile, route, origin, info) {
   const url = origin + route;
   return `<!DOCTYPE html>
 <html lang="en">
@@ -185,6 +231,8 @@ function page(snap, mobile, route, origin) {
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${origin}/images/house-spring.webp">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script type="application/ld+json">${schema(snap, route, origin, info)}</script>
 ${snap.head}
 </head>
 <body>
@@ -208,6 +256,8 @@ async function main() {
   const siteM = /^const SITE = '([^']+)';/m.exec(raw);
   if (!siteM) throw new Error('build: could not find const SITE in the template');
   const ORIGIN = 'https://' + siteM[1];
+  const prop = (k) => { const m = new RegExp('&quot;' + k + '&quot;:\\{[^}]*?&quot;default&quot;:&quot;([^&]+)&quot;').exec(raw); if (!m) throw new Error('build: no default for prop ' + k); return m[1]; };
+  const INFO = { brand: prop('brand'), phone: prop('phone'), services: namesFrom(raw, 'SVC'), areas: namesFrom(raw, 'AREAS') };
 
   await rm(DIST, { recursive: true, force: true });
   await mkdir(DIST, { recursive: true });
@@ -215,7 +265,10 @@ async function main() {
   await cp(path.join(SRC, 'support.js'), path.join(DIST, 'support.js'));
   // image-slot loads a sidecar of user-dropped images relative to the page; make it absolute.
   const slotJs = await readFile(path.join(SRC, 'image-slot.js'), 'utf8');
-  await writeFile(path.join(DIST, 'image-slot.js'), must(slotJs, /const STATE_FILE = '\.image-slots\.state\.json';/, "const STATE_FILE = '/image-slots.state.json';", 'STATE_FILE'));
+  let slotOut = must(slotJs, /const STATE_FILE = '\.image-slots\.state\.json';/, "const STATE_FILE = '/image-slots.state.json';", 'STATE_FILE');
+  // Live photos get the same alt text as the prerendered ones (from the slot caption).
+  slotOut = must(slotOut, /this\._img\.src = url;/, "this._img.src = url; { const cap = (this.getAttribute('placeholder') || '').replace(/^[a-z ]*photo:\\s*/i, '').trim(); this._img.alt = cap.charAt(0).toUpperCase() + cap.slice(1); }", 'image alt');
+  await writeFile(path.join(DIST, 'image-slot.js'), slotOut);
   await writeFile(path.join(DIST, 'image-slots.state.json'), '{}');
   await writeFile(path.join(DIST, 'app.dc.html'), app);
   await cp(path.join(ROOT, 'scripts', 'boot.js'), path.join(DIST, 'boot.js'));
@@ -251,7 +304,7 @@ async function main() {
     const mobile = await render(phone, r, errors);
     const out = path.join(DIST, r, 'index.html');
     await mkdir(path.dirname(out), { recursive: true });
-    await writeFile(out, page(snap, mobile, r, ORIGIN));
+    await writeFile(out, page(snap, mobile, r, ORIGIN, INFO));
     report.push({ route: r, title: snap.title, h1: snap.h1, errors });
     console.log(`${r.padEnd(32)} ${snap.h1.length} h1  ${snap.title.slice(0, 70)}${errors.length ? '  ERRORS: ' + errors.join('; ') : ''}`);
   }
