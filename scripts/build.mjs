@@ -24,7 +24,6 @@ const SRC = path.join(ROOT, 'site');
 const DIST = path.join(ROOT, 'dist');
 const TEMPLATE = 'Spring Texas Foundation Repair.dc.html';
 const DESKTOP = { width: 1280, height: 900 };
-const MOBILE = { width: 390, height: 844 }; // the template switches to its phone layout under 760px
 
 // The runtime pulls React/Babel from unpkg. During the build we serve the same
 // pinned versions from node_modules so the build works offline.
@@ -65,8 +64,9 @@ function transformTemplate(src) {
   src = src.replace(/'(#\/[\w\/-]*)'/g, (_, h) => `'${toPath(h)}'`);
   // Template links: href="#/areas/klein"
   src = src.replace(/href="(#\/[^"]*)"/g, (_, h) => `href="${toPath(h)}"`);
-  // In-page links (href="#area-quote") -> no "#" anywhere; boot.js does the scroll.
-  src = src.replace(/href="#([\w-]+)"/g, 'href="" data-section="$1"');
+  // In-page links (href="#area-quote") keep their target so crawlers see a real link;
+  // boot.js intercepts the click, scrolls, and keeps "#" out of the address bar.
+  src = src.replace(/href="#([\w-]+)"/g, 'href="#$1" data-section="$1"');
   // Assets must be absolute now that pages live in sub-folders.
   src = src.replace(/(["'])(?:\.\/)?(images|uploads)\//g, '$1/$2/');
   src = src.replace(/src="\.\/(support|image-slot)\.js"/g, 'src="/$1.js"');
@@ -214,7 +214,9 @@ function schema(snap, route, origin, info) {
   return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
 }
 
-function page(snap, mobile, route, origin, info) {
+// One copy of the content per page. Phones get their layout when /boot.js mounts the runtime;
+// a second hidden mobile copy made crawlers count every H1/H2 twice.
+function page(snap, route, origin, info) {
   const url = origin + route;
   return `<!DOCTYPE html>
 <html lang="en">
@@ -237,9 +239,37 @@ ${snap.head}
 </head>
 <body>
 <div id="prerendered">${snap.body}</div>
-<template id="prerendered-mobile"><div id="prerendered">${mobile.body}</div></template>
-<script>if(innerWidth<760){var m=document.getElementById('prerendered-mobile');document.getElementById('prerendered').replaceWith(m.content);m.remove();}</script>
 <script src="/boot.js" defer></script>
+</body>
+</html>
+`;
+}
+
+// Plain 404 page: no runtime, noindex, links back into the site.
+function notFound(info) {
+  const tel = info.phone.replace(/[^0-9]/g, '');
+  const link = 'color:#1d2f52;font-weight:700;font-size:17px;text-decoration:underline;text-underline-offset:3px;';
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page Not Found | ${esc(info.brand)}</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Source+Sans+3:wght@400;600;700&display=swap">
+</head>
+<body style="margin:0;font-family:'Source Sans 3',system-ui,sans-serif;color:#1d2f52;background:#fff;">
+<div style="background:#1d2f52;padding:18px clamp(20px,5vw,56px);"><a href="/" style="color:#f4ecdc;font-family:'Alfa Slab One',serif;font-size:20px;text-decoration:none;">${esc(info.brand)}</a></div>
+<main style="max-width:760px;padding:72px clamp(20px,5vw,56px);">
+<p style="margin:0 0 12px;color:#c2332b;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:14px;">404</p>
+<h1 style="font-family:'Alfa Slab One',serif;font-weight:400;font-size:clamp(30px,4vw,44px);line-height:1.15;margin:0 0 16px;">Page not found</h1>
+<p style="font-size:18px;line-height:1.6;margin:0 0 32px;">The page you’re looking for doesn’t exist or has moved.</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px 28px;margin-bottom:40px;">
+<a href="/" style="${link}">Home</a><a href="/services/" style="${link}">Services</a><a href="/areas/" style="${link}">Service Areas</a><a href="/warning-signs/" style="${link}">Warning Signs</a><a href="/pricing-guide/" style="${link}">Pricing Guide</a><a href="/contact/" style="${link}">Contact</a>
+</div>
+<a href="tel:${tel}" style="display:inline-block;background:#c2332b;color:#fff;font-weight:700;font-size:18px;padding:14px 24px;text-decoration:none;">Call ${esc(info.phone)}</a>
+</main>
 </body>
 </html>
 `;
@@ -285,7 +315,7 @@ async function main() {
     });
     return ctx;
   };
-  const desktop = await context(DESKTOP), phone = await context(MOBILE);
+  const desktop = await context(DESKTOP);
   const render = async (ctx, r, errors) => {
     const p = await ctx.newPage();
     p.on('pageerror', (e) => errors.push(e.message));
@@ -301,10 +331,9 @@ async function main() {
   for (const r of routes) {
     const errors = [];
     const snap = await render(desktop, r, errors);
-    const mobile = await render(phone, r, errors);
     const out = path.join(DIST, r, 'index.html');
     await mkdir(path.dirname(out), { recursive: true });
-    await writeFile(out, page(snap, mobile, r, ORIGIN, INFO));
+    await writeFile(out, page(snap, r, ORIGIN, INFO));
     report.push({ route: r, title: snap.title, h1: snap.h1, errors });
     console.log(`${r.padEnd(32)} ${snap.h1.length} h1  ${snap.title.slice(0, 70)}${errors.length ? '  ERRORS: ' + errors.join('; ') : ''}`);
   }
@@ -315,6 +344,19 @@ async function main() {
       routes.map((r) => `  <url><loc>${ORIGIN}${r}</loc><lastmod>${today}</lastmod></url>\n`).join('') + '</urlset>\n');
     await writeFile(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /app.dc.html\nDisallow: /build-report.json\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
   }
+  // Without dist/404.html, Cloudflare Pages answers every unknown URL with the
+  // home page and a 200 status (a "soft 404"). This gives real 404s.
+  await writeFile(path.join(DIST, '404.html'), notFound(INFO));
+  // Security headers for every response (Cloudflare Pages reads dist/_headers).
+  await writeFile(path.join(DIST, '_headers'), [
+    '/*',
+    '  X-Frame-Options: SAMEORIGIN',
+    "  Content-Security-Policy: frame-ancestors 'self'",
+    '  X-Content-Type-Options: nosniff',
+    '  Referrer-Policy: strict-origin-when-cross-origin',
+    '  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()',
+    '',
+  ].join('\n'));
   await browser.close();
   server.close();
   console.log(`\nBuilt ${report.length} pages into dist/`);
