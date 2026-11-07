@@ -22,6 +22,13 @@ import { chromium } from 'playwright';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'site');
 const DIST = path.join(ROOT, 'dist');
+// Fonts are self-hosted from site/fonts (latin subset of the Google Fonts the template uses),
+// inlined as @font-face so no request blocks first paint.
+let FONT_CSS = '';
+const FONT_PRELOAD = ['libre-franklin-400', 'alfa-slab-one-400'].map((f) => `<link rel="preload" href="/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`).join('\n');
+const selfHostFonts = (html) => html
+  .replace(/<link rel="preconnect" href="https:\/\/fonts\.(?:googleapis|gstatic)\.com"[^>]*>\n?/g, '')
+  .replace(/<link rel="stylesheet" href="https:\/\/fonts\.googleapis\.com\/css2[^"]*"[^>]*>/g, `${FONT_PRELOAD}\n<style>${FONT_CSS}</style>`);
 const TEMPLATE = 'Spring Texas Foundation Repair.dc.html';
 const DESKTOP = { width: 1280, height: 900 };
 
@@ -233,7 +240,6 @@ function page(snap, route, origin, info) {
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${origin}/images/spring-tx-brick-home.webp">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script type="application/ld+json">${schema(snap, route, origin, info)}</script>
 ${snap.head}
 </head>
@@ -256,7 +262,6 @@ function notFound(info) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Page Not Found | ${esc(info.brand)}</title>
 <meta name="robots" content="noindex">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Source+Sans+3:wght@400;600;700&display=swap">
 </head>
 <body style="margin:0;font-family:'Source Sans 3',system-ui,sans-serif;color:#1d2f52;background:#fff;">
@@ -292,6 +297,8 @@ async function main() {
   await rm(DIST, { recursive: true, force: true });
   await mkdir(DIST, { recursive: true });
   await cp(path.join(SRC, 'images'), path.join(DIST, 'images'), { recursive: true });
+  await cp(path.join(SRC, 'fonts'), path.join(DIST, 'fonts'), { recursive: true });
+  FONT_CSS = (await readFile(path.join(SRC, 'fonts', 'fonts.css'), 'utf8')).replace(/\s*\n\s*/g, ' ').trim();
   await cp(path.join(SRC, 'support.js'), path.join(DIST, 'support.js'));
   // image-slot loads a sidecar of user-dropped images relative to the page; make it absolute.
   const slotJs = await readFile(path.join(SRC, 'image-slot.js'), 'utf8');
@@ -300,7 +307,7 @@ async function main() {
   slotOut = must(slotOut, /this\._img\.src = url;/, "this._img.src = url; { const cap = (this.getAttribute('placeholder') || '').replace(/^[a-z ]*photo:\\s*/i, '').trim(); this._img.alt = cap.charAt(0).toUpperCase() + cap.slice(1); }", 'image alt');
   await writeFile(path.join(DIST, 'image-slot.js'), slotOut);
   await writeFile(path.join(DIST, 'image-slots.state.json'), '{}');
-  await writeFile(path.join(DIST, 'app.dc.html'), app);
+  await writeFile(path.join(DIST, 'app.dc.html'), selfHostFonts(app));
   await cp(path.join(ROOT, 'scripts', 'boot.js'), path.join(DIST, 'boot.js'));
 
   const server = await serve(app);
@@ -333,7 +340,7 @@ async function main() {
     const snap = await render(desktop, r, errors);
     const out = path.join(DIST, r, 'index.html');
     await mkdir(path.dirname(out), { recursive: true });
-    await writeFile(out, page(snap, r, ORIGIN, INFO));
+    await writeFile(out, selfHostFonts(page(snap, r, ORIGIN, INFO)));
     report.push({ route: r, title: snap.title, h1: snap.h1, errors });
     console.log(`${r.padEnd(32)} ${snap.h1.length} h1  ${snap.title.slice(0, 70)}${errors.length ? '  ERRORS: ' + errors.join('; ') : ''}`);
   }
@@ -346,7 +353,7 @@ async function main() {
   }
   // Without dist/404.html, Cloudflare Pages answers every unknown URL with the
   // home page and a 200 status (a "soft 404"). This gives real 404s.
-  await writeFile(path.join(DIST, '404.html'), notFound(INFO));
+  await writeFile(path.join(DIST, '404.html'), selfHostFonts(notFound(INFO)));
   // Security headers for every response (Cloudflare Pages reads dist/_headers).
   await writeFile(path.join(DIST, '_headers'), [
     '/*',
@@ -355,6 +362,9 @@ async function main() {
     '  X-Content-Type-Options: nosniff',
     '  Referrer-Policy: strict-origin-when-cross-origin',
     '  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()',
+    '',
+    '/fonts/*',
+    '  Cache-Control: public, max-age=31536000, immutable',
     '',
   ].join('\n'));
   await browser.close();
