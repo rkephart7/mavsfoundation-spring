@@ -195,7 +195,7 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, 
 function schema(snap, route, origin, info) {
   const biz = {
     '@type': 'GeneralContractor', '@id': origin + '/#business', name: info.brand, url: origin + '/',
-    telephone: info.phone, image: origin + '/images/house-spring.webp', priceRange: '$$',
+    telephone: info.phone, image: origin + '/images/spring-tx-brick-home.webp', priceRange: '$$',
     address: { '@type': 'PostalAddress', streetAddress: '3336 Spring Stuebner Rd', addressLocality: 'Spring', addressRegion: 'TX', postalCode: '77389', addressCountry: 'US' },
     openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '07:00', closes: '19:00' }],
     areaServed: ['Spring', ...Object.values(info.areas).filter((n) => n !== 'Spring')].map((n) => ({ '@type': 'City', name: n + ', TX' })),
@@ -231,7 +231,7 @@ function page(snap, route, origin, info) {
 <meta property="og:title" content="${esc(snap.title)}">
 <meta property="og:description" content="${esc(snap.description)}">
 <meta property="og:url" content="${url}">
-<meta property="og:image" content="${origin}/images/house-spring.webp">
+<meta property="og:image" content="${origin}/images/spring-tx-brick-home.webp">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script type="application/ld+json">${schema(snap, route, origin, info)}</script>
