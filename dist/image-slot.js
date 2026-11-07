@@ -1,3 +1,4 @@
+window.__SRCSETS = {"/images/brick-stair-step-crack.webp":"/images/brick-stair-step-crack-400w.webp 400w, /images/brick-stair-step-crack.webp 680w","/images/ceiling-trim-gap.webp":"/images/ceiling-trim-gap-400w.webp 400w, /images/ceiling-trim-gap.webp 640w","/images/door-gap-top.webp":"/images/door-gap-top-400w.webp 400w, /images/door-gap-top.webp 480w","/images/drywall-crack-door.webp":"/images/drywall-crack-door-400w.webp 400w, /images/drywall-crack-door.webp 678w","/images/floor-gap-cabinet.webp":"/images/floor-gap-cabinet-400w.webp 400w, /images/floor-gap-cabinet.webp 638w","/images/foundation-crack.webp":"/images/foundation-crack-400w.webp 400w, /images/foundation-crack.webp 606w","/images/spring-tx-brick-home.webp":"/images/spring-tx-brick-home-400w.webp 400w, /images/spring-tx-brick-home.webp 800w","/images/spring-tx-foundation-repair-pier-jacks.webp":"/images/spring-tx-foundation-repair-pier-jacks-400w.webp 400w, /images/spring-tx-foundation-repair-pier-jacks-800w.webp 800w, /images/spring-tx-foundation-repair-pier-jacks.webp 1029w","/images/tile-cracks.webp":"/images/tile-cracks-400w.webp 400w, /images/tile-cracks.webp 547w"};
 // @ds-adherence-ignore -- omelette starter scaffold (raw elements/hex/px by design)
 // Copied omelette starter. Re-running copy_starter_component with this kind overwrites this file with the latest version (page content is unaffected).
 /* BEGIN USAGE */
@@ -1138,7 +1139,7 @@
           // (the pick path's credit/credit-href setAttributes) need this
           // flag, not complete, to know a load is in flight.
           this._loadPending = true;
-          this._img.src = url; { const cap = (this.getAttribute('placeholder') || '').replace(/^[a-z ]*photo:\s*/i, '').trim(); this._img.alt = cap.charAt(0).toUpperCase() + cap.slice(1); }
+          { let k = ''; try { k = new URL(url, location.href).pathname; } catch (e) {} const ss = window.__SRCSETS[k]; if (ss) { const w = Math.ceil(this.getBoundingClientRect().width); for (const im of [this._img, this._ghost]) { if (im) { im.sizes = w ? w + 'px' : '100vw'; im.srcset = ss; } } } else { for (const im of [this._img, this._ghost]) if (im) im.removeAttribute('srcset'); } } this._img.src = url; { const cap = (this.getAttribute('placeholder') || '').replace(/^[a-z ]*photo:\s*/i, '').trim(); this._img.alt = cap.charAt(0).toUpperCase() + cap.slice(1); }
           this._ghost.src = url;
         } else {
           // Same-src re-render — release if settled, so an ingest-set

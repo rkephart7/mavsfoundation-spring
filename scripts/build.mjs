@@ -14,7 +14,7 @@
 //         npm run build -- / /areas/klein/   (only these routes)
 
 import { createServer } from 'node:http';
-import { readFile, writeFile, mkdir, cp, rm, stat } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, cp, rm, stat, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
@@ -26,6 +26,50 @@ const DIST = path.join(ROOT, 'dist');
 // inlined as @font-face so no request blocks first paint.
 let FONT_CSS = '';
 const FONT_PRELOAD = ['libre-franklin-400', 'alfa-slab-one-400'].map((f) => `<link rel="preload" href="/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`).join('\n');
+// Responsive images: smaller WebP copies (400w, 800w) of each photo, made with a canvas in
+// Chromium so the build needs no extra image library. Returns { '/images/x.webp': 'srcset' }.
+const VARIANT_WIDTHS = [400, 800];
+async function makeImageVariants() {
+  const b = await chromium.launch();
+  const pg = await b.newPage();
+  const sets = {};
+  for (const f of (await readdir(path.join(SRC, 'images'))).filter((n) => n.endsWith('.webp')).sort()) {
+    const buf = await readFile(path.join(SRC, 'images', f));
+    const res = await pg.evaluate(async ({ b64, widths }) => {
+      const img = new Image();
+      img.src = 'data:image/webp;base64,' + b64;
+      await img.decode();
+      const outs = [];
+      for (const w of widths) {
+        if (img.naturalWidth <= w * 1.15) continue;
+        const h = Math.round(img.naturalHeight * w / img.naturalWidth);
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        const ctx = c.getContext('2d');
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(img, 0, 0, w, h);
+        outs.push({ w, data: c.toDataURL('image/webp', 0.74).split(',')[1] });
+      }
+      return { nw: img.naturalWidth, outs };
+    }, { b64: buf.toString('base64'), widths: VARIANT_WIDTHS });
+    if (!res.outs.length) continue;
+    const base = f.replace(/\.webp$/, '');
+    for (const o of res.outs) await writeFile(path.join(DIST, 'images', `${base}-${o.w}w.webp`), Buffer.from(o.data, 'base64'));
+    sets['/images/' + f] = [...res.outs.map((o) => `/images/${base}-${o.w}w.webp ${o.w}w`), `/images/${f} ${res.nw}w`].join(', ');
+  }
+  await b.close();
+  return sets;
+}
+let SRCSETS = {};
+// Prerendered <img>: add srcset + sizes (phones get the full column, desktop the measured width).
+const addSrcsets = (html) => html.replace(/<img\b[^>]*>/g, (tag) => {
+  const src = (tag.match(/\ssrc="([^"]+)"/) || [])[1];
+  const set = src && SRCSETS[src];
+  if (!set || /\ssrcset=/.test(tag)) return tag;
+  const w = (tag.match(/\swidth="(\d+)"/) || [])[1];
+  const sizes = w ? `(max-width: 700px) 92vw, ${w}px` : '(max-width: 700px) 92vw, 400px';
+  return tag.replace(/<img\b/, `<img srcset="${set}" sizes="${sizes}"`);
+});
 const selfHostFonts = (html) => html
   .replace(/<link rel="preconnect" href="https:\/\/fonts\.(?:googleapis|gstatic)\.com"[^>]*>\n?/g, '')
   .replace(/<link rel="stylesheet" href="https:\/\/fonts\.googleapis\.com\/css2[^"]*"[^>]*>/g, `${FONT_PRELOAD}\n<style>${FONT_CSS}</style>`);
@@ -298,6 +342,7 @@ async function main() {
   await mkdir(DIST, { recursive: true });
   await cp(path.join(SRC, 'images'), path.join(DIST, 'images'), { recursive: true });
   await cp(path.join(SRC, 'fonts'), path.join(DIST, 'fonts'), { recursive: true });
+  SRCSETS = await makeImageVariants();
   FONT_CSS = (await readFile(path.join(SRC, 'fonts', 'fonts.css'), 'utf8')).replace(/\s*\n\s*/g, ' ').trim();
   await cp(path.join(SRC, 'support.js'), path.join(DIST, 'support.js'));
   // image-slot loads a sidecar of user-dropped images relative to the page; make it absolute.
@@ -305,6 +350,10 @@ async function main() {
   let slotOut = must(slotJs, /const STATE_FILE = '\.image-slots\.state\.json';/, "const STATE_FILE = '/image-slots.state.json';", 'STATE_FILE');
   // Live photos get the same alt text as the prerendered ones (from the slot caption).
   slotOut = must(slotOut, /this\._img\.src = url;/, "this._img.src = url; { const cap = (this.getAttribute('placeholder') || '').replace(/^[a-z ]*photo:\\s*/i, '').trim(); this._img.alt = cap.charAt(0).toUpperCase() + cap.slice(1); }", 'image alt');
+  // Live photos (after the runtime mounts) use the same srcset, set before src so the full-size
+  // file is never fetched; sizes = the slot's rendered width.
+  slotOut = must(slotOut, /this\._img\.src = url;/, "{ let k = ''; try { k = new URL(url, location.href).pathname; } catch (e) {} const ss = window.__SRCSETS[k]; if (ss) { const w = Math.ceil(this.getBoundingClientRect().width); for (const im of [this._img, this._ghost]) { if (im) { im.sizes = w ? w + 'px' : '100vw'; im.srcset = ss; } } } else { for (const im of [this._img, this._ghost]) if (im) im.removeAttribute('srcset'); } } this._img.src = url;", 'image srcset');
+  slotOut = 'window.__SRCSETS = ' + JSON.stringify(SRCSETS) + ';\n' + slotOut;
   await writeFile(path.join(DIST, 'image-slot.js'), slotOut);
   await writeFile(path.join(DIST, 'image-slots.state.json'), '{}');
   await writeFile(path.join(DIST, 'app.dc.html'), selfHostFonts(app));
@@ -340,7 +389,7 @@ async function main() {
     const snap = await render(desktop, r, errors);
     const out = path.join(DIST, r, 'index.html');
     await mkdir(path.dirname(out), { recursive: true });
-    await writeFile(out, selfHostFonts(page(snap, r, ORIGIN, INFO)));
+    await writeFile(out, addSrcsets(selfHostFonts(page(snap, r, ORIGIN, INFO))));
     report.push({ route: r, title: snap.title, h1: snap.h1, errors });
     console.log(`${r.padEnd(32)} ${snap.h1.length} h1  ${snap.title.slice(0, 70)}${errors.length ? '  ERRORS: ' + errors.join('; ') : ''}`);
   }
