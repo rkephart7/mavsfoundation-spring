@@ -738,6 +738,7 @@ a:hover { color: #1d2f52; }
   </div>
 
   </div>
+  <sc-if value="{{ notSignsPg }}" hint-placeholder-val="{{ true }}">
   <section id="quote" data-screen-label="Reach out" style="scroll-margin-top: 80px; position: relative; z-index: 1; margin-left: {{ bleedLeft }}; background: #fff;">
     <div style="max-width: 1480px; margin: 0 0 0 {{ bleedInner }}; padding: {{ quotePT }} clamp(20px, 5vw, 56px) 72px;">
       <sc-if value="{{ isSpringPg }}" hint-placeholder-val="{{ false }}">
@@ -770,6 +771,7 @@ a:hover { color: #1d2f52; }
 
     </div>
   </section>
+  </sc-if>
   <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
   <section data-screen-label="Contact Info" style="background: #fff;">
     <div style="max-width: 1480px; padding: 0 clamp(20px, 5vw, 56px) 56px; color: #1d2f52;">
@@ -2144,7 +2146,7 @@ class Component extends DCLogic {
       mobileLinks: this.state.tab === 'areas' ? areas.map((x) => ({ href: x.href, label: x.name })) : this.state.tab === 'guide' ? [{ href: '#/spring-tx-foundation-considerations', label: 'Spring TX Considerations' }, { href: '#/about', label: 'About & What to Expect' }, { href: '#/warning-signs', label: 'Warning Signs' }, { href: '#/pricing-guide', label: 'Pricing Guide' }].concat(guides.map((g) => ({ href: g.href, label: g.nav }))) : [{ href: '#/services', label: 'All services' }].concat(services.map((x) => ({ href: x.href, label: x.navName }))),
       isHome, isService, isArea, isAreas, isServicesHub, svcHub: SVC.map((x, i) => ({ ...x, num: pad(i + 1), href: '#/' + x.slug })), svc, area, seo, services, areas, isGuide, guide, guides,
       toTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
-      showMain: isHome || isSpringPg || isAbout || isContact || isSignsPg || isPricePg, isSpringPg, notSpringPg: !isSpringPg, isSubPg: isSpringPg || isAbout || isContact || isSignsPg || isPricePg, subMinH: '0', subPadB: isSpringPg ? '0' : '48px', secPadT: isPricePg ? '0' : '72px', quotePT: isContact ? '0' : '72px', raCols: this.state.mobile ? 'minmax(0, 1fr)' : 'repeat(3, minmax(0, 1fr))', signsMT: isSignsPg ? '0' : '56px', whyBleed: (isAbout || this.state.mobile) ? '0' : '-240px', whyInner: (isAbout || this.state.mobile) ? '0' : '240px', floatTop: (isAbout && !this.state.mobile) ? '760px' : '0', mainLabel: isSignsPg ? 'Warning Signs' : isPricePg ? 'Pricing Guide' : isSpringPg ? 'Spring TX Considerations' : isAbout ? 'About' : isContact ? 'Contact' : 'Home', showFloat: !isContact && !isSignsPg && !isPricePg && !isSpringPg, isContact, notAbout: !isAbout,
+      showMain: isHome || isSpringPg || isAbout || isContact || isSignsPg || isPricePg, isSpringPg, notSpringPg: !isSpringPg, isSubPg: isSpringPg || isAbout || isContact || isSignsPg || isPricePg, subMinH: '0', subPadB: isSpringPg ? '0' : '48px', secPadT: isPricePg ? '0' : '72px', quotePT: isContact ? '0' : '72px', notSignsPg: !isSignsPg, raCols: this.state.mobile ? 'minmax(0, 1fr)' : 'repeat(3, minmax(0, 1fr))', signsMT: isSignsPg ? '0' : '56px', whyBleed: (isAbout || this.state.mobile) ? '0' : '-240px', whyInner: (isAbout || this.state.mobile) ? '0' : '240px', floatTop: (isAbout && !this.state.mobile) ? '760px' : '0', mainLabel: isSignsPg ? 'Warning Signs' : isPricePg ? 'Pricing Guide' : isSpringPg ? 'Spring TX Considerations' : isAbout ? 'About' : isContact ? 'Contact' : 'Home', showFloat: !isContact && !isSignsPg && !isPricePg && !isSpringPg, isContact, notAbout: !isAbout,
       subPg: isSignsPg ? { crumb: 'Warning Signs', eyebrow: 'WARNING SIGNS', h1: 'Signs of Foundation Problems in Spring, TX', lead: 'Foundation trouble usually shows up inside the house before you can see it in the slab. Here is what to look for, and when it is worth a free inspection.' } : isPricePg ? { crumb: 'Pricing Guide', eyebrow: 'PRICING GUIDE', h1: 'Foundation Repair Cost in Spring, TX', lead: 'Typical price ranges for the repairs we do most in Spring, and what pushes a job up or down. Every estimate is free and in writing.' } : isContact ? { crumb: 'Contact', eyebrow: 'CONTACT', h1: 'Contact Us for Foundation Repair in Spring, TX', lead: 'Call us or send the form below. We will call you back within one business day to schedule a visit.' } : isSpringPg ? { crumb: 'Spring TX Considerations', eyebrow: 'SPRING TX CONSIDERATIONS', h1: 'Spring, TX Considerations', lead: 'Spring has the usual Houston-area clay problems, plus some that are more specific to it: ground sinking, creek flooding, heavy tree cover and older subdivisions.' } : { crumb: 'About', eyebrow: 'ABOUT US', h1: 'About ' + brand, lead: '' },
       showSigns: isHome || isSignsPg, showSvc: isHome, showWhy: isHome || isAbout, showProcess: isHome || isAbout, showPricing: isHome || isPricePg, showSpring: isHome || isSpringPg, showLocal: isHome || isSpringPg, showAreas: isHome || isAbout, showExpect: isAbout,
       expectG: gBy['what-to-expect'],
