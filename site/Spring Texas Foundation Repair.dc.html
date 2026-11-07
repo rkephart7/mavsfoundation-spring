@@ -26,6 +26,10 @@ a:hover { color: #1d2f52; }
   </a>
   <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
   <button type="button" onClick="{{ openMobile }}" aria-label="Open menu" style="justify-self: end; align-self: center; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: #1d2f52; color: #f4ecdc; border: 0; cursor: pointer;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg></button>
+  <div style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; gap: 6px; border-top: 2px solid #1d2f52; padding-top: 12px;">
+    <a href="{{ phoneHref }}" style="display: flex; align-items: center; gap: 8px; color: #1d2f52; text-decoration: none; font-weight: 700; font-size: 19px; white-space: nowrap;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c2332b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>Click to Call {{ phone }}</a>
+    <a href="{{ smsHref }}" style="display: flex; align-items: center; gap: 8px; color: #1d2f52; text-decoration: none; font-weight: 700; font-size: 19px; white-space: nowrap;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c2332b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>Click to Text {{ phone }}</a>
+  </div>
   </sc-if>
   <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
   <div style="justify-self: end; align-self: center; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 16px 28px;">
@@ -34,7 +38,6 @@ a:hover { color: #1d2f52; }
   <button type="button" onClick="{{ goToForm }}" style="display: flex; align-items: center; gap: 14px; background: #c2332b; color: #fff; border: 0; padding: 16px 22px; font-family: 'Alfa Slab One', serif; font-size: 18px; letter-spacing: 0.04em; white-space: nowrap; cursor: pointer; box-shadow: 4px 4px 0 #1d2f52;" style-hover="background: #a52820;" style-active="transform: translate(2px, 2px); box-shadow: 2px 2px 0 #1d2f52;">REQUEST FREE ESTIMATE
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
   </button>
-  <a href="{{ smsHref }}" style="display: flex; align-items: center; justify-content: flex-end; gap: 10px; color: #1d2f52; text-decoration: none; font-weight: 700; font-size: 22px; white-space: nowrap;" style-hover="color: #c2332b;">Click to Text {{ phone }}</a>
   </div>
   </div>
   </sc-if>
@@ -62,28 +65,31 @@ a:hover { color: #1d2f52; }
 </sc-if>
 
 <sc-if value="{{ mobileMenu }}" hint-placeholder-val="{{ false }}">
-<div style="position: fixed; inset: 0; z-index: 100; background: #10203d; color: #f4ecdc; display: flex; flex-direction: column;">
-  <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px;">
-    <span style="font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 0.1em;">MENU</span>
-    <button type="button" onClick="{{ closeMobile }}" aria-label="Close menu" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: none; border: 0; color: #f4ecdc; cursor: pointer;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div role="dialog" aria-label="Menu" style="position: fixed; inset: 0; z-index: 100; background: #fbf6ec; color: #1d2f52; display: flex; flex-direction: column;">
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 12px 12px 20px; background: #1d2f52; border-bottom: 4px solid #c2332b;">
+    <a href="#/" onClick="{{ closeMobile }}" style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-decoration: none;">
+      <span style="font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.12em; line-height: 1; color: #f4ecdc; white-space: nowrap;">★ MAVERICKS OF SPRING TEXAS ★</span>
+      <span style="background: #c2332b; color: #fff; font-family: 'Alfa Slab One', serif; font-size: 12px; letter-spacing: 0.05em; padding: 2px 10px; white-space: nowrap;">FOUNDATION REPAIR</span>
+    </a>
+    <button type="button" onClick="{{ closeMobile }}" aria-label="Close menu" style="width: 48px; height: 48px; flex: none; display: flex; align-items: center; justify-content: center; background: #c2332b; border: 0; color: #fff; cursor: pointer;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
   </div>
-  <div style="display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid #2c3f63; border-bottom: 1px solid #2c3f63;">
-    <a href="#/" style="padding: 14px 20px; color: #f4ecdc; text-decoration: none; font-weight: 700; font-size: 16px;">Home</a>
-    <a href="#/about" style="padding: 14px 20px; color: #f4ecdc; text-decoration: none; font-weight: 700; font-size: 16px;">About</a>
-    <a href="#/spring-tx-foundation-considerations" style="padding: 14px 20px; color: #f4ecdc; text-decoration: none; font-weight: 700; font-size: 16px;">Spring TX</a>
-    <button type="button" onClick="{{ goToForm }}" style="padding: 14px 20px; text-align: left; background: none; border: 0; color: #f4ecdc; font: inherit; font-weight: 700; font-size: 16px; cursor: pointer;">Contact</button>
-  </div>
-  <div style="display: grid; grid-template-columns: repeat(3, 1fr); font-weight: 700; font-size: 15px;">
-    <button type="button" onClick="{{ tabServices }}" style="padding: 14px 12px; text-align: left; border: 0; font: inherit; font-weight: 700; color: #fff; cursor: pointer; background: {{ tabBgServices }};">Services</button>
-    <button type="button" onClick="{{ tabAreas }}" style="padding: 14px 12px; text-align: left; border: 0; font: inherit; font-weight: 700; color: #fff; cursor: pointer; background: {{ tabBgAreas }};">Areas</button>
-    <button type="button" onClick="{{ tabGuide }}" style="padding: 14px 12px; text-align: left; border: 0; font: inherit; font-weight: 700; color: #fff; cursor: pointer; background: {{ tabBgGuide }};">Spring TX</button>
-  </div>
-  <div style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding: 4px 20px;">
-    <sc-for list="{{ mobileLinks }}" as="m" hint-placeholder-count="9"><a href="{{ m.href }}" style="padding: 14px 0; font-size: 17px; font-weight: 600; color: #f4ecdc; text-decoration: none; border-bottom: 1px solid #2c3f63;">{{ m.label }}</a></sc-for>
-  </div>
-  <div style="display: grid; grid-template-columns: 1fr 1fr;">
-    <a href="{{ phoneHref }}" style="display: flex; align-items: center; gap: 8px; background: #f4ecdc; color: #10203d; padding: 18px 20px; font-weight: 700; font-size: 16px; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>Call Now</a>
-    <button type="button" onClick="{{ goToForm }}" style="background: #c2332b; color: #fff; padding: 18px 20px; border: 0; text-align: left; font: inherit; font-weight: 700; font-size: 16px; cursor: pointer;">Free Estimate</button>
+  <nav aria-label="Mobile" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column;">
+    <a href="#/" onClick="{{ closeMobile }}" style="display: flex; align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box; padding: 16px 20px; background: none; border: 0; border-bottom: 1px solid #e4d9c4; color: #1d2f52; text-decoration: none; text-align: left; font-family: 'Alfa Slab One', serif; font-size: 19px; letter-spacing: 0.02em; cursor: pointer;">Home<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c2332b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+    <button type="button" onClick="{{ tabServices }}" aria-expanded="{{ openSvcM }}" style="display: flex; align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box; padding: 16px 20px; background: none; border: 0; border-bottom: 1px solid #e4d9c4; color: #1d2f52; text-decoration: none; text-align: left; font-family: 'Alfa Slab One', serif; font-size: 19px; letter-spacing: 0.02em; cursor: pointer;">Services<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c2332b" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate({{ rotSvcM }}); transition: transform 0.2s;"><path d="m6 9 6 6 6-6"></path></svg></button>
+    <sc-if value="{{ openSvcM }}" hint-placeholder-val="{{ false }}"><div style="background: #f4ecdc;"><sc-for list="{{ mServices }}" as="m" hint-placeholder-count="6"><a href="{{ m.href }}" onClick="{{ closeMobile }}" style="display: block; padding: 12px 20px 12px 32px; border-bottom: 1px solid #eadfcb; color: #1d2f52; text-decoration: none; font-size: 16px; font-weight: 600;">{{ m.label }}</a></sc-for></div></sc-if>
+    <a href="#/warning-signs" onClick="{{ closeMobile }}" style="display: flex; align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box; padding: 16px 20px; background: none; border: 0; border-bottom: 1px solid #e4d9c4; color: #1d2f52; text-decoration: none; text-align: left; font-family: 'Alfa Slab One', serif; font-size: 19px; letter-spacing: 0.02em; cursor: pointer;">Warning Signs<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c2332b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+    <a href="#/pricing-guide" onClick="{{ closeMobile }}" style="display: flex; align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box; padding: 16px 20px; background: none; border: 0; border-bottom: 1px solid #e4d9c4; color: #1d2f52; text-decoration: none; text-align: left; font-family: 'Alfa Slab One', serif; font-size: 19px; letter-spacing: 0.02em; cursor: pointer;">Pricing Guide<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c2332b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+    <button type="button" onClick="{{ tabGuide }}" aria-expanded="{{ openGuideM }}" style="display: flex; align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box; padding: 16px 20px; background: none; border: 0; border-bottom: 1px solid #e4d9c4; color: #1d2f52; text-decoration: none; text-align: left; font-family: 'Alfa Slab One', serif; font-size: 19px; letter-spacing: 0.02em; cursor: pointer;">Spring TX Guides<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c2332b" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate({{ rotGuideM }}); transition: transform 0.2s;"><path d="m6 9 6 6 6-6"></path></svg></button>
+    <sc-if value="{{ openGuideM }}" hint-placeholder-val="{{ false }}"><div style="background: #f4ecdc;"><sc-for list="{{ mGuides }}" as="m" hint-placeholder-count="6"><a href="{{ m.href }}" onClick="{{ closeMobile }}" style="display: block; padding: 12px 20px 12px 32px; border-bottom: 1px solid #eadfcb; color: #1d2f52; text-decoration: none; font-size: 16px; font-weight: 600;">{{ m.label }}</a></sc-for></div></sc-if>
+    <button type="button" onClick="{{ tabAreas }}" aria-expanded="{{ openAreasM }}" style="display: flex; align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box; padding: 16px 20px; background: none; border: 0; border-bottom: 1px solid #e4d9c4; color: #1d2f52; text-decoration: none; text-align: left; font-family: 'Alfa Slab One', serif; font-size: 19px; letter-spacing: 0.02em; cursor: pointer;">Service Areas<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c2332b" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate({{ rotAreasM }}); transition: transform 0.2s;"><path d="m6 9 6 6 6-6"></path></svg></button>
+    <sc-if value="{{ openAreasM }}" hint-placeholder-val="{{ false }}"><div style="background: #f4ecdc;"><sc-for list="{{ mAreas }}" as="m" hint-placeholder-count="6"><a href="{{ m.href }}" onClick="{{ closeMobile }}" style="display: block; padding: 12px 20px 12px 32px; border-bottom: 1px solid #eadfcb; color: #1d2f52; text-decoration: none; font-size: 16px; font-weight: 600;">{{ m.label }}</a></sc-for></div></sc-if>
+    <a href="#/about" onClick="{{ closeMobile }}" style="display: flex; align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box; padding: 16px 20px; background: none; border: 0; border-bottom: 1px solid #e4d9c4; color: #1d2f52; text-decoration: none; text-align: left; font-family: 'Alfa Slab One', serif; font-size: 19px; letter-spacing: 0.02em; cursor: pointer;">About<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c2332b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+    <a href="#/contact" onClick="{{ closeMobile }}" style="display: flex; align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box; padding: 16px 20px; background: none; border: 0; border-bottom: 1px solid #e4d9c4; color: #1d2f52; text-decoration: none; text-align: left; font-family: 'Alfa Slab One', serif; font-size: 19px; letter-spacing: 0.02em; cursor: pointer;">Contact<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c2332b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+  </nav>
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; box-shadow: 0 -4px 16px rgba(0,0,0,0.15);">
+    <a href="{{ phoneHref }}" style="display: flex; flex-direction: column; align-items: center; gap: 4px; background: #1d2f52; color: #fff; padding: 12px 6px; font-weight: 700; font-size: 14px; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>Call</a>
+    <a href="{{ smsHref }}" style="display: flex; flex-direction: column; align-items: center; gap: 4px; background: #10203d; color: #fff; padding: 12px 6px; font-weight: 700; font-size: 14px; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>Text</a>
+    <button type="button" onClick="{{ goToForm }}" style="display: flex; flex-direction: column; align-items: center; gap: 4px; background: #c2332b; color: #fff; padding: 12px 6px; border: 0; font: inherit; font-weight: 700; font-size: 14px; cursor: pointer;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>Free Estimate</button>
   </div>
 </div>
 </sc-if>
@@ -205,7 +211,7 @@ a:hover { color: #1d2f52; }
   </section>
   </sc-if>
 
-<div style="position: relative;">
+<div style="position: relative; display: {{ colDisplay }}; flex-direction: column;">
   <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
   <sc-if value="{{ showFloat }}" hint-placeholder-val="{{ true }}">
   <div style="position: absolute; left: -240px; top: {{ floatTop }}; bottom: 0; width: 240px; z-index: 5; pointer-events: none;">
@@ -259,7 +265,7 @@ a:hover { color: #1d2f52; }
 
   </sc-if>
   <sc-if value="{{ showSvc }}" hint-placeholder-val="{{ true }}">
-  <section id="services" data-screen-label="Our Services" style="scroll-margin-top: 64px; position: relative; z-index: 1; margin-left: {{ bleedLeft }}; background: #fff; border-top: 3px double #1d2f52; border-bottom: 3px double #1d2f52;">
+  <section id="services" data-screen-label="Our Services" style="order: {{ svcOrder }}; scroll-margin-top: 64px; position: relative; z-index: 1; margin-left: {{ bleedLeft }}; background: #fff; border-top: 3px double #1d2f52; border-bottom: 3px double #1d2f52;">
     <div style="max-width: 1480px; margin: 0 0 0 {{ bleedInner }}; padding: 72px clamp(20px, 5vw, 56px);">
       <div style="display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 13px; letter-spacing: 0.26em; color: #c2332b; margin-bottom: 14px;"><span>★</span>OUR SERVICES</div>
       <h2 style="font-family: 'Alfa Slab One', serif; font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.1; margin: 0; color: #1d2f52;">Our Services</h2>
@@ -2030,7 +2036,7 @@ const SITE = 'mavsofspringtxfoundationrepair.com';
 const pad = (n) => String(n).padStart(2, '0');
 
 class Component extends DCLogic {
-  state = { route: '', sub: '', submitted: false, menu: null, mobileMenu: false, tab: 'services', mobile: typeof window !== 'undefined' && window.innerWidth < 760, wide: typeof window !== 'undefined' && window.innerWidth >= 1280 };
+  state = { route: '', sub: '', submitted: false, menu: null, mobileMenu: false, tab: '', mobile: typeof window !== 'undefined' && window.innerWidth < 760, wide: typeof window !== 'undefined' && window.innerWidth >= 1280 };
   onResize = () => { const m = window.innerWidth < 760; const w = window.innerWidth >= 1280; if (m !== this.state.mobile) this.setState({ mobile: m, mobileMenu: false }); if (w !== this.state.wide) this.setState({ wide: w }); };
   readHash = () => {
     const parts = (location.hash || '').replace(/^#\/?/, '').split('/').filter(Boolean);
@@ -2142,8 +2148,11 @@ class Component extends DCLogic {
       openServices: () => this.setState({ menu: 'services' }), openGuide: () => this.setState({ menu: 'guide' }), closeMenu: () => this.setState({ menu: null }),
       toggleServices: () => this.setState((s) => ({ menu: s.menu === 'services' ? null : 'services' })), toggleGuide: () => this.setState((s) => ({ menu: s.menu === 'guide' ? null : 'guide' })),
       lineHome: isHome ? '#c2332b' : 'transparent', lineServices: (isService || isServicesHub) ? '#c2332b' : 'transparent', lineAbout: isAbout ? '#c2332b' : 'transparent', lineGuide: isSpringPg ? '#c2332b' : 'transparent', lineSigns: isSignsPg ? '#c2332b' : 'transparent', linePrice: isPricePg ? '#c2332b' : 'transparent', lineContact: isContact ? '#c2332b' : 'transparent',
-      mobileMenu: this.state.mobileMenu, openMobile: () => this.setState({ mobileMenu: true }), closeMobile: () => this.setState({ mobileMenu: false }),
-      tabServices: () => this.setState({ tab: 'services' }), tabAreas: () => this.setState({ tab: 'areas' }), tabGuide: () => this.setState({ tab: 'guide' }),
+      mobileMenu: this.state.mobileMenu, openMobile: () => this.setState({ mobileMenu: true, tab: '' }), closeMobile: () => this.setState({ mobileMenu: false }),
+      tabServices: () => this.setState({ tab: this.state.tab === 'services' ? '' : 'services' }), tabAreas: () => this.setState({ tab: this.state.tab === 'areas' ? '' : 'areas' }), tabGuide: () => this.setState({ tab: this.state.tab === 'guide' ? '' : 'guide' }),
+      openSvcM: this.state.tab === 'services', openAreasM: this.state.tab === 'areas', openGuideM: this.state.tab === 'guide', rotSvcM: this.state.tab === 'services' ? '180deg' : '0deg', rotAreasM: this.state.tab === 'areas' ? '180deg' : '0deg', rotGuideM: this.state.tab === 'guide' ? '180deg' : '0deg',
+      mServices: [{ href: '#/services', label: 'All services' }].concat(services.map((x) => ({ href: x.href, label: x.navName }))), mAreas: [{ href: '#/areas', label: 'All service areas' }].concat(areas.map((x) => ({ href: x.href, label: x.name }))), mGuides: [{ href: '#/spring-tx-foundation-considerations', label: 'Spring TX Considerations' }].concat(guides.map((g) => ({ href: g.href, label: g.nav }))),
+      colDisplay: this.state.mobile ? 'flex' : 'block', svcOrder: this.state.mobile ? '-1' : '0',
       tabBgServices: this.state.tab === 'services' ? '#c2332b' : 'transparent', tabBgAreas: this.state.tab === 'areas' ? '#c2332b' : 'transparent', tabBgGuide: this.state.tab === 'guide' ? '#c2332b' : 'transparent',
       mobileLinks: this.state.tab === 'areas' ? areas.map((x) => ({ href: x.href, label: x.name })) : this.state.tab === 'guide' ? [{ href: '#/spring-tx-foundation-considerations', label: 'Spring TX Considerations' }, { href: '#/about', label: 'About & What to Expect' }, { href: '#/warning-signs', label: 'Warning Signs' }, { href: '#/pricing-guide', label: 'Pricing Guide' }].concat(guides.map((g) => ({ href: g.href, label: g.nav }))) : [{ href: '#/services', label: 'All services' }].concat(services.map((x) => ({ href: x.href, label: x.navName }))),
       isHome, isService, isArea, isAreas, isServicesHub, svcHub: SVC.map((x, i) => ({ ...x, num: pad(i + 1), href: '#/' + x.slug })), svc, area, seo, services, areas, isGuide, guide, guides,
