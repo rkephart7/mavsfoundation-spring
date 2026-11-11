@@ -109,6 +109,9 @@ function transformTemplate(src) {
     "try { sessionStorage.setItem('dc-jump', label.toLowerCase().replace(/[^a-z0-9]+/g, '-')); } catch (err) {} location.href = r ? '/' + r + '/' : '/';", 'pageJump navigation');
   // Any other in-page JS navigation becomes a normal page load.
   src = src.replace(/location\.hash = /g, 'location.href = ');
+  // Estimate forms: send the lead to /api/lead (scripts/lead.js) and only show "Received" once it is stored.
+  src = must(src, /submit: \(e\) => \{ e\.preventDefault\(\); this\.setState\(\{ submitted: true \}\); \},/,
+    "submit: (e) => { e.preventDefault(); const f = e.currentTarget; if (!window.mavsLead) { alert('Sorry, the form is not available right now. Please call us.'); return; } window.mavsLead(f).then((ok) => { if (ok) this.setState({ submitted: true }); }); },", 'form submit handler');
   // JS-built links:  '#/' + s.slug  ->  '/' + s.slug + '/'
   src = src.replace(/'#\/(areas\/)?' \+ ([\w.]+)/g, (_, a, e) => `'/${a || ''}' + ${e} + '/'`);
   // JS string literals: '#/contact'
@@ -289,6 +292,7 @@ ${snap.head}
 </head>
 <body>
 <div id="prerendered">${snap.body}</div>
+<script src="/lead.js" defer></script>
 <script src="/boot.js" defer></script>
 </body>
 </html>
@@ -358,6 +362,7 @@ async function main() {
   await writeFile(path.join(DIST, 'image-slots.state.json'), '{}');
   await writeFile(path.join(DIST, 'app.dc.html'), selfHostFonts(app));
   await cp(path.join(ROOT, 'scripts', 'boot.js'), path.join(DIST, 'boot.js'));
+  await cp(path.join(ROOT, 'scripts', 'lead.js'), path.join(DIST, 'lead.js'));
 
   const server = await serve(app);
   const base = `http://127.0.0.1:${server.address().port}`;
@@ -398,7 +403,7 @@ async function main() {
     const today = new Date().toISOString().slice(0, 10);
     await writeFile(path.join(DIST, 'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
       routes.map((r) => `  <url><loc>${ORIGIN}${r}</loc><lastmod>${today}</lastmod></url>\n`).join('') + '</urlset>\n');
-    await writeFile(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /app.dc.html\nDisallow: /build-report.json\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
+    await writeFile(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /app.dc.html\nDisallow: /build-report.json\nDisallow: /report\nDisallow: /api/\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
   }
   // Without dist/404.html, Cloudflare Pages answers every unknown URL with the
   // home page and a 200 status (a "soft 404"). This gives real 404s.

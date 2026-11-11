@@ -44,3 +44,19 @@ service there and rebuild; it gets its own URL automatically.
   keyed by URL. Descriptions are in `DESC` right below it.
 - The build adds a canonical link, Open Graph and Twitter tags to every page, and writes
   `dist/sitemap.xml` and `dist/robots.txt`, all pointing at the domain in `const SITE` in the template.
+
+## Leads (estimate form, calls, texts)
+
+- The forms post to `/api/lead` (`functions/api/lead.js`, a Cloudflare Pages Function). It checks
+  Turnstile, saves the lead to D1 (`leads` table, created automatically) and emails it.
+- WhatConverts posts calls and texts to `/api/whatconverts?key=WC_WEBHOOK_KEY`; they land in the same table.
+- `/report?month=YYYY-MM` (password `REPORT_PASSWORD`, any username) shows the month's count,
+  breakdown by type/source/page and the full list; `&format=csv` downloads it.
+- Email goes through `workers/mailer` (Worker `mavs-mailer`, Email Routing `send_email`), because Pages
+  Functions can't send email themselves. It also emails last month's report (CSV attached) on the 1st.
+- Front end: `scripts/lead.js`; `scripts/build.mjs` wires the template's form submit to it.
+
+Settings: Pages project needs `DB` (D1) and `MAILER` (service binding to `mavs-mailer`) bindings, plus
+`TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET`, `REPORT_PASSWORD`, `WC_WEBHOOK_KEY`. The Worker needs secrets
+`MAIL_TO`, `RENTER_EMAIL` (optional) and `REPORT_PASSWORD`. Every recipient must be a verified
+destination address in Email Routing.

@@ -2222,7 +2222,7 @@ class Component extends DCLogic {
         setTimeout(() => { const i = document.getElementById('ra-name'); if (i) i.focus({ preventScroll: true }); }, 500);
       },
       submitted: this.state.submitted, notSubmitted: !this.state.submitted,
-      submit: (e) => { e.preventDefault(); this.setState({ submitted: true }); },
+      submit: (e) => { e.preventDefault(); const f = e.currentTarget; if (!window.mavsLead) { alert('Sorry, the form is not available right now. Please call us.'); return; } window.mavsLead(f).then((ok) => { if (ok) this.setState({ submitted: true }); }); },
       updated: 'October 2026'
     };
   }

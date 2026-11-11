@@ -2,5 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /app.dc.html
 Disallow: /build-report.json
+Disallow: /report
+Disallow: /api/
 
 Sitemap: https://mavsofspringtxfoundationrepair.com/sitemap.xml
