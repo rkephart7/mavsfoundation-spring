@@ -53,6 +53,21 @@
     });
   }
 
+  // Which form on the page was used, in plain words for the email and report.
+  function formLabel(f) {
+    if (f.id === 'request-appointment') return 'Top of page form';
+    if (f.closest('footer')) return 'Footer form (bottom of page)';
+    var sec = f.closest('section');
+    if (sec && sec.id === 'services') return 'Services section form';
+    var h = f.querySelector('h2, h3, h4');
+    h = h ? h.textContent.trim() : '';
+    if (/request a call/i.test(h)) return '"Request A Call" form';
+    var sl = sec ? sec.getAttribute('data-screen-label') || '' : '';
+    if (!sl && sec) { var sh = sec.querySelector('h2'); sl = sh ? sh.textContent.trim() : ''; }
+    if (/^signs$/i.test(sl)) sl = 'Warning signs';
+    return (h ? '"' + h + '" form' : 'Form') + (sl ? ' in ' + sl + ' section' : '');
+  }
+
   var busy = false;
   window.mavsLead = function (form) {
     if (busy) return Promise.resolve(false);
@@ -68,6 +83,7 @@
       email: val('input[type="email"]'),
       message: val('textarea'),
       page: location.href.split('#')[0],
+      form: formLabel(form),
       attribution: attribution,
     };
     return waitToken(15000).then(function () {
@@ -81,7 +97,7 @@
         if (widget != null && window.turnstile) { try { window.turnstile.reset(widget); } catch (e) {} }
         if (btn) { btn.disabled = false; btn.style.opacity = ''; if (oldText != null) btn.firstChild.nodeValue = oldText; }
         if (ok) {
-          try { if (window.gtag) window.gtag('event', 'generate_lead'); } catch (e) {}
+          try { if (window.gtag) window.gtag('event', 'generate_lead', { form_page: location.pathname, form_name: formLabel(form) }); } catch (e) {}
         } else {
           alert('Sorry, your request did not go through. Please call or text us at ' + PHONE + '.');
         }

@@ -16,9 +16,11 @@ function authorized(request, env) {
   return diff === 0;
 }
 
-const CSV_COLS = ['id', 'created_at', 'type', 'name', 'phone', 'email', 'message', 'source', 'medium', 'campaign', 'page', 'landing_page', 'referrer', 'duration', 'recording'];
+const CSV_COLS = ['id', 'created_at', 'type', 'name', 'phone', 'email', 'message', 'form', 'source', 'medium', 'campaign', 'page', 'landing_page', 'referrer', 'duration', 'recording'];
 const csvCell = (v) => { const s = v == null ? '' : String(v); return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
 const local = (iso) => new Date(iso).toLocaleString('en-US', { timeZone: TZ, month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+
+const path = (r) => { try { return new URL(r.page || r.landing_page).pathname; } catch (e) { return r.page || ''; } };
 
 function tally(rows, key) {
   const t = {};
@@ -65,9 +67,9 @@ table{border-collapse:collapse;width:100%} td,th{padding:6px 8px;border-bottom:1
 <h1>Leads: ${esc(title)}</h1>
 <div class="nav"><a href="?month=${mm(-1)}">&larr; ${mm(-1)}</a><a href="?month=${mm(1)}">${mm(1)} &rarr;</a><a href="?month=${month}&amp;format=csv">Download CSV</a></div>
 <div class="big">${rows.length} lead${rows.length === 1 ? '' : 's'}</div>
-<div class="grid">${box('By type', tally(rows, (r) => label(r.type)))}${box('By source', tally(rows, (r) => [r.source, r.medium].filter(Boolean).join(' / ')))}${box('By page', tally(rows, (r) => { try { return new URL(r.page || r.landing_page).pathname; } catch (e) { return r.page; } }))}</div>
-<div class="list"><table><tr><th>When</th><th>Type</th><th>Name</th><th>Phone</th><th>Email</th><th>Source</th><th>Message</th></tr>
-${rows.map((r) => `<tr><td>${esc(local(r.created_at))}</td><td>${esc(label(r.type))}${r.duration ? ` (${Math.round(r.duration / 6) / 10} min)` : ''}</td><td>${esc(r.name)}</td><td><a href="tel:${esc((r.phone || '').replace(/[^0-9+]/g, ''))}">${esc(r.phone)}</a></td><td>${esc(r.email)}</td><td>${esc([r.source, r.medium].filter(Boolean).join(' / '))}</td><td class="msg">${esc(r.message)}</td></tr>`).join('\n') || '<tr><td colspan="7">No leads this month.</td></tr>'}
+<div class="grid">${box('By type', tally(rows, (r) => label(r.type)))}${box('By source', tally(rows, (r) => [r.source, r.medium].filter(Boolean).join(' / ')))}${box('By page', tally(rows, path))}${box('By form', tally(rows, (r) => r.form || (r.type === 'form' ? '' : label(r.type))))}</div>
+<div class="list"><table><tr><th>When</th><th>Type</th><th>Name</th><th>Phone</th><th>Email</th><th>Source</th><th>Page / form</th><th>Message</th></tr>
+${rows.map((r) => `<tr><td>${esc(local(r.created_at))}</td><td>${esc(label(r.type))}${r.duration ? ` (${Math.round(r.duration / 6) / 10} min)` : ''}</td><td>${esc(r.name)}</td><td><a href="tel:${esc((r.phone || '').replace(/[^0-9+]/g, ''))}">${esc(r.phone)}</a></td><td>${esc(r.email)}</td><td>${esc([r.source, r.medium].filter(Boolean).join(' / '))}</td><td>${esc(path(r))}${r.form ? '<br><small>' + esc(r.form) + '</small>' : ''}</td><td class="msg">${esc(r.message)}</td></tr>`).join('\n') || '<tr><td colspan="8">No leads this month.</td></tr>'}
 </table></div></body></html>`;
   return new Response(html, { headers: { ...H, 'content-type': 'text/html; charset=utf-8' } });
 }

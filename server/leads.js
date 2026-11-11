@@ -20,7 +20,7 @@ export async function db(env) {
         created_at TEXT NOT NULL,
         type TEXT NOT NULL,
         name TEXT, phone TEXT, email TEXT, message TEXT,
-        page TEXT, landing_page TEXT, referrer TEXT,
+        page TEXT, form TEXT, landing_page TEXT, referrer TEXT,
         source TEXT, medium TEXT, campaign TEXT, gclid TEXT,
         duration INTEGER, recording TEXT,
         external_id TEXT UNIQUE,
@@ -33,7 +33,7 @@ export async function db(env) {
   return env.DB;
 }
 
-const COLS = ['created_at', 'type', 'name', 'phone', 'email', 'message', 'page', 'landing_page', 'referrer',
+const COLS = ['created_at', 'type', 'name', 'phone', 'email', 'message', 'page', 'form', 'landing_page', 'referrer',
   'source', 'medium', 'campaign', 'gclid', 'duration', 'recording', 'external_id', 'ip', 'user_agent', 'raw'];
 
 // Insert a lead. With an external_id (WhatConverts), a repeat delivery updates the row instead.
@@ -80,7 +80,7 @@ export function leadEmail(lead, site) {
     ['Message', lead.message],
     ['Call length', lead.duration ? `${Math.round(lead.duration / 6) / 10} min` : ''],
     ['Recording', lead.recording],
-    ['Page', lead.page], ['Source', [lead.source, lead.medium].filter(Boolean).join(' / ')],
+    ['Page', lead.page], ['Form', lead.form], ['Source', [lead.source, lead.medium].filter(Boolean).join(' / ')],
     ['Received', when],
   ].filter((r) => r[1]);
   const subject = `New ${label(lead.type).toLowerCase()} lead: ${lead.name || lead.phone || 'unknown'}`;

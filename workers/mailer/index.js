@@ -62,14 +62,15 @@ async function monthlyReport(env) {
   const names = { form: 'Web form', call: 'Phone call', text: 'Text message' };
   const byType = count((r) => names[r.type] || r.type);
   const bySource = count((r) => [r.source, r.medium].filter(Boolean).join(' / '));
+  const byForm = count((r) => r.form || names[r.type] || r.type);
   const title = new Date(Date.UTC(y, m - 1, 15)).toLocaleString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
   const list = (rows) => rows.map(([k, n]) => `  ${k}: ${n}`).join('\n') || '  none';
   const tbl = (h, rows) => `<h3 style="margin:16px 0 6px">${h}</h3><table style="border-collapse:collapse">${rows.map(([k, n]) => `<tr><td style="padding:3px 16px 3px 0">${esc(k)}</td><td style="font-weight:700">${n}</td></tr>`).join('')}</table>`;
   const link = `${env.SITE}/report?month=${month}`;
   await sendAll(env, {
     subject: `Lead report for ${title}: ${j.count} lead${j.count === 1 ? '' : 's'}`,
-    text: `${j.count} leads in ${title}.\n\nBy type:\n${list(byType)}\n\nBy source:\n${list(bySource)}\n\nFull list: ${link}\n(CSV attached)`,
-    html: `<div style="font:15px/1.5 Arial,sans-serif"><p style="font-size:22px;margin:0"><b>${j.count}</b> lead${j.count === 1 ? '' : 's'} in ${title}</p>${tbl('By type', byType)}${tbl('By source', bySource)}<p><a href="${link}">Full list</a> (CSV attached)</p></div>`,
+    text: `${j.count} leads in ${title}.\n\nBy type:\n${list(byType)}\n\nBy source:\n${list(bySource)}\n\nBy form:\n${list(byForm)}\n\nFull list: ${link}\n(CSV attached)`,
+    html: `<div style="font:15px/1.5 Arial,sans-serif"><p style="font-size:22px;margin:0"><b>${j.count}</b> lead${j.count === 1 ? '' : 's'} in ${title}</p>${tbl('By type', byType)}${tbl('By source', bySource)}${tbl('By form', byForm)}<p><a href="${link}">Full list</a> (CSV attached)</p></div>`,
     attachments: [{ filename: `leads-${month}.csv`, type: 'text/csv', content: csv }],
   });
 }

@@ -73,6 +73,10 @@ const addSrcsets = (html) => html.replace(/<img\b[^>]*>/g, (tag) => {
 const selfHostFonts = (html) => html
   .replace(/<link rel="preconnect" href="https:\/\/fonts\.(?:googleapis|gstatic)\.com"[^>]*>\n?/g, '')
   .replace(/<link rel="stylesheet" href="https:\/\/fonts\.googleapis\.com\/css2[^"]*"[^>]*>/g, `${FONT_PRELOAD}\n<style>${FONT_CSS}</style>`);
+// Google Analytics 4. Form submissions send a generate_lead event (scripts/lead.js).
+const GA_ID = 'G-6NK9G46ZQT';
+const GA_TAG = `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');</script>`;
 const TEMPLATE = 'Spring Texas Foundation Repair.dc.html';
 const DESKTOP = { width: 1280, height: 900 };
 
@@ -277,6 +281,7 @@ function page(snap, route, origin, info) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+${GA_TAG}
 <title>${esc(snap.title)}</title>
 <meta name="description" content="${esc(snap.description)}">
 <link rel="canonical" href="${url}">
@@ -308,6 +313,7 @@ function notFound(info) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+${GA_TAG}
 <title>Page Not Found | ${esc(info.brand)}</title>
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Source+Sans+3:wght@400;600;700&display=swap">

@@ -36,6 +36,7 @@ export async function onRequestPost({ request, env }) {
     email: clean(b.email, 200),
     message: clean(b.message, 4000),
     page: clean(b.page, 300),
+    form: clean(b.form, 120),
     landing_page: clean(a.landing, 500),
     referrer: clean(a.referrer, 500),
     campaign: clean(a.utm_campaign, 200),
