@@ -2,8 +2,10 @@
 name = "mavs-mailer"
 main = "index.js"
 compatibility_date = "2025-09-01"
-# Public URL so the site can reach it without a service binding; requests need the key.
-workers_dev = true
+# No public URL: only the site reaches it, through the MAILER service binding.
+workers_dev = false
+# Keep the variables set in the dashboard (MAIL_TO, RENTER_EMAIL, ...) when this deploys.
+keep_vars = true
 preview_urls = false
 
 send_email = [{ name = "SEND" }]

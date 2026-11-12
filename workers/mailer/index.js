@@ -1,9 +1,8 @@
 // mavs-mailer: sends lead emails with Cloudflare Email Routing (send_email binding),
 // and emails the monthly lead report on the 1st of each month.
 //
-// Pages Functions can't use send_email, so the site calls this Worker, through the MAILER
-// service binding if the Pages project has one, otherwise at its workers.dev URL.
-// Every request must carry "Authorization: Bearer <REPORT_PASSWORD>".
+// Pages Functions can't use send_email, so the site calls this Worker through the MAILER
+// service binding. It has no public URL (workers_dev = false), so only the site can reach it.
 //
 // Secrets (Worker > Settings > Variables and Secrets, type Secret):
 //   MAIL_TO          Ryan's address (comma-separate several)
@@ -17,11 +16,7 @@ const TZ = 'America/Chicago';
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const key = (request.headers.get('Authorization') || '').replace(/^Bearer\s+/i, '');
-    if (!env.REPORT_PASSWORD || key !== env.REPORT_PASSWORD) {
-      return Response.json({ error: env.REPORT_PASSWORD ? 'bad key' : 'REPORT_PASSWORD secret not set on mavs-mailer' }, { status: 401 });
-    }
-    if (url.pathname === '/health') return Response.json({ ok: true, recipients: recipients(env).length, from: env.FROM });
+    if (url.pathname === '/health') return Response.json({ ok: true, recipients: recipients(env).length, report_password: !!env.REPORT_PASSWORD, from: env.FROM });
     if (request.method !== 'POST' || url.pathname !== '/send') return new Response('Not found', { status: 404 });
     const msg = await request.json();
     const sent = await sendAll(env, msg);
