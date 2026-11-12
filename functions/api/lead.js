@@ -1,13 +1,17 @@
 // /api/lead: the estimate forms post here.
 // GET returns the public Turnstile site key so the page can load the spam check.
-import { saveLead, notify, leadEmail, clean, json, sourceOf } from '../../server/leads.js';
+import { saveLead, notify, callMailer, leadEmail, clean, json, sourceOf } from '../../server/leads.js';
 
-export function onRequestGet({ env }) {
-  // status: which settings this deployment can see (no secrets shown).
-  return json({
-    siteKey: env.TURNSTILE_SITE_KEY || '',
-    status: { db: !!env.DB, mailer: !!env.MAILER, turnstile: !!env.TURNSTILE_SECRET, report: !!env.REPORT_PASSWORD },
-  });
+export async function onRequestGet({ request, env }) {
+  const status = { db: !!env.DB, mailer: env.MAILER ? 'binding' : 'url', turnstile: !!env.TURNSTILE_SECRET, report: !!env.REPORT_PASSWORD };
+  // ?check=1 also asks the mailer whether it is reachable and has recipients set (no secrets shown).
+  if (new URL(request.url).searchParams.get('check')) {
+    try {
+      const r = await callMailer(env, '/health');
+      status.mailer_check = r.status === 200 ? await r.json() : { status: r.status, body: (await r.text()).slice(0, 200) };
+    } catch (e) { status.mailer_check = { error: String(e && e.message || e) }; }
+  }
+  return json({ siteKey: env.TURNSTILE_SITE_KEY || '', status });
 }
 
 export async function onRequestPost({ request, env }) {

@@ -1,8 +1,9 @@
 // mavs-mailer: sends lead emails with Cloudflare Email Routing (send_email binding),
 // and emails the monthly lead report on the 1st of each month.
 //
-// Pages Functions can't use send_email, so the Pages project calls this Worker through a
-// service binding (MAILER). It has no public URL (workers_dev = false).
+// Pages Functions can't use send_email, so the site calls this Worker, through the MAILER
+// service binding if the Pages project has one, otherwise at its workers.dev URL.
+// Every request must carry "Authorization: Bearer <REPORT_PASSWORD>".
 //
 // Secrets (Worker > Settings > Variables and Secrets, type Secret):
 //   MAIL_TO          Ryan's address (comma-separate several)
@@ -16,10 +17,15 @@ const TZ = 'America/Chicago';
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const key = (request.headers.get('Authorization') || '').replace(/^Bearer\s+/i, '');
+    if (!env.REPORT_PASSWORD || key !== env.REPORT_PASSWORD) {
+      return Response.json({ error: env.REPORT_PASSWORD ? 'bad key' : 'REPORT_PASSWORD secret not set on mavs-mailer' }, { status: 401 });
+    }
+    if (url.pathname === '/health') return Response.json({ ok: true, recipients: recipients(env).length, from: env.FROM });
     if (request.method !== 'POST' || url.pathname !== '/send') return new Response('Not found', { status: 404 });
     const msg = await request.json();
     const sent = await sendAll(env, msg);
-    return Response.json({ sent, recipients: recipients(env).length }, { status: sent ? 200 : 502 });
+    return Response.json({ sent, recipients: recipients(env).length, error: lastError || undefined }, { status: sent ? 200 : 502 });
   },
   async scheduled(event, env, ctx) {
     ctx.waitUntil(monthlyReport(env));
@@ -30,8 +36,10 @@ function recipients(env) {
   return [env.MAIL_TO, env.RENTER_EMAIL].filter(Boolean).join(',').split(',').map((s) => s.trim()).filter(Boolean);
 }
 
+let lastError = '';
 async function sendAll(env, msg) {
   let sent = 0;
+  lastError = '';
   if (!recipients(env).length) console.error('mailer: no MAIL_TO / RENTER_EMAIL secret set');
   for (const to of [...new Set(recipients(env))]) {
     try {
@@ -39,6 +47,7 @@ async function sendAll(env, msg) {
       sent++;
     } catch (e) {
       console.error('send to', to, 'failed:', e && e.message);
+      lastError = (e && e.message) || String(e);
     }
   }
   return sent;
