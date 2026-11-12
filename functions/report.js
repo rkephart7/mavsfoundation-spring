@@ -1,6 +1,6 @@
 // /report?month=YYYY-MM[&format=csv|json]: monthly lead report, behind REPORT_PASSWORD
 // (browser login box; any username).
-import { db, esc, label, monthStart, currentMonth, TZ } from '../server/leads.js';
+import { db, esc, label, monthStart, currentMonth, TZ, callMailer, leadEmail } from '../server/leads.js';
 
 const H = { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow' };
 
@@ -34,6 +34,20 @@ export async function onRequestGet({ request, env }) {
     return new Response('Login required', { status: 401, headers: { ...H, 'WWW-Authenticate': 'Basic realm="Lead report", charset="UTF-8"' } });
   }
   const url = new URL(request.url);
+  // /report?test=email sends a test lead email and shows the mailer's answer, so a delivery
+  // problem (no recipient set, address not verified, ...) can be read without the logs.
+  if (url.searchParams.get('test') === 'email') {
+    const out = { mailer: env.MAILER ? 'binding' : 'url' };
+    try {
+      const r = await callMailer(env, '/send', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(leadEmail({ type: 'form', name: 'Test lead', phone: '(281) 555-0100', message: 'Test from /report?test=email' }, url.origin)),
+      });
+      out.status = r.status;
+      try { out.answer = await r.json(); } catch (e) { out.answer = null; }
+    } catch (e) { out.error = String((e && e.message) || e); }
+    return Response.json(out, { headers: H });
+  }
   const month = /^\d{4}-\d{2}$/.test(url.searchParams.get('month') || '') ? url.searchParams.get('month') : currentMonth();
   const [y, m] = month.split('-').map(Number);
   const format = url.searchParams.get('format');
