@@ -2,7 +2,8 @@
 name = "mavs-mailer"
 main = "index.js"
 compatibility_date = "2025-09-01"
-workers_dev = false
+# Public URL so the site can reach it without a service binding; requests need the key.
+workers_dev = true
 preview_urls = false
 
 send_email = [{ name = "SEND" }]
