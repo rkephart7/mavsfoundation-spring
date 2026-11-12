@@ -1,6 +1,7 @@
 // /api/whatconverts?key=WC_WEBHOOK_KEY: WhatConverts webhook for call and text leads.
 // Accepts JSON or form-encoded bodies. A repeat delivery for the same WhatConverts lead
-// updates the row; only the first one sends an email.
+// updates the row. No email: WhatConverts already alerts on calls and texts
+// (set NOTIFY_WC=on on the Pages project to email them too).
 import { saveLead, notify, leadEmail, clean, json } from '../../server/leads.js';
 
 export async function onRequestPost({ request, env }) {
@@ -46,6 +47,6 @@ export async function onRequestPost({ request, env }) {
     console.error('saveLead', e);
     return json({ ok: false }, 500);
   }
-  if (r.isNew && env.NOTIFY_WC !== 'off') await notify(env, leadEmail(lead, url.origin));
+  if (r.isNew && env.NOTIFY_WC === 'on') await notify(env, leadEmail(lead, url.origin));
   return json({ ok: true, id: r.id });
 }
