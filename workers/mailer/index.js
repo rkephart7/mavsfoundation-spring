@@ -19,7 +19,7 @@ export default {
     if (request.method !== 'POST' || url.pathname !== '/send') return new Response('Not found', { status: 404 });
     const msg = await request.json();
     const sent = await sendAll(env, msg);
-    return Response.json({ sent }, { status: sent ? 200 : 502 });
+    return Response.json({ sent, recipients: recipients(env).length }, { status: sent ? 200 : 502 });
   },
   async scheduled(event, env, ctx) {
     ctx.waitUntil(monthlyReport(env));
@@ -32,6 +32,7 @@ function recipients(env) {
 
 async function sendAll(env, msg) {
   let sent = 0;
+  if (!recipients(env).length) console.error('mailer: no MAIL_TO / RENTER_EMAIL secret set');
   for (const to of [...new Set(recipients(env))]) {
     try {
       await env.SEND.send(new EmailMessage(env.FROM, to, mime({ ...msg, from: env.FROM, fromName: env.FROM_NAME, to })));

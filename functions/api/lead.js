@@ -3,7 +3,11 @@
 import { saveLead, notify, leadEmail, clean, json, sourceOf } from '../../server/leads.js';
 
 export function onRequestGet({ env }) {
-  return json({ siteKey: env.TURNSTILE_SITE_KEY || '' });
+  // status: which settings this deployment can see (no secrets shown).
+  return json({
+    siteKey: env.TURNSTILE_SITE_KEY || '',
+    status: { db: !!env.DB, mailer: !!env.MAILER, turnstile: !!env.TURNSTILE_SECRET, report: !!env.REPORT_PASSWORD },
+  });
 }
 
 export async function onRequestPost({ request, env }) {
@@ -54,5 +58,5 @@ export async function onRequestPost({ request, env }) {
   try { await saveLead(env, lead); saved = true; } catch (e) { console.error('saveLead', e); }
   const mailed = await notify(env, leadEmail(lead, url.origin));
   if (!saved && !mailed) return json({ ok: false, error: 'could not record lead' }, 500);
-  return json({ ok: true });
+  return json({ ok: true, saved, mailed });
 }
