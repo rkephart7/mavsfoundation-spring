@@ -57,11 +57,12 @@ export async function saveLead(env, lead) {
 
 // Send a notification through the mailer Worker. Never throws; returns true when sent.
 export async function notify(env, msg) {
-  if (!env.MAILER) return false;
+  if (!env.MAILER) { console.error('notify: no MAILER binding on this deployment'); return false; }
   try {
     const r = await env.MAILER.fetch('https://mailer/send', {
       method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(msg),
     });
+    if (!r.ok) console.error('notify: mailer answered', r.status, await r.text());
     return r.ok;
   } catch (e) {
     console.error('notify failed', e);
