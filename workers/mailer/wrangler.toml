@@ -14,6 +14,8 @@ send_email = [{ name = "SEND" }]
 FROM = "leads@mavsofspringtxfoundationrepair.com"
 FROM_NAME = "Mavericks Website Leads"
 SITE = "https://mavsofspringtxfoundationrepair.com"
+# Same value as CRON_TOKEN in server/leads.js.
+CRON_TOKEN = "mavs-monthly-report-2026"
 
 # Monthly report: 14:00 UTC on the 1st (8 or 9 AM Central).
 [triggers]

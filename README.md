@@ -53,10 +53,13 @@ service there and rebuild; it gets its own URL automatically.
 - `/report?month=YYYY-MM` (password `REPORT_PASSWORD`, any username) shows the month's count,
   breakdown by type/source/page and the full list; `&format=csv` downloads it.
 - Email goes through `workers/mailer` (Worker `mavs-mailer`, Email Routing `send_email`), because Pages
-  Functions can't send email themselves. It also emails last month's report (CSV attached) on the 1st.
+  Functions can't send email themselves. On the 1st its cron calls `/api/monthly-report`, which emails
+  last month's report (CSV attached) once.
 - Front end: `scripts/lead.js`; `scripts/build.mjs` wires the template's form submit to it.
 
-Settings: Pages project needs `DB` (D1) and `MAILER` (service binding to `mavs-mailer`) bindings, plus
-`TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET`, `REPORT_PASSWORD`, `WC_WEBHOOK_KEY`. The Worker needs secrets
-`MAIL_TO`, `RENTER_EMAIL` (optional) and `REPORT_PASSWORD`. Every recipient must be a verified
-destination address in Email Routing.
+Settings (all on the Pages project, Settings > Variables and Secrets / Bindings; nothing to set on the
+Worker): bindings `DB` (D1) and `MAILER` (service binding to `mavs-mailer`); variables `MAIL_TO`
+(lead emails go here; comma-separate several), `RENTER_EMAIL` (optional), `TURNSTILE_SITE_KEY`,
+`TURNSTILE_SECRET`, `REPORT_PASSWORD`, `WC_WEBHOOK_KEY`. Every recipient must be a verified
+destination address in Email Routing. Checks: `/api/lead?check=1` (what the live site sees) and
+`/report?test=email` (sends a test lead email and shows the mailer's answer).

@@ -3,6 +3,8 @@
 // Bindings and settings on the Pages project:
 //   DB                  D1 database (the leads table is created automatically)
 //   MAILER              service binding to the mavs-mailer Worker (sends the emails)
+//   MAIL_TO             Ryan's email (comma-separate several)
+//   RENTER_EMAIL        the renter's email (optional)
 //   TURNSTILE_SITE_KEY  Turnstile site key (public)
 //   TURNSTILE_SECRET    Turnstile secret key
 //   REPORT_PASSWORD     password for /report
@@ -58,18 +60,29 @@ export async function saveLead(env, lead) {
 // The mailer Worker: through the MAILER service binding when the Pages project has one,
 // otherwise over HTTPS at MAILER_URL (default: its workers.dev address).
 export const MAILER_URL = 'https://mavs-mailer.ryan-kep.workers.dev';
+// POST a message to the mailer; the recipients come from this project's settings.
+export function sendMail(env, msg) {
+  return callMailer(env, '/send', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ to: recipientsOf(env), ...msg }),
+  });
+}
+
 export async function callMailer(env, path, init = {}) {
   const headers = { ...(init.headers || {}), Authorization: 'Bearer ' + (env.REPORT_PASSWORD || '') };
   if (env.MAILER) return env.MAILER.fetch('https://mailer' + path, { ...init, headers });
   return fetch((env.MAILER_URL || MAILER_URL) + path, { ...init, headers });
 }
 
+// Who gets lead emails: set on the Pages project (its settings survive every deploy).
+export const recipientsOf = (env) => [...new Set([env.MAIL_TO, env.RENTER_EMAIL].filter(Boolean).join(',').split(',').map((s) => s.trim()).filter(Boolean))];
+
+// Token the mailer's monthly cron uses to call /api/monthly-report (same value in workers/mailer/wrangler.toml).
+export const CRON_TOKEN = 'mavs-monthly-report-2026';
+
 // Send a notification through the mailer Worker. Never throws; returns true when sent.
 export async function notify(env, msg) {
   try {
-    const r = await callMailer(env, '/send', {
-      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(msg),
-    });
+    const r = await sendMail(env, msg);
     if (!r.ok) console.error('notify: mailer answered', r.status, await r.text());
     return r.ok;
   } catch (e) {

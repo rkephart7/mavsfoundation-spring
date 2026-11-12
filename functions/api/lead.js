@@ -1,9 +1,9 @@
 // /api/lead: the estimate forms post here.
 // GET returns the public Turnstile site key so the page can load the spam check.
-import { saveLead, notify, callMailer, leadEmail, clean, json, sourceOf } from '../../server/leads.js';
+import { saveLead, notify, callMailer, recipientsOf, leadEmail, clean, json, sourceOf } from '../../server/leads.js';
 
 export async function onRequestGet({ request, env }) {
-  const status = { db: !!env.DB, mailer: env.MAILER ? 'binding' : 'url', turnstile: !!env.TURNSTILE_SECRET, report: !!env.REPORT_PASSWORD };
+  const status = { db: !!env.DB, mailer: env.MAILER ? 'binding' : 'url', recipients: recipientsOf(env).length, turnstile: !!env.TURNSTILE_SECRET, report: !!env.REPORT_PASSWORD };
   // ?check=1 also asks the mailer whether it is reachable and has recipients set (no secrets shown).
   if (new URL(request.url).searchParams.get('check')) {
     try {
