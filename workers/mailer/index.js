@@ -4,11 +4,9 @@
 // Pages Functions can't use send_email, so the site calls this Worker through the MAILER
 // service binding. It has no public URL (workers_dev = false), so only the site can reach it.
 //
-// Secrets (Worker > Settings > Variables and Secrets, type Secret):
-//   MAIL_TO          Ryan's address (comma-separate several)
-//   RENTER_EMAIL     the renter's address (optional; comma-separate several)
-//   REPORT_PASSWORD  same password as /report on the site (for the monthly email)
-// Every recipient must be a verified destination address in Email Routing.
+// Nothing to set on this Worker: the site sends the recipients (MAIL_TO / RENTER_EMAIL on the
+// Pages project) with each message. Every recipient must be a verified destination address
+// in Email Routing. On the 1st the cron asks the site to email last month's report.
 import { EmailMessage } from 'cloudflare:email';
 
 const TZ = 'America/Chicago';
@@ -16,68 +14,39 @@ const TZ = 'America/Chicago';
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.pathname === '/health') return Response.json({ ok: true, recipients: recipients(env).length, report_password: !!env.REPORT_PASSWORD, from: env.FROM });
+    if (url.pathname === '/health') return Response.json({ ok: true, from: env.FROM });
     if (request.method !== 'POST' || url.pathname !== '/send') return new Response('Not found', { status: 404 });
     const msg = await request.json();
-    const sent = await sendAll(env, msg);
-    return Response.json({ sent, recipients: recipients(env).length, error: lastError || undefined }, { status: sent ? 200 : 502 });
+    const to = recipients(env, msg.to);
+    if (!to.length) return Response.json({ sent: 0, recipients: 0, error: 'no recipients: set MAIL_TO on the Pages project' }, { status: 400 });
+    const sent = await sendAll(env, msg, to);
+    return Response.json({ sent, recipients: to.length, error: lastError || undefined }, { status: sent ? 200 : 502 });
   },
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(monthlyReport(env));
+    ctx.waitUntil(fetch(`${env.SITE}/api/monthly-report?token=${env.CRON_TOKEN}`).then(async (r) => console.log('monthly report', r.status, await r.text())));
   },
 };
 
-function recipients(env) {
-  return [env.MAIL_TO, env.RENTER_EMAIL].filter(Boolean).join(',').split(',').map((s) => s.trim()).filter(Boolean);
+// Recipients sent by the site, or (fallback) MAIL_TO / RENTER_EMAIL set on this Worker.
+function recipients(env, list) {
+  const from = Array.isArray(list) && list.length ? list : [env.MAIL_TO, env.RENTER_EMAIL];
+  return [...new Set(from.filter(Boolean).join(',').split(',').map((s) => s.trim()).filter((s) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)))];
 }
 
 let lastError = '';
-async function sendAll(env, msg) {
+async function sendAll(env, msg, list) {
   let sent = 0;
   lastError = '';
-  if (!recipients(env).length) console.error('mailer: no MAIL_TO / RENTER_EMAIL secret set');
-  for (const to of [...new Set(recipients(env))]) {
+  for (const addr of list) {
     try {
-      await env.SEND.send(new EmailMessage(env.FROM, to, mime({ ...msg, from: env.FROM, fromName: env.FROM_NAME, to })));
+      await env.SEND.send(new EmailMessage(env.FROM, addr, mime({ ...msg, from: env.FROM, fromName: env.FROM_NAME, to: addr })));
       sent++;
     } catch (e) {
-      console.error('send to', to, 'failed:', e && e.message);
+      console.error('send to', addr, 'failed:', e && e.message);
       lastError = (e && e.message) || String(e);
     }
   }
   return sent;
-}
-
-async function monthlyReport(env) {
-  const now = new Date();
-  const p = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit' }).formatToParts(now);
-  let y = +p.find((x) => x.type === 'year').value, m = +p.find((x) => x.type === 'month').value - 1;
-  if (m < 1) { m = 12; y--; }
-  const month = `${y}-${String(m).padStart(2, '0')}`;
-  const auth = { Authorization: 'Basic ' + btoa('report:' + env.REPORT_PASSWORD) };
-  const [j, csv] = await Promise.all([
-    fetch(`${env.SITE}/report?month=${month}&format=json`, { headers: auth }).then((r) => { if (!r.ok) throw new Error('report json ' + r.status); return r.json(); }),
-    fetch(`${env.SITE}/report?month=${month}&format=csv`, { headers: auth }).then((r) => r.text()),
-  ]);
-  const count = (key) => {
-    const t = {};
-    for (const r of j.rows) { const k = key(r) || '(none)'; t[k] = (t[k] || 0) + 1; }
-    return Object.entries(t).sort((a, b) => b[1] - a[1]);
-  };
-  const names = { form: 'Web form', call: 'Phone call', text: 'Text message' };
-  const byType = count((r) => names[r.type] || r.type);
-  const bySource = count((r) => [r.source, r.medium].filter(Boolean).join(' / '));
-  const byForm = count((r) => r.form || names[r.type] || r.type);
-  const title = new Date(Date.UTC(y, m - 1, 15)).toLocaleString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
-  const list = (rows) => rows.map(([k, n]) => `  ${k}: ${n}`).join('\n') || '  none';
-  const tbl = (h, rows) => `<h3 style="margin:16px 0 6px">${h}</h3><table style="border-collapse:collapse">${rows.map(([k, n]) => `<tr><td style="padding:3px 16px 3px 0">${esc(k)}</td><td style="font-weight:700">${n}</td></tr>`).join('')}</table>`;
-  const link = `${env.SITE}/report?month=${month}`;
-  await sendAll(env, {
-    subject: `Lead report for ${title}: ${j.count} lead${j.count === 1 ? '' : 's'}`,
-    text: `${j.count} leads in ${title}.\n\nBy type:\n${list(byType)}\n\nBy source:\n${list(bySource)}\n\nBy form:\n${list(byForm)}\n\nFull list: ${link}\n(CSV attached)`,
-    html: `<div style="font:15px/1.5 Arial,sans-serif"><p style="font-size:22px;margin:0"><b>${j.count}</b> lead${j.count === 1 ? '' : 's'} in ${title}</p>${tbl('By type', byType)}${tbl('By source', bySource)}${tbl('By form', byForm)}<p><a href="${link}">Full list</a> (CSV attached)</p></div>`,
-    attachments: [{ filename: `leads-${month}.csv`, type: 'text/csv', content: csv }],
-  });
 }
 
 function esc(s) {

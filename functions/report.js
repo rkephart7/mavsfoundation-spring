@@ -1,6 +1,7 @@
 // /report?month=YYYY-MM[&format=csv|json]: monthly lead report, behind REPORT_PASSWORD
 // (browser login box; any username).
-import { db, esc, label, monthStart, currentMonth, TZ, callMailer, leadEmail } from '../server/leads.js';
+import { db, esc, label, monthStart, currentMonth, TZ, sendMail, recipientsOf, leadEmail } from '../server/leads.js';
+import { CSV_COLS, toCsv, tally } from '../server/monthly.js';
 
 const H = { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow' };
 
@@ -16,17 +17,10 @@ function authorized(request, env) {
   return diff === 0;
 }
 
-const CSV_COLS = ['id', 'created_at', 'type', 'name', 'phone', 'email', 'message', 'form', 'source', 'medium', 'campaign', 'page', 'landing_page', 'referrer', 'duration', 'recording'];
-const csvCell = (v) => { const s = v == null ? '' : String(v); return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
 const local = (iso) => new Date(iso).toLocaleString('en-US', { timeZone: TZ, month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 
 const path = (r) => { try { return new URL(r.page || r.landing_page).pathname; } catch (e) { return r.page || ''; } };
 
-function tally(rows, key) {
-  const t = {};
-  for (const r of rows) { const k = key(r) || '(none)'; t[k] = (t[k] || 0) + 1; }
-  return Object.entries(t).sort((a, b) => b[1] - a[1]);
-}
 
 export async function onRequestGet({ request, env }) {
   if (!env.REPORT_PASSWORD) return new Response('Set REPORT_PASSWORD on the Pages project to turn on the report.', { status: 503, headers: H });
@@ -37,12 +31,10 @@ export async function onRequestGet({ request, env }) {
   // /report?test=email sends a test lead email and shows the mailer's answer, so a delivery
   // problem (no recipient set, address not verified, ...) can be read without the logs.
   if (url.searchParams.get('test') === 'email') {
-    const out = { mailer: env.MAILER ? 'binding' : 'url' };
+    const out = { mailer: env.MAILER ? 'binding' : 'url', recipients: recipientsOf(env).length };
+    if (!out.recipients) return Response.json({ ...out, error: 'MAIL_TO is not set on the Pages project (Settings > Variables and Secrets)' }, { headers: H });
     try {
-      const r = await callMailer(env, '/send', {
-        method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(leadEmail({ type: 'form', name: 'Test lead', phone: '(281) 555-0100', message: 'Test from /report?test=email' }, url.origin)),
-      });
+      const r = await sendMail(env, leadEmail({ type: 'form', name: 'Test lead', phone: '(281) 555-0100', message: 'Test from /report?test=email' }, url.origin));
       out.status = r.status;
       try { out.answer = await r.json(); } catch (e) { out.answer = null; }
     } catch (e) { out.error = String((e && e.message) || e); }
@@ -60,8 +52,7 @@ export async function onRequestGet({ request, env }) {
 
   if (format === 'json') return Response.json({ month, count: rows.length, rows }, { headers: H });
   if (format === 'csv') {
-    const body = '\ufeff' + [CSV_COLS.join(','), ...rows.map((r) => CSV_COLS.map((c) => csvCell(c === 'created_at' ? new Date(r[c]).toLocaleString('en-US', { timeZone: TZ }) : r[c])).join(','))].join('\r\n');
-    return new Response(body, { headers: { ...H, 'content-type': 'text/csv; charset=utf-8', 'content-disposition': `attachment; filename="leads-${month}.csv"` } });
+    return new Response(toCsv(rows), { headers: { ...H, 'content-type': 'text/csv; charset=utf-8', 'content-disposition': `attachment; filename="leads-${month}.csv"` } });
   }
 
   const mm = (k) => { let yy = y, mo = m + k; if (mo < 1) { mo += 12; yy--; } if (mo > 12) { mo -= 12; yy++; } return `${yy}-${String(mo).padStart(2, '0')}`; };
