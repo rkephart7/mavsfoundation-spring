@@ -25,6 +25,14 @@ const DIST = path.join(ROOT, 'dist');
 // Fonts are self-hosted from site/fonts (latin subset of the Google Fonts the template uses),
 // inlined as @font-face so no request blocks first paint.
 let FONT_CSS = '';
+// Navy star favicon (files live in site/, copied to the dist root).
+const FAVICON = [
+  '<link rel="icon" href="/favicon.ico" sizes="48x48">',
+  '<link rel="icon" href="/favicon.svg" type="image/svg+xml">',
+  '<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">',
+  '<link rel="apple-touch-icon" href="/apple-touch-icon.png">',
+].join('\n');
+const FAVICON_FILES = ['favicon.ico', 'favicon.svg', 'favicon-32x32.png', 'apple-touch-icon.png'];
 const FONT_PRELOAD = ['libre-franklin-400', 'alfa-slab-one-400'].map((f) => `<link rel="preload" href="/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`).join('\n');
 // Responsive images: smaller WebP copies (400w, 800w) of each photo, made with a canvas in
 // Chromium so the build needs no extra image library. Returns { '/images/x.webp': 'srcset' }.
@@ -282,6 +290,7 @@ function page(snap, route, origin, info) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 ${GA_TAG}
+${FAVICON}
 <title>${esc(snap.title)}</title>
 <meta name="description" content="${esc(snap.description)}">
 <link rel="canonical" href="${url}">
@@ -315,6 +324,7 @@ function notFound(info) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 ${GA_TAG}
 <title>Page Not Found | ${esc(info.brand)}</title>
+${FAVICON}
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Source+Sans+3:wght@400;600;700&display=swap">
 </head>
@@ -352,6 +362,7 @@ async function main() {
   await mkdir(DIST, { recursive: true });
   await cp(path.join(SRC, 'images'), path.join(DIST, 'images'), { recursive: true });
   await cp(path.join(SRC, 'fonts'), path.join(DIST, 'fonts'), { recursive: true });
+  for (const f of FAVICON_FILES) await cp(path.join(SRC, f), path.join(DIST, f));
   SRCSETS = await makeImageVariants();
   FONT_CSS = (await readFile(path.join(SRC, 'fonts', 'fonts.css'), 'utf8')).replace(/\s*\n\s*/g, ' ').trim();
   await cp(path.join(SRC, 'support.js'), path.join(DIST, 'support.js'));
